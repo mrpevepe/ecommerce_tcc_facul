@@ -1,0 +1,15 @@
+Ainda falta fazer:
+
+
+// SUPER IMPORTANTE
+
+- pagina de gerenciamento de pedidos no dashboard do admin
+- criação de avaliações/comentários em um pedido quando o pedido do usuário é entregue
+- css em tudo
+
+
+
+// WHATEVER, SE DER TEMPO EU FAÇO
+
+- fazer um carrousel com imagens na pagina de show do produto
+- 
