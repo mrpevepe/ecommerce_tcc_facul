@@ -3,13 +3,13 @@ Ainda falta fazer:
 
 // SUPER IMPORTANTE
 
-- pagina de gerenciamento de pedidos no dashboard do admin
-- criação de avaliações/comentários em um pedido quando o pedido do usuário é entregue
+- criação de avaliações/comentários em um pedido só quando o pedido do usuário tem status de delivered
 - css em tudo
 
 
 
 // WHATEVER, SE DER TEMPO EU FAÇO
 
+- dashboard do admin com dados de produtos vendidos no mês / preço total vendido etc...
 - fazer um carrousel com imagens na pagina de show do produto
 - 

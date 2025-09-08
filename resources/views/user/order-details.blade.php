@@ -12,7 +12,7 @@
             <p><strong>Status:</strong> {{ ucfirst($order->status) }}</p>
             <p><strong>Método de Pagamento:</strong> {{ ucfirst($order->payment_method) }}</p>
             <p><strong>Total:</strong> R$ {{ number_format($order->total_price, 2, ',', '.') }}</p>
-            <p><strong>Data do Pedido:</strong> {{ $order->created_at->format('d/m/Y H:i') }}</p>
+            <p><strong>Data do Pedido:</strong> {{ $order->created_at->setTimezone('America/Sao_Paulo')->format('d/m/Y H:i') }}</p>
         </div>
     </div>
 

@@ -230,7 +230,7 @@ class ProductController extends Controller
                 'product_id' => $product->id,
                 'variation_id' => $variationId,
                 'name' => $product->nome,
-                'variation_name' => $variation->nome_variacao, // Adiciona o nome da variação
+                'variation_name' => $variation->nome_variacao,
                 'price' => $variation->preco,
                 'quantity' => $quantity,
                 'image' => $variation->images->where('is_main', true)->first()->path ?? $product->images->where('is_main', true)->first()->path,

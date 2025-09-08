@@ -49,11 +49,17 @@
                         @foreach ($orders as $order)
                             <tr>
                                 <td>#{{ $order->id }}</td>
-                                <td>{{ $order->created_at->format('d/m/Y H:i') }}</td>
+                                <td>{{ $order->created_at->setTimezone('America/Sao_Paulo')->format('d/m/Y H:i') }}</td>
                                 <td>R$ {{ number_format($order->total_price, 2, ',', '.') }}</td>
                                 <td>{{ ucfirst($order->status) }}</td>
                                 <td>
                                     <a href="{{ route('user.orders.show', $order->id) }}" class="btn btn-info btn-sm">Ver Detalhes</a>
+                                    @if ($order->status === 'pending')
+                                        <form action="{{ route('user.orders.cancel', $order->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja cancelar este pedido?');">
+                                            @csrf
+                                            <button type="submit" class="btn btn-danger btn-sm">Cancelar Pedido</button>
+                                        </form>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

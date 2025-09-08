@@ -11,7 +11,27 @@ use Illuminate\Support\Facades\Auth;
 class OrdersController extends Controller
 {
     /**
-     * Processa o checkout e cria o pedido.
+     * Exibe a lista de todos os pedidos para o administrador.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\View\View
+     */
+    public function index(Request $request)
+    {
+        $status = $request->query('status', 'all');
+        $query = Order::with('user', 'items.product', 'items.variation');
+
+        if (in_array($status, ['pending', 'cancelled', 'delivered'])) {
+            $query->where('status', $status);
+        }
+
+        $orders = $query->latest()->get();
+
+        return view('admin.orders.index', compact('orders', 'status'));
+    }
+
+    /**
+     * Processa o checkout e cria o pedido sem reduzir o estoque.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
@@ -41,14 +61,13 @@ class OrdersController extends Controller
             'address_id' => $user->endereco_id,
             'status' => 'pending',
             'payment_method' => $request->payment_method,
-            'payment_status' => 'pending',
             'total_price' => $totalPrice,
         ]);
 
         foreach ($cart as $variationId => $item) {
             $variation = ProductVariation::find($variationId);
 
-            if ($variation && $variation->quantidade_estoque >= $item['quantity']) {
+            if ($variation) {
                 OrderItem::create([
                     'order_id' => $order->id,
                     'product_id' => $item['product_id'],
@@ -56,14 +75,10 @@ class OrdersController extends Controller
                     'quantity' => $item['quantity'],
                     'price_at_purchase' => $item['price'],
                 ]);
-
-                // Atualiza o estoque
-                $variation->quantidade_estoque -= $item['quantity'];
-                $variation->save();
             } else {
-                // Se estoque insuficiente, cancela o pedido
+                // Se a variação não existe, cancela o pedido
                 $order->update(['status' => 'cancelled']);
-                return redirect()->route('cart.index')->with('error', 'Estoque insuficiente para um ou mais itens.');
+                return redirect()->route('cart.index')->with('error', 'Uma ou mais variações são inválidas.');
             }
         }
 
@@ -87,5 +102,66 @@ class OrdersController extends Controller
         }
 
         return view('user.order-details', compact('order'));
+    }
+
+    /**
+     * Cancela um pedido (apenas para usuário, status pending).
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function cancel($id)
+    {
+        $order = Order::findOrFail($id);
+        if ($order->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        if ($order->status !== 'pending') {
+            return redirect()->route('user.index')->with('error', 'Este pedido não pode ser cancelado.');
+        }
+
+        $order->update(['status' => 'cancelled']);
+
+        return redirect()->route('user.index')->with('success', 'Pedido cancelado com sucesso!');
+    }
+
+    /**
+     * Marca um pedido como entregue e reduz o estoque (apenas para admin, status pending).
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function markAsDelivered($id)
+    {
+        $order = Order::with('items.variation')->findOrFail($id);
+        if (Auth::user()->cargo !== 'administrador') {
+            abort(403);
+        }
+
+        if ($order->status !== 'pending') {
+            return redirect()->route('admin.orders.index')->with('error', 'Este pedido não pode ser marcado como entregue.');
+        }
+
+        // Verifica se há estoque suficiente para todos os itens
+        foreach ($order->items as $item) {
+            $variation = ProductVariation::find($item->variation_id);
+            if (!$variation || $variation->quantidade_estoque < $item->quantity) {
+                return redirect()->route('admin.orders.index')->with('error', 'Estoque insuficiente para um ou mais itens do pedido.');
+            }
+        }
+
+        // Reduz o estoque
+        foreach ($order->items as $item) {
+            $variation = ProductVariation::find($item->variation_id);
+            if ($variation) {
+                $variation->quantidade_estoque -= $item->quantity;
+                $variation->save();
+            }
+        }
+
+        $order->update(['status' => 'delivered']);
+
+        return redirect()->route('admin.orders.index')->with('success', 'Pedido marcado como entregue e estoque atualizado!');
     }
 }

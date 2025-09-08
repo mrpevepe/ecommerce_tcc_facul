@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/user/address', [UserController::class, 'saveAddress'])->name('user.address.save');
     Route::post('/orders', [OrdersController::class, 'store'])->name('orders.store');
     Route::get('/user/orders/{id}', [OrdersController::class, 'show'])->name('user.orders.show');
+    Route::post('/user/orders/{id}/cancel', [OrdersController::class, 'cancel'])->name('user.orders.cancel');
 });
 
 // Rotas Admin
@@ -47,6 +48,9 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/dashboard', function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
+
+    Route::get('/orders', [OrdersController::class, 'index'])->name('admin.orders.index');
+    Route::post('/orders/{id}/deliver', [OrdersController::class, 'markAsDelivered'])->name('admin.orders.deliver');
 
     Route::get('/products', [ProductController::class, 'index'])->name('admin.products.index');
     Route::get('/products/create', [ProductController::class, 'create'])->name('admin.products.create');

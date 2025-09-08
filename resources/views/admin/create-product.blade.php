@@ -1,4 +1,3 @@
-<!-- Modificações em create-product.blade.php -->
 @extends('layouts.main')
 
 @section('title', 'Criar Produto')
@@ -45,7 +44,7 @@
 
         <h2>Variações</h2>
         <div id="variacoes-container">
-            <!-- Variações serão adicionadas aqui dinamicamente -->
+            <!-- variações adicionadas automaticamente aq -->
         </div>
 
         <button type="button" class="btn btn-secondary mb-3" id="add-variacao">Adicionar Variação</button>

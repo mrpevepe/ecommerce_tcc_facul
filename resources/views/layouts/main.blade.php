@@ -17,7 +17,7 @@
         <header>
             <nav class="navbar navbar-expand-sm navbar-light">
                 <a href="/" class="navbar-brand">
-                    <img src="/img/logo.webp" alt="logo">
+                    <img src="/img/logo.jpg" alt="logo" style="width: 40px">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -25,6 +25,9 @@
                 <div class="collapse navbar-collapse" id="navbar">
                     <ul class="navbar-nav">
                         @if (Auth::check())
+                            <li class="nav-item">
+                                <a href="{{ route('user.index') }}" class="nav-link">Minha Conta</a>
+                            </li>
                             <li class="nav-item">
                                 <form action="{{ route('logout') }}" method="POST" style="display:inline;">
                                     @csrf
