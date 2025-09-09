@@ -64,7 +64,11 @@ class OrdersController extends Controller
             'total_price' => $totalPrice,
         ]);
 
-        foreach ($cart as $variationId => $item) {
+        foreach ($cart as $cartKey => $item) {
+            $parts = explode('_', $cartKey);
+            $variationId = $parts[0];
+            $size = $item['size'];
+            
             $variation = ProductVariation::find($variationId);
 
             if ($variation) {
@@ -72,6 +76,7 @@ class OrdersController extends Controller
                     'order_id' => $order->id,
                     'product_id' => $item['product_id'],
                     'variation_id' => $variationId,
+                    'product_size' => $size, // Salvar o tamanho
                     'quantity' => $item['quantity'],
                     'price_at_purchase' => $item['price'],
                 ]);

@@ -40,6 +40,7 @@
                         <th>Imagem</th>
                         <th>Produto</th>
                         <th>Variação</th>
+                        <th>Tamanho</th>
                         <th>Quantidade</th>
                         <th>Preço Unitário</th>
                         <th>Subtotal</th>
@@ -60,6 +61,7 @@
                             </td>
                             <td>{{ $item->product->nome }}</td>
                             <td>{{ $item->variation->nome_variacao ?? 'Sem variação' }}</td>
+                            <td>{{ $item->product_size ?? 'N/A' }}</td>
                             <td>{{ $item->quantity }}</td>
                             <td>R$ {{ number_format($item->price_at_purchase, 2, ',', '.') }}</td>
                             <td>R$ {{ number_format($item->price_at_purchase * $item->quantity, 2, ',', '.') }}</td>

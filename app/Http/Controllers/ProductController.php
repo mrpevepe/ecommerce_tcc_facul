@@ -221,18 +221,23 @@ class ProductController extends Controller
         $product = Product::with('variations.images')->findOrFail($id);
         $variationId = $request->input('variation_id');
         $quantity = $request->input('quantity', 1);
+        $size = $request->input('size', 'P'); // Novo campo
 
         $cart = session()->get('cart', []);
         $variation = $product->variations->find($variationId);
 
         if ($variation && $variation->quantidade_estoque >= $quantity) {
-            $cart[$variationId] = [
+            // Criar uma chave única combinando variation_id e size
+            $cartKey = $variationId . '_' . $size;
+            
+            $cart[$cartKey] = [
                 'product_id' => $product->id,
                 'variation_id' => $variationId,
                 'name' => $product->nome,
                 'variation_name' => $variation->nome_variacao,
                 'price' => $variation->preco,
                 'quantity' => $quantity,
+                'size' => $size, // Novo campo
                 'image' => $variation->images->where('is_main', true)->first()->path ?? $product->images->where('is_main', true)->first()->path,
             ];
 
@@ -249,12 +254,12 @@ class ProductController extends Controller
         return view('cart', compact('cart'));
     }
 
-    public function removeFromCart($variationId)
+    public function removeFromCart($cartKey)
     {
         $cart = session()->get('cart', []);
 
-        if (isset($cart[$variationId])) {
-            unset($cart[$variationId]);
+        if (isset($cart[$cartKey])) {
+            unset($cart[$cartKey]);
             session()->put('cart', $cart);
             return redirect()->route('cart.index')->with('success', 'Item removido do carrinho!');
         }
@@ -264,14 +269,18 @@ class ProductController extends Controller
 
     public function updateCartQuantity(Request $request)
     {
-        $variationId = $request->input('variation_id');
+        $cartKey = $request->input('cart_key');
         $quantity = $request->input('quantity');
         $cart = session()->get('cart', []);
 
-        if (isset($cart[$variationId])) {
+        if (isset($cart[$cartKey])) {
+            // Extrair variation_id do cartKey
+            $parts = explode('_', $cartKey);
+            $variationId = $parts[0];
+            
             $variation = ProductVariation::find($variationId);
             if ($variation && $variation->quantidade_estoque >= $quantity && $quantity > 0) {
-                $cart[$variationId]['quantity'] = $quantity;
+                $cart[$cartKey]['quantity'] = $quantity;
                 session()->put('cart', $cart);
                 return redirect()->route('cart.index')->with('success', 'Quantidade atualizada!');
             } else {

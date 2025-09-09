@@ -28,6 +28,7 @@
                 <tr>
                     <th>Imagem</th>
                     <th>Nome</th>
+                    <th>Tamanho</th> <!-- Nova coluna -->
                     <th>Preço Unitário</th>
                     <th>Quantidade</th>
                     <th>Subtotal</th>
@@ -35,7 +36,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($cart as $item)
+                @foreach ($cart as $key => $item)
                     <tr class="cart-item">
                         <td>
                             @if ($item['image'])
@@ -45,11 +46,12 @@
                             @endif
                         </td>
                         <td>{{ $item['name'] }} - {{ $item['variation_name'] ?? 'Sem variação' }}</td>
+                        <td>{{ $item['size'] }}</td> <!-- Nova coluna -->
                         <td>R$ {{ number_format($item['price'], 2, ',', '.') }}</td>
                         <td>
                             <form action="{{ route('cart.updateQuantity') }}" method="POST" style="display: inline;">
                                 @csrf
-                                <input type="hidden" name="variation_id" value="{{ $item['variation_id'] }}">
+                                <input type="hidden" name="cart_key" value="{{ $key }}">
                                 <div class="input-group" style="width: 150px;">
                                     <button type="button" class="btn btn-outline-secondary" onclick="this.parentElement.querySelector('input[type=number]').stepDown(); this.form.submit();">-</button>
                                     <input type="number" name="quantity" value="{{ $item['quantity'] }}" min="1" class="form-control text-center" style="width: 60px;" onchange="this.form.submit()">
@@ -59,7 +61,7 @@
                         </td>
                         <td>R$ {{ number_format($item['price'] * $item['quantity'], 2, ',', '.') }}</td>
                         <td>
-                            <form action="{{ route('cart.remove', $item['variation_id']) }}" method="POST">
+                            <form action="{{ route('cart.remove', $key) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm">Remover</button>

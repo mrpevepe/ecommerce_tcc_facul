@@ -43,7 +43,12 @@
                         <td>
                             <ul>
                                 @foreach ($order->items as $item)
-                                    <li>{{ $item->product->nome }} ({{ $item->variation->nome_variacao ?? 'Sem variação' }}) - Qtd: {{ $item->quantity }}</li>
+                                    <li>
+                                        {{ $item->product->nome }} 
+                                        ({{ $item->variation->nome_variacao ?? 'Sem variação' }}) 
+                                        - Tamanho: {{ $item->product_size ?? 'N/A' }} 
+                                        - Qtd: {{ $item->quantity }}
+                                    </li>
                                 @endforeach
                             </ul>
                         </td>
