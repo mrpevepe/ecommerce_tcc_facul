@@ -60,4 +60,6 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::patch('/variations/{id}/stock', [ProductController::class, 'updateStock'])->name('admin.variations.updateStock');
     Route::get('/products/{id}/variations', [ProductController::class, 'showVariations'])->name('admin.products.variations');
     Route::post('/products/{id}/variations', [ProductController::class, 'storeVariation'])->name('admin.products.storeVariation');
+    Route::get('/products/{variationId}/stock/edit', [ProductController::class, 'editStock'])->name('admin.products.editStock');
+    Route::post('/products/{variationId}/stock', [ProductController::class, 'saveStock'])->name('admin.products.saveStock');
 });

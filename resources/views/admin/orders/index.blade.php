@@ -46,7 +46,7 @@
                                     <li>
                                         {{ $item->product->nome }} 
                                         ({{ $item->variation->nome_variacao ?? 'Sem variação' }}) 
-                                        - Tamanho: {{ $item->product_size ?? 'N/A' }} 
+                                        - Tamanho: {{ $item->size->name ?? 'N/A' }} 
                                         - Qtd: {{ $item->quantity }}
                                     </li>
                                 @endforeach

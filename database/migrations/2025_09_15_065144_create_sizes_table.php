@@ -1,0 +1,40 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('sizes', function (Blueprint $table) {
+            $table->id();
+            $table->string('name', 10)->unique();
+            $table->timestamps();
+        });
+
+        // Populate with standard sizes
+        DB::table('sizes')->insert([
+            ['name' => 'P'],
+            ['name' => 'M'],
+            ['name' => 'G'],
+            ['name' => 'GG'],
+            ['name' => 'XG'],
+            ['name' => 'XGG'],
+            ['name' => 'XXGG'],
+        ]);
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('sizes');
+    }
+};

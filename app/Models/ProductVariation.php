@@ -12,7 +12,6 @@ class ProductVariation extends Model
     protected $fillable = [
         'product_id',
         'nome_variacao',
-        'quantidade_estoque',
         'preco',
     ];
 
@@ -29,5 +28,12 @@ class ProductVariation extends Model
     public function orderItems()
     {
         return $this->hasMany(OrderItem::class, 'variation_id');
+    }
+    
+    public function sizes()
+    {
+        return $this->belongsToMany(Size::class, 'product_variation_sizes')
+                    ->withPivot('quantity')
+                    ->withTimestamps();
     }
 }

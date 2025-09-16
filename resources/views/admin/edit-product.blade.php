@@ -1,4 +1,3 @@
-<!-- Modificações em edit-product.blade.php -->
 @extends('layouts.main')
 
 @section('title', 'Editar Produto')
@@ -60,12 +59,30 @@
                             <input type="text" class="form-control" name="variations[{{ $index }}][nome_variacao]" value="{{ $variation->nome_variacao }}" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Quantidade em Estoque</label>
-                            <input type="number" class="form-control" name="variations[{{ $index }}][quantidade_estoque]" value="{{ $variation->quantidade_estoque }}" required>
-                        </div>
-                        <div class="mb-3">
                             <label class="form-label">Preço</label>
                             <input type="number" step="0.01" class="form-control" name="variations[{{ $index }}][preco]" value="{{ $variation->preco }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Estoque por Tamanho</label>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Tamanho</th>
+                                        <th>Quantidade</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($sizes as $size)
+                                        <tr>
+                                            <td>{{ $size->name }}</td>
+                                            <td>
+                                                <input type="number" class="form-control" name="variations[{{ $index }}][quantidade_estoque][{{ $size->id }}][quantity]" value="{{ $variation->sizes->find($size->id)->pivot->quantity ?? 0 }}" min="0" required>
+                                                <input type="hidden" name="variations[{{ $index }}][quantidade_estoque][{{ $size->id }}][size_id]" value="{{ $size->id }}">
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Imagem da Variação (deixe em branco para manter atual)</label>
@@ -114,12 +131,30 @@
                         <input type="text" class="form-control" name="variations[${variacaoIndex}][nome_variacao]" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Quantidade em Estoque</label>
-                        <input type="number" class="form-control" name="variations[${variacaoIndex}][quantidade_estoque]" required>
-                    </div>
-                    <div class="mb-3">
                         <label class="form-label">Preço</label>
                         <input type="number" step="0.01" class="form-control" name="variations[${variacaoIndex}][preco]" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Estoque por Tamanho</label>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Tamanho</th>
+                                    <th>Quantidade</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($sizes as $size)
+                                    <tr>
+                                        <td>{{ $size->name }}</td>
+                                        <td>
+                                            <input type="number" class="form-control" name="variations[${variacaoIndex}][quantidade_estoque][${variacaoIndex}_${$size->id}][quantity]" min="0" required>
+                                            <input type="hidden" name="variations[${variacaoIndex}][quantidade_estoque][${variacaoIndex}_${$size->id}][size_id]" value="{{ $size->id }}">
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Imagem da Variação</label>

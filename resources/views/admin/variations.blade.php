@@ -1,4 +1,3 @@
-<!-- resources/views/admin/variations.blade.php -->
 @extends('layouts.main')
 
 @section('title', 'Variações do Produto')
@@ -8,7 +7,6 @@
     <h1>Variações do Produto: {{ $product->nome }}</h1>
     <a href="{{ route('admin.products.index') }}" class="btn btn-secondary mb-3">Voltar</a>
 
-    <!-- Botão para adicionar variação -->
     <button type="button" class="btn btn-success mb-3" id="addVariationBtn">Adicionar Variação</button>
 
     @if ($product->variations->isEmpty())
@@ -39,21 +37,38 @@
                         <td>{{ $product->descricao ?? 'Sem descrição' }}</td>
                         <td>R$ {{ number_format($variation->preco, 2, ',', '.') }}</td>
                         <td>
-                            <form action="{{ route('admin.variations.updateStock', $variation->id) }}" method="POST" class="d-flex align-items-center">
-                                @csrf
-                                @method('PATCH')
-                                <input type="number" name="quantidade_estoque" value="{{ $variation->quantidade_estoque }}" class="form-control d-inline-block" style="width: 100px;" min="0">
-                                <button type="submit" class="btn btn-sm btn-primary ms-2">Atualizar Estoque</button>
-                            </form>
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Tamanho</th>
+                                        <th>Quantidade</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($variation->sizes as $size)
+                                        <tr>
+                                            <td>{{ $size->name }}</td>
+                                            <td>{{ $size->pivot->quantity }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td><strong>Total</strong></td>
+                                        <td><strong>{{ $variation->sizes->sum('pivot.quantity') }}</strong></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
                         </td>
-                        <td></td>
+                        <td>
+                            <a href="{{ route('admin.products.editStock', $variation->id) }}" class="btn btn-sm btn-primary">Editar Estoque</a>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     @endif
 
-    <!-- Formulário dinâmico para adicionar variação -->
     <div id="addVariationForm" style="display: none;" class="mt-4">
         <h3>Adicionar Nova Variação</h3>
         <form action="{{ route('admin.products.storeVariation', $product->id) }}" method="POST" enctype="multipart/form-data">
@@ -61,19 +76,49 @@
             <div class="mb-3">
                 <label for="nome_variacao" class="form-label">Nome da Variação</label>
                 <input type="text" class="form-control" id="nome_variacao" name="nome_variacao" required>
+                @error('nome_variacao')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
             <div class="mb-3">
                 <label for="preco" class="form-label">Preço</label>
                 <input type="number" step="0.01" class="form-control" id="preco" name="preco" required>
+                @error('preco')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
             <div class="mb-3">
-                <label for="quantidade_estoque" class="form-label">Quantidade em Estoque</label>
-                <input type="number" class="form-control" id="quantidade_estoque" name="quantidade_estoque" required>
+                <label class="form-label">Estoque por Tamanho</label>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Tamanho</th>
+                            <th>Quantidade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($sizes as $size)
+                            <tr>
+                                <td>{{ $size->name }}</td>
+                                <td>
+                                    <input type="number" class="form-control" name="quantidade_estoque[{{ $size->id }}][quantity]" min="0" required>
+                                    <input type="hidden" name="quantidade_estoque[{{ $size->id }}][size_id]" value="{{ $size->id }}">
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                @error('quantidade_estoque.*.quantity')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
             <div class="mb-3">
                 <label for="imagem" class="form-label">Imagem da Variação</label>
                 <input type="file" class="form-control" id="imagem" name="imagem" onchange="previewImage(event)">
                 <img id="imagePreview" src="#" alt="Preview da Imagem" style="display: none; max-width: 200px; margin-top: 10px;">
+                @error('imagem')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
             <button type="submit" class="btn btn-primary">Salvar Variação</button>
             <button type="button" class="btn btn-secondary ms-2" id="cancelVariationBtn">Cancelar</button>
@@ -90,7 +135,6 @@
     document.getElementById('cancelVariationBtn').addEventListener('click', function() {
         document.getElementById('addVariationForm').style.display = 'none';
         document.getElementById('addVariationBtn').style.display = 'block';
-        // Limpar o preview ao cancelar
         document.getElementById('imagePreview').style.display = 'none';
         document.getElementById('imagePreview').src = '#';
     });

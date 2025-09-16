@@ -13,7 +13,7 @@ class OrderItem extends Model
         'order_id',
         'product_id',
         'variation_id',
-        'product_size',
+        'size_id',
         'quantity',
         'price_at_purchase',
     ];
@@ -35,5 +35,10 @@ class OrderItem extends Model
     public function variation()
     {
         return $this->belongsTo(ProductVariation::class, 'variation_id');
+    }
+    
+    public function size()
+    {
+        return $this->belongsTo(Size::class, 'size_id');
     }
 }

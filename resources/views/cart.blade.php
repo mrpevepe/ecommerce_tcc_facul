@@ -28,7 +28,7 @@
                 <tr>
                     <th>Imagem</th>
                     <th>Nome</th>
-                    <th>Tamanho</th> <!-- Nova coluna -->
+                    <th>Tamanho</th>
                     <th>Preço Unitário</th>
                     <th>Quantidade</th>
                     <th>Subtotal</th>
@@ -46,7 +46,7 @@
                             @endif
                         </td>
                         <td>{{ $item['name'] }} - {{ $item['variation_name'] ?? 'Sem variação' }}</td>
-                        <td>{{ $item['size'] }}</td> <!-- Nova coluna -->
+                        <td>{{ $item['size_name'] }}</td>
                         <td>R$ {{ number_format($item['price'], 2, ',', '.') }}</td>
                         <td>
                             <form action="{{ route('cart.updateQuantity') }}" method="POST" style="display: inline;">
@@ -54,7 +54,7 @@
                                 <input type="hidden" name="cart_key" value="{{ $key }}">
                                 <div class="input-group" style="width: 150px;">
                                     <button type="button" class="btn btn-outline-secondary" onclick="this.parentElement.querySelector('input[type=number]').stepDown(); this.form.submit();">-</button>
-                                    <input type="number" name="quantity" value="{{ $item['quantity'] }}" min="1" class="form-control text-center" style="width: 60px;" onchange="this.form.submit()">
+                                    <input type="number" name="quantity" value="{{ $item['quantity'] }}" min="1" max="{{ $item['stock'] }}" class="form-control text-center" style="width: 60px;" onchange="this.form.submit()">
                                     <button type="button" class="btn btn-outline-secondary" onclick="this.parentElement.querySelector('input[type=number]').stepUp(); this.form.submit();">+</button>
                                 </div>
                             </form>
@@ -125,4 +125,13 @@
     @endif
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.querySelectorAll('input[type=number][name=quantity]').forEach(input => {
+        input.addEventListener('input', function() {
+            const max = parseInt(this.max) || 1;
+            if (this.value > max) this.value = max;
+            if (this.value < 1) this.value = 1;
+        });
+    });
+</script>
 @endsection
