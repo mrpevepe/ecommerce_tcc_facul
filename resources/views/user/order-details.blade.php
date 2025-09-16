@@ -39,6 +39,7 @@
                     <tr>
                         <th>Imagem</th>
                         <th>Produto</th>
+                        <th>Categoria</th>
                         <th>Variação</th>
                         <th>Tamanho</th>
                         <th>Quantidade</th>
@@ -60,6 +61,7 @@
                                 @endif
                             </td>
                             <td>{{ $item->product->nome }}</td>
+                            <td>{{ $item->product->category->name ?? 'Sem categoria' }}</td>
                             <td>{{ $item->variation->nome_variacao ?? 'Sem variação' }}</td>
                             <td>{{ $item->size->name ?? 'N/A' }}</td>
                             <td>{{ $item->quantity }}</td>

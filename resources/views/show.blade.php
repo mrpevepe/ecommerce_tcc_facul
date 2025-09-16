@@ -36,6 +36,7 @@
             @endif
         </div>
         <div class="col-md-6">
+            <p><strong>Categoria:</strong> {{ $product->category->name ?? 'Sem categoria' }}</p>
             <p><strong>Descrição:</strong> {{ $product->descricao ?? 'Sem descrição' }}</p>
             <p><strong>Marca:</strong> {{ $product->marca ?? 'Sem marca' }}</p>
             <p><strong>Preço:</strong> <span id="productPrice">R$ {{ number_format($product->variations->first()->preco ?? 0, 2, ',', '.') }}</span></p>

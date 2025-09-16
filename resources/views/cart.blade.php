@@ -28,6 +28,7 @@
                 <tr>
                     <th>Imagem</th>
                     <th>Nome</th>
+                    <th>Categoria</th>
                     <th>Tamanho</th>
                     <th>Preço Unitário</th>
                     <th>Quantidade</th>
@@ -46,6 +47,7 @@
                             @endif
                         </td>
                         <td>{{ $item['name'] }} - {{ $item['variation_name'] ?? 'Sem variação' }}</td>
+                        <td>{{ $item['category'] ?? 'Sem categoria' }}</td>
                         <td>{{ $item['size_name'] }}</td>
                         <td>R$ {{ number_format($item['price'], 2, ',', '.') }}</td>
                         <td>

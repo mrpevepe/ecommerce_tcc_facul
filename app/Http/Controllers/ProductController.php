@@ -7,6 +7,7 @@ use App\Models\ProductVariation;
 use App\Models\ProductImage;
 use App\Models\ProductVariationImage;
 use App\Models\Size;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -14,20 +15,26 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::all();
+        $products = Product::with('category')->get();
         return view('admin.products', compact('products'));
     }
 
-    public function indexPublic()
+    public function indexPublic(Request $request)
     {
-        $products = Product::with('variations')->get();
-        return view('index', compact('products'));
+        $query = Product::with('variations');
+        if ($request->has('category_id') && $request->category_id !== 'all') {
+            $query->where('category_id', $request->category_id);
+        }
+        $products = $query->get();
+        $categories = Category::all();
+        return view('index', compact('products', 'categories'));
     }
 
     public function create()
     {
         $sizes = Size::all();
-        return view('admin.create-product', compact('sizes'));
+        $categories = Category::all();
+        return view('admin.create-product', compact('sizes', 'categories'));
     }
 
     public function store(Request $request)
@@ -36,6 +43,7 @@ class ProductController extends Controller
             'nome' => 'required|string|max:255',
             'descricao' => 'nullable|string',
             'marca' => 'nullable|string|max:255',
+            'category_id' => 'nullable|exists:categories,id',
             'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'variations.*.nome_variacao' => 'required|string|max:255',
             'variations.*.preco' => 'required|numeric|min:0',
@@ -49,6 +57,7 @@ class ProductController extends Controller
             'descricao' => $request->descricao,
             'marca' => $request->marca,
             'status' => 'ativo',
+            'category_id' => $request->category_id,
         ]);
 
         if ($request->hasFile('imagem')) {
@@ -90,9 +99,10 @@ class ProductController extends Controller
 
     public function edit($id)
     {
-        $product = Product::with('variations.images', 'variations.sizes')->findOrFail($id);
+        $product = Product::with('variations.images', 'variations.sizes', 'category')->findOrFail($id);
         $sizes = Size::all();
-        return view('admin.edit-product', compact('product', 'sizes'));
+        $categories = Category::all();
+        return view('admin.edit-product', compact('product', 'sizes', 'categories'));
     }
 
     public function update(Request $request, $id)
@@ -103,6 +113,7 @@ class ProductController extends Controller
             'nome' => 'required|string|max:255',
             'descricao' => 'nullable|string',
             'marca' => 'nullable|string|max:255',
+            'category_id' => 'nullable|exists:categories,id',
             'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'variations.*.nome_variacao' => 'required|string|max:255',
             'variations.*.preco' => 'required|numeric|min:0',
@@ -115,6 +126,7 @@ class ProductController extends Controller
             'nome' => $request->nome,
             'descricao' => $request->descricao,
             'marca' => $request->marca,
+            'category_id' => $request->category_id,
         ]);
 
         if ($request->hasFile('imagem')) {
@@ -172,7 +184,7 @@ class ProductController extends Controller
 
     public function showVariations($id)
     {
-        $product = Product::with('variations.images', 'variations.sizes')->findOrFail($id);
+        $product = Product::with('variations.images', 'variations.sizes', 'category')->findOrFail($id);
         $sizes = Size::all();
         return view('admin.variations', compact('product', 'sizes'));
     }
@@ -216,7 +228,7 @@ class ProductController extends Controller
 
     public function editStock($variationId)
     {
-        $variation = ProductVariation::with('sizes')->findOrFail($variationId);
+        $variation = ProductVariation::with('sizes', 'product.category')->findOrFail($variationId);
         $sizes = Size::all();
         return view('admin.edit-stock', compact('variation', 'sizes'));
     }
@@ -240,13 +252,13 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        $product = Product::with('variations.images', 'variations.sizes')->findOrFail($id);
+        $product = Product::with('variations.images', 'variations.sizes', 'category')->findOrFail($id);
         return view('show', compact('product'));
     }
 
     public function addToCart(Request $request, $id)
     {
-        $product = Product::with('variations.images', 'variations.sizes')->findOrFail($id);
+        $product = Product::with('variations.images', 'variations.sizes', 'category')->findOrFail($id);
         $variationId = $request->input('variation_id');
         $quantity = $request->input('quantity', 1);
         $sizeId = $request->input('size_id');
@@ -276,6 +288,7 @@ class ProductController extends Controller
                     'size_name' => $size->name,
                     'image' => $variation->images->where('is_main', true)->first()->path ?? $product->images->where('is_main', true)->first()->path,
                     'stock' => $stock,
+                    'category' => $product->category->name ?? 'Sem categoria',
                 ];
 
                 session()->put('cart', $cart);
@@ -331,5 +344,54 @@ class ProductController extends Controller
         }
 
         return redirect()->route('cart.index')->with('error', 'Item não encontrado no carrinho.');
+    }
+
+    public function createCategory()
+    {
+        $categories = Category::all();
+        return view('admin.create-category', compact('categories'));
+    }
+
+    public function storeCategory(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:categories',
+        ]);
+
+        Category::create([
+            'name' => $request->name,
+        ]);
+
+        return redirect()->route('admin.categories.create')->with('success', 'Categoria criada com sucesso!');
+    }
+
+    public function editCategory($id)
+    {
+        $category = Category::findOrFail($id);
+        $categories = Category::all();
+        return view('admin.edit-category', compact('category', 'categories'));
+    }
+
+    public function updateCategory(Request $request, $id)
+    {
+        $category = Category::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255|unique:categories,name,' . $id,
+        ]);
+
+        $category->update([
+            'name' => $request->name,
+        ]);
+
+        return redirect()->route('admin.categories.create')->with('success', 'Categoria atualizada com sucesso!');
+    }
+
+    public function destroyCategory($id)
+    {
+        $category = Category::findOrFail($id);
+        $category->delete();
+
+        return redirect()->route('admin.categories.create')->with('success', 'Categoria excluída com sucesso!');
     }
 }

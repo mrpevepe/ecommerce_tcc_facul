@@ -3,7 +3,6 @@
 @section('title', 'Criar Produto')
 
 @section('content')
-
 <div class="container mt-5">
     <h1>Criar Novo Produto</h1>
     <form method="POST" action="{{ route('admin.products.store') }}" enctype="multipart/form-data">
@@ -34,6 +33,19 @@
         </div>
 
         <div class="mb-3">
+            <label for="category_id" class="form-label">Categoria</label>
+            <select class="form-control" id="category_id" name="category_id">
+                <option value="">Nenhuma</option>
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach
+            </select>
+            @error('category_id')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div class="mb-3">
             <label for="imagem" class="form-label">Imagem Principal do Produto</label>
             <input type="file" class="form-control" id="imagem" name="imagem" onchange="previewImage(event, 'preview-main')">
             @error('imagem')
@@ -59,6 +71,67 @@
 
     // Pass sizes from Blade to JavaScript
     const sizes = @json($sizes);
+    let variacaoIndex = 0;
+
+    document.getElementById('add-variacao').addEventListener('click', function() {
+        const container = document.getElementById('variacoes-container');
+        let sizeRows = '';
+        sizes.forEach(size => {
+            sizeRows += `
+                <tr>
+                    <td>${size.name}</td>
+                    <td>
+                        <input type="number" class="form-control" name="variations[${variacaoIndex}][quantidade_estoque][${variacaoIndex}_${size.id}][quantity]" min="0" required>
+                        <input type="hidden" name="variations[${variacaoIndex}][quantidade_estoque][${variacaoIndex}_${size.id}][size_id]" value="${size.id}">
+                    </td>
+                </tr>
+            `;
+        });
+
+        const variacaoHtml = `
+            <div class="card mb-3 variacao">
+                <div class="card-body">
+                    <h5 class="card-title">Variação ${variacaoIndex + 1}</h5>
+                    <div class="mb-3">
+                        <label for="variations[${variacaoIndex}][nome_variacao]" class="form-label">Nome da Variação</label>
+                        <input type="text" class="form-control" name="variations[${variacaoIndex}][nome_variacao]" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="variations[${variacaoIndex}][preco]" class="form-label">Preço</label>
+                        <input type="number" step="0.01" class="form-control" name="variations[${variacaoIndex}][preco]" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Estoque por Tamanho</label>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Tamanho</th>
+                                    <th>Quantidade</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${sizeRows}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mb-3">
+                        <label for="variations[${variacaoIndex}][imagem]" class="form-label">Imagem da Variação</label>
+                        <input type="file" class="form-control" name="variations[${variacaoIndex}][imagem]" onchange="previewImage(event, 'preview-variacao-${variacaoIndex}')">
+                        <img id="preview-variacao-${variacaoIndex}" src="#" alt="Preview da Imagem" style="display: none; max-width: 200px; margin-top: 10px;">
+                    </div>
+                    <button type="button" class="btn btn-danger remove-variacao">Remover Variação</button>
+                </div>
+            </div>
+        `;
+        container.insertAdjacentHTML('beforeend', variacaoHtml);
+        variacaoIndex++;
+    });
+
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('remove-variacao')) {
+            e.target.closest('.variacao').remove();
+        }
+    });
 
     function previewImage(event, previewId) {
         console.log('previewImage called for', previewId);
@@ -70,97 +143,7 @@
         };
         if (event.target.files[0]) {
             reader.readAsDataURL(event.target.files[0]);
-        } else {
-            console.warn('No file selected for preview');
         }
     }
-
-    let variacaoIndex = 0;
-
-    // Ensure the button exists before adding event listener
-    const addVariacaoBtn = document.getElementById('add-variacao');
-    if (addVariacaoBtn) {
-        console.log('add-variacao button found');
-        addVariacaoBtn.addEventListener('click', function() {
-            console.log('Adicionar Variação clicked, index:', variacaoIndex);
-            const container = document.getElementById('variacoes-container');
-            if (!container) {
-                console.error('variacoes-container not found');
-                return;
-            }
-
-            // Generate size rows dynamically from sizes array
-            let sizeRows = '';
-            if (sizes.length === 0) {
-                sizeRows = '<tr><td colspan="2" class="text-danger">Nenhum tamanho cadastrado. Adicione tamanhos na tabela sizes.</td></tr>';
-            } else {
-                sizes.forEach(size => {
-                    sizeRows += `
-                        <tr>
-                            <td>${size.name}</td>
-                            <td>
-                                <input type="number" class="form-control" name="variations[${variacaoIndex}][quantidade_estoque][${variacaoIndex}_${size.id}][quantity]" min="0" required>
-                                <input type="hidden" name="variations[${variacaoIndex}][quantidade_estoque][${variacaoIndex}_${size.id}][size_id]" value="${size.id}">
-                            </td>
-                        </tr>
-                    `;
-                });
-            }
-
-            const variacaoHtml = `
-                <div class="card mb-3 variacao">
-                    <div class="card-body">
-                        <h5 class="card-title">Variação ${variacaoIndex + 1}</h5>
-                        <div class="mb-3">
-                            <label for="variations[${variacaoIndex}][nome_variacao]" class="form-label">Nome da Variação</label>
-                            <input type="text" class="form-control" name="variations[${variacaoIndex}][nome_variacao]" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="variations[${variacaoIndex}][preco]" class="form-label">Preço</label>
-                            <input type="number" step="0.01" class="form-control" name="variations[${variacaoIndex}][preco]" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Estoque por Tamanho</label>
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Tamanho</th>
-                                        <th>Quantidade</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${sizeRows}
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="mb-3">
-                            <label for="variations[${variacaoIndex}][imagem]" class="form-label">Imagem da Variação</label>
-                            <input type="file" class="form-control" name="variations[${variacaoIndex}][imagem]" onchange="previewImage(event, 'preview-variacao-${variacaoIndex}')">
-                            <img id="preview-variacao-${variacaoIndex}" src="#" alt="Preview da Imagem" style="display: none; max-width: 200px; margin-top: 10px;">
-                        </div>
-                        <button type="button" class="btn btn-danger remove-variacao">Remover Variação</button>
-                    </div>
-                </div>
-            `;
-            try {
-                container.insertAdjacentHTML('beforeend', variacaoHtml);
-                console.log('Variation added to DOM');
-                variacaoIndex++;
-            } catch (e) {
-                console.error('Error inserting variation HTML:', e);
-            }
-        });
-    } else {
-        console.error('add-variacao button not found');
-    }
-
-    // Handle remove variation button
-    document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('remove-variacao')) {
-            console.log('Remover Variação clicked');
-            e.target.closest('.variacao').remove();
-        }
-    });
 </script>
-
 @endsection

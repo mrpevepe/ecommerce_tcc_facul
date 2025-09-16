@@ -45,6 +45,7 @@
                                 @foreach ($order->items as $item)
                                     <li>
                                         {{ $item->product->nome }} 
+                                        (Categoria: {{ $item->product->category->name ?? 'Sem categoria' }}) 
                                         ({{ $item->variation->nome_variacao ?? 'Sem variação' }}) 
                                         - Tamanho: {{ $item->size->name ?? 'N/A' }} 
                                         - Qtd: {{ $item->quantity }}

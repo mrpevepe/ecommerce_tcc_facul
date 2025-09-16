@@ -17,6 +17,7 @@
                 <tr>
                     <th>Imagem</th>
                     <th>Nome</th>
+                    <th>Categoria</th>
                     <th>Descrição</th>
                     <th>Preço</th>
                     <th>Estoque</th>
@@ -34,6 +35,7 @@
                             @endif
                         </td>
                         <td>{{ $variation->nome_variacao }}</td>
+                        <td>{{ $product->category->name ?? 'Sem categoria' }}</td>
                         <td>{{ $product->descricao ?? 'Sem descrição' }}</td>
                         <td>R$ {{ number_format($variation->preco, 2, ',', '.') }}</td>
                         <td>

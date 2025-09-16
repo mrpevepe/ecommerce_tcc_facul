@@ -6,6 +6,7 @@
 <div class="container mt-5">
     <h1>Editar Estoque: {{ $variation->product->nome }} - {{ $variation->nome_variacao }}</h1>
     <a href="{{ route('admin.products.variations', $variation->product_id) }}" class="btn btn-secondary mb-3">Voltar</a>
+    <p><strong>Categoria:</strong> {{ $variation->product->category->name ?? 'Sem categoria' }}</p>
 
     <div class="mb-3">
         @if ($variation->images->where('is_main', true)->first())

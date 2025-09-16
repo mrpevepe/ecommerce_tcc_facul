@@ -20,7 +20,7 @@ class OrdersController extends Controller
     public function index(Request $request)
     {
         $status = $request->query('status', 'all');
-        $query = Order::with('user', 'items.product', 'items.variation', 'items.size');
+        $query = Order::with('user', 'items.product.category', 'items.variation', 'items.size');
 
         if (in_array($status, ['pending', 'cancelled', 'delivered'])) {
             $query->where('status', $status);
@@ -123,7 +123,7 @@ class OrdersController extends Controller
      */
     public function show($id)
     {
-        $order = Order::with('items.product', 'items.variation.images', 'items.size', 'address')->findOrFail($id);
+        $order = Order::with('items.product.category', 'items.variation.images', 'items.size', 'address')->findOrFail($id);
         if ($order->user_id !== Auth::id()) {
             abort(403);
         }

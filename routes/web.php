@@ -62,4 +62,10 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::post('/products/{id}/variations', [ProductController::class, 'storeVariation'])->name('admin.products.storeVariation');
     Route::get('/products/{variationId}/stock/edit', [ProductController::class, 'editStock'])->name('admin.products.editStock');
     Route::post('/products/{variationId}/stock', [ProductController::class, 'saveStock'])->name('admin.products.saveStock');
+
+    Route::get('/categories/create', [ProductController::class, 'createCategory'])->name('admin.categories.create');
+    Route::post('/categories', [ProductController::class, 'storeCategory'])->name('admin.categories.store');
+    Route::get('/categories/{id}/edit', [ProductController::class, 'editCategory'])->name('admin.categories.edit');
+    Route::put('/categories/{id}', [ProductController::class, 'updateCategory'])->name('admin.categories.update');
+    Route::delete('/categories/{id}', [ProductController::class, 'destroyCategory'])->name('admin.categories.destroy');
 });

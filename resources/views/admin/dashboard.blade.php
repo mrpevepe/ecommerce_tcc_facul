@@ -16,6 +16,9 @@
         <div class="col-md-4">
             <a href="{{ route('admin.orders.index') }}" class="btn btn-info btn-lg">Gerenciar Pedidos</a>
         </div>
+        <div class="col-md-4">
+            <a href="{{ route('admin.categories.create') }}" class="btn btn-primary btn-lg">Gerenciar Categorias</a>
+        </div>
     </div>
 </div>
 

@@ -13,6 +13,7 @@
                 <th>ID</th>
                 <th>Imagem</th>
                 <th>Nome</th>
+                <th>Categoria</th>
                 <th>Marca</th>
                 <th>Status</th>
                 <th>Ações</th>
@@ -30,6 +31,7 @@
                         @endif
                     </td>
                     <td>{{ $product->nome }}</td>
+                    <td>{{ $product->category->name ?? 'Sem categoria' }}</td>
                     <td>{{ $product->marca }}</td>
                     <td>{{ $product->status }}</td>
                     <td>
