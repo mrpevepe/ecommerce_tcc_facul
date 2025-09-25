@@ -22,6 +22,23 @@
         color: white;
         border-color: #007bff;
     }
+    .comments-section {
+        margin-top: 30px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+    .comment {
+        margin-bottom: 20px;
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+    }
+    .comment-actions {
+        margin-top: 10px;
+    }
+    .comment-form {
+        margin-top: 20px;
+    }
 </style>
 
 <div class="container mt-5">
@@ -75,6 +92,95 @@
                 <button type="submit" class="btn btn-primary" id="addToCartBtn" disabled>Adicionar ao Carrinho</button>
             </form>
         </div>
+    </div>
+
+    <!-- Seção de Avaliações -->
+    <div class="comments-section">
+        <h3>Avaliações do Produto</h3>
+        @if ($product->comments->isEmpty())
+            <p>Sem avaliações para este produto.</p>
+        @else
+            @foreach ($product->comments as $comment)
+                <div class="comment">
+                    <h5>{{ $comment->titulo }}</h5>
+                    <p>{{ $comment->descricao }}</p>
+                    <small>Por: {{ $comment->user->name }} em {{ $comment->created_at->format('d/m/Y H:i') }}</small>
+                    @if (Auth::check() && Auth::id() === $comment->user_id)
+                        <div class="comment-actions">
+                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editCommentModal{{ $comment->id }}">Editar</button>
+                            <form action="{{ route('comments.destroy', [$product->id, $comment->id]) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Tem certeza que deseja excluir esta avaliação?')">Excluir</button>
+                            </form>
+                        </div>
+
+                        <!-- Modal para Editar Comentário -->
+                        <div class="modal fade" id="editCommentModal{{ $comment->id }}" tabindex="-1" aria-labelledby="editCommentModalLabel{{ $comment->id }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editCommentModalLabel{{ $comment->id }}">Editar Avaliação</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form action="{{ route('comments.update', [$product->id, $comment->id]) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label for="titulo{{ $comment->id }}" class="form-label">Título</label>
+                                                <input type="text" class="form-control" id="titulo{{ $comment->id }}" name="titulo" value="{{ $comment->titulo }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="descricao{{ $comment->id }}" class="form-label">Descrição</label>
+                                                <textarea class="form-control" id="descricao{{ $comment->id }}" name="descricao" rows="4" required>{{ $comment->descricao }}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                            <button type="submit" class="btn btn-primary">Salvar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            @endforeach
+        @endif
+
+        <!-- Formulário para Adicionar Avaliação -->
+        @if (Auth::check())
+            @php
+                $canComment = App\Models\Order::where('user_id', Auth::id())
+                    ->where('status', 'delivered')
+                    ->whereHas('items', function ($query) use ($product) {
+                        $query->where('product_id', $product->id);
+                    })
+                    ->exists();
+            @endphp
+            @if ($canComment)
+                <div class="comment-form">
+                    <h4>Adicionar Avaliação</h4>
+                    <form action="{{ route('comments.store', $product->id) }}" method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="titulo" class="form-label">Título</label>
+                            <input type="text" class="form-control" id="titulo" name="titulo" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="descricao" class="form-label">Descrição</label>
+                            <textarea class="form-control" id="descricao" name="descricao" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Enviar Avaliação</button>
+                    </form>
+                </div>
+            @else
+                <p>Você precisa ter comprado e recebido este produto para adicionar uma avaliação.</p>
+            @endif
+        @else
+            <p>Faça login para adicionar uma avaliação.</p>
+        @endif
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>

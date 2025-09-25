@@ -5,18 +5,9 @@ Ainda falta fazer:
 
 - criação de avaliações/comentários em um pedido só quando o pedido do usuário tem status de delivered
 - css em tudo
+- fazer validações para tudo
 
-
-- MODIFICAR AS FUNCIONALIDADES DO CODIGO EM RELAÇÃO A TAMANHOS, NO CASO, NA PAGINA DE SHOW DO PRODUTO
-BOTAR OS BOTÕES PARA SELECIONAR OS TAMANHOS, E FAZER A BAIXA DO ESTOQUE DOS TAMANHOS QUANDO O PEDIDO
-É CRIADO PARA FACILITAR VALIDAÇÕES
-
-- MODIFICAR AS FUNCIONADES EM RELAÇÃO A TAMANHOS E PREÇO QUANDO UMA CAMISETA É ADICIONADA NO CARRINHO
-E TAMBÉM QUANDO O PEDIDO E CRIADO ETC...
-
-
-- categorias para camisetas
-
+- adicioanr campos de endereço no pedido e alterar relações no historico de pedidos
 
 
 // WHATEVER, SE DER TEMPO EU FAÇO

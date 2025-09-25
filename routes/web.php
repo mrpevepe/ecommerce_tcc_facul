@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrdersController;
+use App\Http\Controllers\CommentsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,13 @@ use App\Http\Controllers\OrdersController;
 Route::get('/', [ProductController::class, 'indexPublic'])->name('home');
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
 Route::post('/products/{id}/add-to-cart', [ProductController::class, 'addToCart'])->name('products.addToCart');
+
+// Comments
+Route::middleware('auth')->group(function () {
+    Route::post('/products/{productId}/comments', [CommentsController::class, 'store'])->name('comments.store');
+    Route::put('/products/{productId}/comments/{commentId}', [CommentsController::class, 'update'])->name('comments.update');
+    Route::delete('/products/{productId}/comments/{commentId}', [CommentsController::class, 'destroy'])->name('comments.destroy');
+});
 
 // Auth
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
