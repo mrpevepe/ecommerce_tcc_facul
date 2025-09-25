@@ -42,18 +42,18 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function saveAddress(Request $request)
+public function saveAddress(Request $request)
     {
         try {
             Log::info('Tentando salvar endereço para user ID: ' . Auth::id());
 
             $request->validate([
-                'logradouro' => 'required|string|max:255',
-                'numero' => 'required|string|max:255',
-                'complemento' => 'nullable|string|max:255',
-                'bairro' => 'required|string|max:255',
+                'logradouro' => 'required|string|max:40',
+                'numero' => 'required|string|max:20',
+                'complemento' => 'nullable|string|max:100',
+                'bairro' => 'required|string|max:40',
                 'cep' => 'required|string|size:9',
-                'nome_cidade' => 'required|string|max:255',
+                'nome_cidade' => 'required|string|max:30',
                 'estado' => 'required|string|size:2',
             ]);
 

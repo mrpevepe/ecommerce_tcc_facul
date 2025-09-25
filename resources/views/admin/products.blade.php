@@ -1,4 +1,3 @@
-<!-- resources/views/admin/products.blade.php -->
 @extends('layouts.main')
 
 @section('title', 'Listar Produtos')
@@ -21,6 +20,7 @@
                 <th>ID</th>
                 <th>Imagem</th>
                 <th>Nome</th>
+                <th>Descrição</th>
                 <th>Categoria</th>
                 <th>Marca</th>
                 <th>Status</th>
@@ -39,6 +39,7 @@
                         @endif
                     </td>
                     <td>{{ $product->nome }}</td>
+                    <td>{{ $product->descricao ?? 'Sem descrição' }}</td>
                     <td>{{ $product->category->name ?? 'Sem categoria' }}</td>
                     <td>{{ $product->marca }}</td>
                     <td>{{ ucfirst($product->status) }}</td>

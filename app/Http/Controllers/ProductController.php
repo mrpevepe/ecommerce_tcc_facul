@@ -59,7 +59,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nome' => 'required|string|max:255',
+            'nome' => 'required|string|max:60',
             'descricao' => 'nullable|string',
             'marca' => 'nullable|string|max:255',
             'category_id' => 'nullable|exists:categories,id',
@@ -129,7 +129,7 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
 
         $request->validate([
-            'nome' => 'required|string|max:255',
+            'nome' => 'required|string|max:60',
             'descricao' => 'nullable|string',
             'marca' => 'nullable|string|max:255',
             'category_id' => 'nullable|exists:categories,id',
@@ -367,16 +367,27 @@ class ProductController extends Controller
         return redirect()->route('cart.index')->with('error', 'Item não encontrado no carrinho.');
     }
 
-    public function createCategory()
+    public function createCategory(Request $request)
     {
-        $categories = Category::all();
+        $query = Category::query();
+
+        if ($request->has('search')) {
+            $search = $request->query('search');
+            $query->where('name', 'like', "%{$search}%");
+        }
+
+        if ($request->has('status') && $request->status !== 'all') {
+            $query->where('status', $request->status);
+        }
+
+        $categories = $query->get();
         return view('admin.create-category', compact('categories'));
     }
 
     public function storeCategory(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255|unique:categories',
+            'name' => 'required|string|max:60|unique:categories',
         ]);
 
         Category::create([
@@ -398,7 +409,7 @@ class ProductController extends Controller
         $category = Category::findOrFail($id);
 
         $request->validate([
-            'name' => 'required|string|max:255|unique:categories,name,' . $id,
+            'name' => 'required|string|max:60|unique:categories,name,' . $id,
         ]);
 
         $category->update([

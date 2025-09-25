@@ -12,5 +12,6 @@ Ainda falta fazer:
 - dashboard do admin com dados de produtos vendidos no mês / preço total vendido etc...
 - fazer um carrousel com imagens na pagina de show do produto
 
+-VALIDAÇÃO DE AVALIAÇÕES NOS PRODUTOS
 
 preciso de uma migration, preciso adicionar uma coluna na database de status ("ativo", "inativo") em categorias, product_variations, ai caso eu esteja editando uma delas, eu possa inativar, ou ativar novamente o produto ou a  categoria. entende? ai no edit product e edit category, preciso das funcionalidades de desativar/ativar, e na variations.blade.php um botão para inativar e ativar também, ai lá na pagina inicial welcome.blade.php e na show.blade.php, só vão ser puxados na welcome produtos ativos com variações ativas, e dentro do produto na show.blade.php vai ter as variações, porém as que estão inativas não vão poder ser selecionadas. na página de products ali do administrador também eu quero adicionar uma searchbar encima da tabela, e do lado uma caixinha de options com opções "ativo" e "inativo" para poder filtrar os produtos ativos/inativos ai a searchbar vai ser padrão para buscar pelo nome/marca dos produtos, na página do administrador onde ele pode gerenciar as avaliações feitas pelos usuários, eu também quero que ele mostre na tabela qual é o id do produto com nome e imagem,  daquele comentário.

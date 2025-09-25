@@ -18,7 +18,6 @@
                     <th>Imagem</th>
                     <th>Nome</th>
                     <th>Categoria</th>
-                    <th>Descrição</th>
                     <th>Preço</th>
                     <th>Estoque</th>
                     <th>Status</th>
@@ -37,7 +36,6 @@
                         </td>
                         <td>{{ $variation->nome_variacao }}</td>
                         <td>{{ $product->category->name ?? 'Sem categoria' }}</td>
-                        <td>{{ $product->descricao ?? 'Sem descrição' }}</td>
                         <td>R$ {{ number_format($variation->preco, 2, ',', '.') }}</td>
                         <td>
                             <table class="table table-sm">
@@ -80,9 +78,9 @@
         </table>
     @endif
 
-    <div id="addVariationForm" style="display: none;" class="mt-4">
-        <h3>Adicionar Nova Variação</h3>
-        <form action="{{ route('admin.products.storeVariation', $product->id) }}" method="POST" enctype="multipart/form-data">
+    <div id="addVariationForm" style="display: none;">
+        <h2>Adicionar Nova Variação</h2>
+        <form method="POST" action="{{ route('admin.products.storeVariation', $product->id) }}" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
                 <label for="nome_variacao" class="form-label">Nome da Variação</label>

@@ -12,18 +12,8 @@
         @method('PUT')
         <div class="mb-3">
             <label for="name" class="form-label">Nome da Categoria</label>
-            <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $category->name) }}" required>
+            <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $category->name) }}" maxlength="60" required>
             @error('name')
-                <div class="text-danger">{{ $message }}</div>
-            @enderror
-        </div>
-        <div class="mb-3">
-            <label for="status" class="form-label">Status</label>
-            <select class="form-control" id="status" name="status" required>
-                <option value="ativo" {{ $category->status === 'ativo' ? 'selected' : '' }}>Ativo</option>
-                <option value="inativo" {{ $category->status === 'inativo' ? 'selected' : '' }}>Inativo</option>
-            </select>
-            @error('status')
                 <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
@@ -31,6 +21,14 @@
     </form>
 
     <h2 class="mt-5">Categorias Existentes</h2>
+    <div class="mb-3 filter-container">
+        <input type="text" id="searchBar" class="form-control" placeholder="Pesquisar por nome..." value="{{ request()->query('search') }}">
+        <select id="statusFilter" class="form-control w-25">
+            <option value="all" {{ request()->query('status') == 'all' ? 'selected' : '' }}>Todos os Status</option>
+            <option value="ativo" {{ request()->query('status') == 'ativo' ? 'selected' : '' }}>Ativo</option>
+            <option value="inativo" {{ request()->query('status') == 'inativo' ? 'selected' : '' }}>Inativo</option>
+        </select>
+    </div>
     @if ($categories->isEmpty())
         <p>Nenhuma categoria cadastrada.</p>
     @else
@@ -51,10 +49,12 @@
                         <td>{{ ucfirst($category->status) }}</td>
                         <td>
                             <a href="{{ route('admin.categories.edit', $category->id) }}" class="btn btn-sm btn-primary">Editar</a>
-                            <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Tem certeza que deseja excluir esta categoria?');">
+                            <form action="{{ route('admin.categories.updateStatus', $category->id) }}" method="POST" style="display:inline;">
                                 @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
+                                @method('PATCH')
+                                <button type="submit" class="btn btn-sm {{ $category->status === 'ativo' ? 'btn-warning' : 'btn-success' }}">
+                                    {{ $category->status === 'ativo' ? 'Inativar' : 'Ativar' }}
+                                </button>
                             </form>
                         </td>
                     </tr>
@@ -63,4 +63,18 @@
         </table>
     @endif
 </div>
+
+<script>
+    document.getElementById('searchBar').addEventListener('input', function() {
+        const url = new URL(window.location);
+        url.searchParams.set('search', this.value);
+        window.location = url;
+    });
+
+    document.getElementById('statusFilter').addEventListener('change', function() {
+        const url = new URL(window.location);
+        url.searchParams.set('status', this.value);
+        window.location = url;
+    });
+</script>
 @endsection

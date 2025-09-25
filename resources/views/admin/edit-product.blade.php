@@ -12,7 +12,7 @@
 
         <div class="mb-3">
             <label for="nome" class="form-label">Nome do Produto</label>
-            <input type="text" class="form-control" id="nome" name="nome" value="{{ $product->nome }}" required>
+            <input type="text" class="form-control" id="nome" name="nome" value="{{ $product->nome }}" maxlength="60" required>
             @error('nome')
                 <div class="text-danger">{{ $message }}</div>
             @enderror
