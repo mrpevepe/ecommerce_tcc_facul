@@ -13,6 +13,7 @@ class ProductVariation extends Model
         'product_id',
         'nome_variacao',
         'preco',
+        'status',
     ];
 
     public function product()

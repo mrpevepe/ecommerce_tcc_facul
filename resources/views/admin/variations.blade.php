@@ -21,6 +21,7 @@
                     <th>Descrição</th>
                     <th>Preço</th>
                     <th>Estoque</th>
+                    <th>Status</th>
                     <th>Ação</th>
                 </tr>
             </thead>
@@ -62,8 +63,16 @@
                                 </tfoot>
                             </table>
                         </td>
+                        <td>{{ ucfirst($variation->status) }}</td>
                         <td>
                             <a href="{{ route('admin.products.editStock', $variation->id) }}" class="btn btn-sm btn-primary">Editar Estoque</a>
+                            <form action="{{ route('admin.variations.updateStatus', $variation->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="btn btn-sm {{ $variation->status === 'ativo' ? 'btn-warning' : 'btn-success' }}">
+                                    {{ $variation->status === 'ativo' ? 'Inativar' : 'Ativar' }}
+                                </button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach

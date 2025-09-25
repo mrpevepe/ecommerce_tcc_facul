@@ -39,6 +39,10 @@
     .comment-form {
         margin-top: 20px;
     }
+    .variation-btn.disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
 </style>
 
 <div class="container mt-5">
@@ -56,16 +60,16 @@
             <p><strong>Categoria:</strong> {{ $product->category->name ?? 'Sem categoria' }}</p>
             <p><strong>Descrição:</strong> {{ $product->descricao ?? 'Sem descrição' }}</p>
             <p><strong>Marca:</strong> {{ $product->marca ?? 'Sem marca' }}</p>
-            <p><strong>Preço:</strong> <span id="productPrice">R$ {{ number_format($product->variations->first()->preco ?? 0, 2, ',', '.') }}</span></p>
+            <p><strong>Preço:</strong> <span id="productPrice">R$ {{ number_format($product->variations->where('status', 'ativo')->first()->preco ?? 0, 2, ',', '.') }}</span></p>
             <div>
-                @foreach ($product->variations as $variation)
+                @foreach ($product->variations->where('status', 'ativo') as $variation)
                     <button class="btn btn-outline-primary variation-btn" data-variation-id="{{ $variation->id }}" data-price="{{ $variation->preco }}" data-image="{{ Storage::url($variation->images->where('is_main', true)->first()->path ?? $product->images->where('is_main', true)->first()->path) }}" data-name="{{ $variation->nome_variacao }}">
                         {{ $variation->nome_variacao }}
                     </button>
                 @endforeach
             </div>
             <div class="variation-details">
-                <p><strong>Variação Selecionada:</strong> <span id="variationName">{{ $product->variations->first()->nome_variacao ?? 'Nenhuma' }}</span></p>
+                <p><strong>Variação Selecionada:</strong> <span id="variationName">{{ $product->variations->where('status', 'ativo')->first()->nome_variacao ?? 'Nenhuma' }}</span></p>
                 <p><strong>Estoque:</strong> <span id="variationStock">0</span></p>
             </div>
             
@@ -73,7 +77,7 @@
             <div class="mb-3">
                 <label class="form-label">Tamanho:</label>
                 <div id="sizeButtons">
-                    @foreach ($product->variations->first()->sizes as $size)
+                    @foreach ($product->variations->where('status', 'ativo')->first()->sizes as $size)
                         <button class="btn btn-outline-secondary size-btn" data-size-id="{{ $size->id }}" data-size-name="{{ $size->name }}" data-stock="{{ $size->pivot->quantity }}" {{ $size->pivot->quantity > 0 ? '' : 'disabled' }}>
                             {{ $size->name }}
                         </button>
@@ -83,7 +87,7 @@
             
             <form action="{{ route('products.addToCart', $product->id) }}" method="POST" class="mt-3">
                 @csrf
-                <input type="hidden" name="variation_id" id="selectedVariationId" value="{{ $product->variations->first()->id ?? '' }}">
+                <input type="hidden" name="variation_id" id="selectedVariationId" value="{{ $product->variations->where('status', 'ativo')->first()->id ?? '' }}">
                 <input type="hidden" name="size_id" id="selectedSizeId" value="">
                 <div class="mb-2">
                     <label for="quantity" class="form-label">Quantidade:</label>
@@ -187,8 +191,8 @@
 <script>
     let sizesData = {};
 
-    // Inicializar dados de tamanhos para cada variação
-    @foreach ($product->variations as $variation)
+    // Inicializar dados de tamanhos para cada variação ativa
+    @foreach ($product->variations->where('status', 'ativo') as $variation)
         sizesData[{{ $variation->id }}] = [
             @foreach ($variation->sizes as $size)
                 { id: {{ $size->id }}, name: "{{ $size->name }}", stock: {{ $size->pivot->quantity }}},

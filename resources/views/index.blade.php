@@ -33,25 +33,27 @@
     </div>
     <div id="productList" class="row">
         @foreach ($products as $product)
-            @php
-                $firstVariation = $product->variations->first();
-                $price = $firstVariation ? $firstVariation->preco : 0;
-            @endphp
-            <div class="col-md-4">
-                <a href="{{ route('products.show', $product->id) }}" class="text-decoration-none text-dark">
-                    <div class="product-card">
-                        @if ($product->images->where('is_main', true)->first())
-                            <img src="{{ Storage::url($product->images->where('is_main', true)->first()->path) }}" alt="{{ $product->nome }}">
-                        @else
-                            <p>Sem Imagem</p>
-                        @endif
-                        <h5>{{ $product->nome }}</h5>
-                        <p>Marca: {{ $product->marca ?? 'Sem marca' }}</p>
-                        <p>Categoria: {{ $product->category->name ?? 'Sem categoria' }}</p>
-                        <p>Preço: R$ {{ number_format($price, 2, ',', '.') }}</p>
-                    </div>
-                </a>
-            </div>
+            @if ($product->status === 'ativo' && $product->variations->where('status', 'ativo')->isNotEmpty())
+                @php
+                    $firstVariation = $product->variations->where('status', 'ativo')->first();
+                    $price = $firstVariation ? $firstVariation->preco : 0;
+                @endphp
+                <div class="col-md-4">
+                    <a href="{{ route('products.show', $product->id) }}" class="text-decoration-none text-dark">
+                        <div class="product-card">
+                            @if ($product->images->where('is_main', true)->first())
+                                <img src="{{ Storage::url($product->images->where('is_main', true)->first()->path) }}" alt="{{ $product->nome }}">
+                            @else
+                                <p>Sem Imagem</p>
+                            @endif
+                            <h5>{{ $product->nome }}</h5>
+                            <p>Marca: {{ $product->marca ?? 'Sem marca' }}</p>
+                            <p>Categoria: {{ $product->category->name ?? 'Sem categoria' }}</p>
+                            <p>Preço: R$ {{ number_format($price, 2, ',', '.') }}</p>
+                        </div>
+                    </a>
+                </div>
+            @endif
         @endforeach
     </div>
 </div>

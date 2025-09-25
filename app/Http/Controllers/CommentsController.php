@@ -11,6 +11,18 @@ use Illuminate\Support\Facades\Auth;
 class CommentsController extends Controller
 {
     /**
+     * Exibe a lista de avaliações de um produto para o administrador.
+     *
+     * @param  int  $productId
+     * @return \Illuminate\View\View
+     */
+    public function index($productId)
+    {
+        $product = Product::with('comments.user')->findOrFail($productId);
+        return view('admin.comments', compact('product'));
+    }
+
+    /**
      * Armazena um novo comentário para o produto.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -89,8 +101,8 @@ class CommentsController extends Controller
     {
         $comment = Comment::findOrFail($commentId);
 
-        // Verificar se o comentário pertence ao usuário
-        if ($comment->user_id !== Auth::id() || $comment->product_id !== (int) $productId) {
+        // Verificar se o comentário pertence ao produto e se o usuário é administrador
+        if ($comment->product_id !== (int) $productId && Auth::user()->cargo !== 'administrador') {
             abort(403);
         }
 

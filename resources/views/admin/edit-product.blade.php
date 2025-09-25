@@ -89,7 +89,7 @@
                                         <tr>
                                             <td>{{ $size->name }}</td>
                                             <td>
-                                                <input type="number" class="form-control" name="variations[{{ $index }}][quantidade_estoque][{{ $index }}_{{ $size->id }}][quantity]" value="{{ $variation->sizes->find($size->id)->pivot->quantity ?? 0 }}" min="0" required>
+                                                <input type="number" class="form-control" name="variations[{{ $index }}][quantidade_estoque][{{ $index }}_{{ $size->id }}][quantity]" value="{{ $variation->sizes->where('id', $size->id)->first()->pivot->quantity ?? 0 }}" min="0" required>
                                                 <input type="hidden" name="variations[{{ $index }}][quantidade_estoque][{{ $index }}_{{ $size->id }}][size_id]" value="{{ $size->id }}">
                                             </td>
                                         </tr>
@@ -106,6 +106,7 @@
                                 <img id="preview-variacao-{{ $index }}" src="#" alt="Preview da Imagem" style="display: none; max-width: 200px; margin-top: 10px;">
                             @endif
                         </div>
+                        <button type="button" class="btn btn-danger remove-variacao">Remover Variação</button>
                     </div>
                 </div>
             @endforeach

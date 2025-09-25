@@ -11,10 +11,16 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
-        'address_id',
         'status',
         'payment_method',
         'total_price',
+        'logradouro',
+        'numero',
+        'complemento',
+        'bairro',
+        'cep',
+        'nome_cidade',
+        'estado',
     ];
 
     protected $casts = [
@@ -25,11 +31,6 @@ class Order extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function address()
-    {
-        return $this->belongsTo(Endereco::class, 'address_id');
     }
 
     public function items()

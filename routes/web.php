@@ -65,15 +65,21 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::post('/products', [ProductController::class, 'store'])->name('admin.products.store');
     Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('admin.products.edit');
     Route::put('/products/{id}', [ProductController::class, 'update'])->name('admin.products.update');
+    Route::patch('/products/{id}/status', [ProductController::class, 'updateStatus'])->name('admin.products.updateStatus');
     Route::patch('/variations/{id}/stock', [ProductController::class, 'updateStock'])->name('admin.variations.updateStock');
     Route::get('/products/{id}/variations', [ProductController::class, 'showVariations'])->name('admin.products.variations');
     Route::post('/products/{id}/variations', [ProductController::class, 'storeVariation'])->name('admin.products.storeVariation');
     Route::get('/products/{variationId}/stock/edit', [ProductController::class, 'editStock'])->name('admin.products.editStock');
     Route::post('/products/{variationId}/stock', [ProductController::class, 'saveStock'])->name('admin.products.saveStock');
+    Route::patch('/variations/{id}/status', [ProductController::class, 'updateVariationStatus'])->name('admin.variations.updateStatus');
+
+    Route::get('/products/{productId}/comments', [CommentsController::class, 'index'])->name('admin.comments.index');
+    Route::delete('/products/{productId}/comments/{commentId}', [CommentsController::class, 'destroy'])->name('admin.comments.destroy');
 
     Route::get('/categories/create', [ProductController::class, 'createCategory'])->name('admin.categories.create');
     Route::post('/categories', [ProductController::class, 'storeCategory'])->name('admin.categories.store');
     Route::get('/categories/{id}/edit', [ProductController::class, 'editCategory'])->name('admin.categories.edit');
     Route::put('/categories/{id}', [ProductController::class, 'updateCategory'])->name('admin.categories.update');
+    Route::patch('/categories/{id}/status', [ProductController::class, 'updateCategoryStatus'])->name('admin.categories.updateStatus');
     Route::delete('/categories/{id}', [ProductController::class, 'destroyCategory'])->name('admin.categories.destroy');
 });

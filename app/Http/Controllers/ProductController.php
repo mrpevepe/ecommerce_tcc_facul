@@ -13,15 +13,34 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with('category')->get();
+        $query = Product::with('category');
+
+        if ($request->has('search')) {
+            $search = $request->query('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('nome', 'like', "%{$search}%")
+                  ->orWhere('marca', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->has('status') && $request->status !== 'all') {
+            $query->where('status', $request->status);
+        }
+
+        $products = $query->get();
         return view('admin.products', compact('products'));
     }
 
     public function indexPublic(Request $request)
     {
-        $query = Product::with('variations');
+        $query = Product::with(['variations' => function ($q) {
+            $q->where('status', 'ativo');
+        }])->where('status', 'ativo')->whereHas('variations', function ($q) {
+            $q->where('status', 'ativo');
+        });
+
         if ($request->has('category_id') && $request->category_id !== 'all') {
             $query->where('category_id', $request->category_id);
         }
@@ -252,7 +271,9 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        $product = Product::with('variations.images', 'variations.sizes', 'category')->findOrFail($id);
+        $product = Product::with(['variations' => function ($q) {
+            $q->where('status', 'ativo')->with('sizes', 'images');
+        }, 'images', 'category', 'comments.user'])->findOrFail($id);
         return view('show', compact('product'));
     }
 
@@ -394,4 +415,29 @@ class ProductController extends Controller
 
         return redirect()->route('admin.categories.create')->with('success', 'Categoria excluída com sucesso!');
     }
+
+    public function updateVariationStatus($variationId)
+    {
+        $variation = ProductVariation::findOrFail($variationId);
+        $newStatus = $variation->status === 'ativo' ? 'inativo' : 'ativo';
+        $variation->update(['status' => $newStatus]);
+        return redirect()->back()->with('success', 'Status da variação atualizado com sucesso!');
+    }
+
+    public function updateStatus($productId)
+    {
+        $product = Product::findOrFail($productId);
+        $newStatus = $product->status === 'ativo' ? 'inativo' : 'ativo';
+        $product->update(['status' => $newStatus]);
+        return redirect()->back()->with('success', 'Status do produto atualizado com sucesso!');
+    }
+
+    public function updateCategoryStatus($categoryId)
+    {
+        $category = Category::findOrFail($categoryId);
+        $newStatus = $category->status === 'ativo' ? 'inativo' : 'ativo';
+        $category->update(['status' => $newStatus]);
+        return redirect()->back()->with('success', 'Status da categoria atualizado com sucesso!');
+    }
+
 }

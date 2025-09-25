@@ -17,6 +17,16 @@
                 <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
+        <div class="mb-3">
+            <label for="status" class="form-label">Status</label>
+            <select class="form-control" id="status" name="status" required>
+                <option value="ativo">Ativo</option>
+                <option value="inativo">Inativo</option>
+            </select>
+            @error('status')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
         <button type="submit" class="btn btn-primary">Salvar Categoria</button>
     </form>
 
@@ -29,6 +39,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Nome</th>
+                    <th>Status</th>
                     <th>Ações</th>
                 </tr>
             </thead>
@@ -37,12 +48,20 @@
                     <tr>
                         <td>{{ $category->id }}</td>
                         <td>{{ $category->name }}</td>
+                        <td>{{ ucfirst($category->status) }}</td>
                         <td>
                             <a href="{{ route('admin.categories.edit', $category->id) }}" class="btn btn-sm btn-primary">Editar</a>
                             <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Tem certeza que deseja excluir esta categoria?');">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
+                            </form>
+                            <form action="{{ route('admin.categories.updateStatus', $category->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="btn btn-sm {{ $category->status === 'ativo' ? 'btn-warning' : 'btn-success' }}">
+                                    {{ $category->status === 'ativo' ? 'Inativar' : 'Ativar' }}
+                                </button>
                             </form>
                         </td>
                     </tr>

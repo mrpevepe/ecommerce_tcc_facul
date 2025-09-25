@@ -21,10 +21,10 @@
             <h4>Endereço de Entrega</h4>
         </div>
         <div class="card-body">
-            <p>{{ $order->address->logradouro }}, {{ $order->address->numero }} - {{ $order->address->bairro }}</p>
-            <p>{{ $order->address->nome_cidade }} - {{ $order->address->estado }}, CEP: {{ $order->address->cep }}</p>
-            @if ($order->address->complemento)
-                <p>Complemento: {{ $order->address->complemento }}</p>
+            <p>{{ $order->logradouro }}, {{ $order->numero }} - {{ $order->bairro }}</p>
+            <p>{{ $order->nome_cidade }} - {{ $order->estado }}, CEP: {{ $order->cep }}</p>
+            @if ($order->complemento)
+                <p>Complemento: {{ $order->complemento }}</p>
             @endif
         </div>
     </div>

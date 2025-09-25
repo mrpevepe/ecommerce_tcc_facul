@@ -41,7 +41,9 @@ class OrdersController extends Controller
     {
         $user = Auth::user();
 
-        if (!$user->endereco_id) {
+        $endereco = $user->endereco;
+
+        if (!$endereco) {
             return redirect()->route('user.address.form')->with('error', 'Adicione um endereço antes de prosseguir com o checkout.');
         }
 
@@ -62,7 +64,7 @@ class OrdersController extends Controller
             $parts = explode('_', $cartKey);
             $variationId = $parts[0];
             $sizeId = $item['size_id'];
-            
+
             $variation = ProductVariation::find($variationId);
             $stock = $variation->sizes()->where('size_id', $sizeId)->first()->pivot->quantity ?? 0;
 
@@ -74,10 +76,16 @@ class OrdersController extends Controller
         // Criar o pedido
         $order = Order::create([
             'user_id' => $user->id,
-            'address_id' => $user->endereco_id,
             'status' => 'pending',
             'payment_method' => $request->payment_method,
             'total_price' => $totalPrice,
+            'logradouro' => $endereco->logradouro,
+            'numero' => $endereco->numero,
+            'complemento' => $endereco->complemento,
+            'bairro' => $endereco->bairro,
+            'cep' => $endereco->cep,
+            'nome_cidade' => $endereco->nome_cidade,
+            'estado' => $endereco->estado,
         ]);
 
         // Criar itens do pedido e reduzir estoque
@@ -85,7 +93,7 @@ class OrdersController extends Controller
             $parts = explode('_', $cartKey);
             $variationId = $parts[0];
             $sizeId = $item['size_id'];
-            
+
             $variation = ProductVariation::find($variationId);
             $stock = $variation->sizes()->where('size_id', $sizeId)->first()->pivot->quantity ?? 0;
 
@@ -123,7 +131,7 @@ class OrdersController extends Controller
      */
     public function show($id)
     {
-        $order = Order::with('items.product.category', 'items.variation.images', 'items.size', 'address')->findOrFail($id);
+        $order = Order::with('items.product.category', 'items.variation.images', 'items.size')->findOrFail($id);
         if ($order->user_id !== Auth::id()) {
             abort(403);
         }
