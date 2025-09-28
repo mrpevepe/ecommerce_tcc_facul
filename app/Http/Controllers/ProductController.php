@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    public function index(Request $request)
+public function index(Request $request)
     {
         $query = Product::with('category');
 
@@ -41,10 +41,21 @@ class ProductController extends Controller
             $q->where('status', 'ativo');
         });
 
+        if ($request->has('search')) {
+            $search = $request->query('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('nome', 'like', "%{$search}%")
+                  ->orWhere('marca', 'like', "%{$search}%");
+            });
+        }
+
         if ($request->has('category_id') && $request->category_id !== 'all') {
             $query->where('category_id', $request->category_id);
         }
-        $products = $query->get();
+
+        //>>>>>>>>>> Paginação com 16 produtos por página, preservando parâmetros de filtro <<<<<<<<<<
+        $products = $query->paginate(16)->appends($request->only(['search', 'category_id']));
+
         $categories = Category::all();
         return view('index', compact('products', 'categories'));
     }
@@ -124,7 +135,7 @@ class ProductController extends Controller
         return view('admin.edit-product', compact('product', 'sizes', 'categories'));
     }
 
-    public function update(Request $request, $id)
+public function update(Request $request, $id)
     {
         $product = Product::findOrFail($id);
 
@@ -193,6 +204,29 @@ class ProductController extends Controller
                                 'is_main' => true,
                             ]);
                         }
+                    }
+                } else {
+                    // Cria uma nova variação se ID não estiver presente
+                    $variation = ProductVariation::create([
+                        'product_id' => $product->id,
+                        'nome_variacao' => $variationData['nome_variacao'],
+                        'preco' => $variationData['preco'],
+                        'status' => 'ativo', // Defina o status padrão para novas variações
+                    ]);
+
+                    if (isset($variationData['quantidade_estoque']) && is_array($variationData['quantidade_estoque'])) {
+                        foreach ($variationData['quantidade_estoque'] as $stock) {
+                            $variation->sizes()->attach($stock['size_id'], ['quantity' => $stock['quantity']]);
+                        }
+                    }
+
+                    if (isset($variationData['imagem']) && $variationData['imagem']) {
+                        $path = $variationData['imagem']->store('product_variations', 'public');
+                        ProductVariationImage::create([
+                            'variation_id' => $variation->id,
+                            'path' => $path,
+                            'is_main' => true,
+                        ]);
                     }
                 }
             }

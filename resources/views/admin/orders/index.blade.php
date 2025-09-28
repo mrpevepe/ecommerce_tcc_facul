@@ -29,6 +29,7 @@
                     <th>Cliente</th>
                     <th>Data</th>
                     <th>Itens</th>
+                    <th>Endereço</th>
                     <th>Total</th>
                     <th>Status</th>
                     <th>Ações</th>
@@ -53,11 +54,23 @@
                                 @endforeach
                             </ul>
                         </td>
+                        <td>
+                            {{ $order->logradouro }}, {{ $order->numero }}
+                            @if ($order->complemento)
+                                - {{ $order->complemento }}
+                            @endif
+                            <br>
+                            Bairro: {{ $order->bairro }}
+                            <br>
+                            CEP: {{ $order->cep }}
+                            <br>
+                            {{ $order->nome_cidade }} - {{ $order->estado }}
+                        </td>
                         <td>R$ {{ number_format($order->total_price, 2, ',', '.') }}</td>
-                        <td>{{ ucfirst($order->status) }}</td>
+                        <td>{{ ['pending' => 'Pendente', 'cancelled' => 'Cancelado', 'delivered' => 'Entregue'][$order->status] ?? ucfirst($order->status) }}</td>
                         <td>
                             @if ($order->status === 'pending')
-                                <form action="{{ route('admin.orders.deliver', $order->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja marcar este pedido como entregue? Estoque será reduzido.');">
+                                <form action="{{ route('admin.orders.deliver', $order->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Deseja Enviar Esse Pedido?');">
                                     @csrf
                                     <button type="submit" class="btn btn-success btn-sm">Enviar Pedido</button>
                                 </form>
@@ -67,8 +80,33 @@
                 @endforeach
             </tbody>
         </table>
+
+        <!-- Resumo de resultados -->
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <div>
+                Exibindo {{ $orders->firstItem() }} a {{ $orders->lastItem() }} de {{ $orders->total() }} resultados
+            </div>
+            <!-- Paginação com tema compacto personalizado -->
+            <div>
+                {{ $orders->links('pagination::simple-bootstrap-5') }}
+            </div>
+        </div>
     @endif
 
     <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary mt-3">Voltar</a>
 </div>
+
+<!-- CSS para ajustar o tamanho da paginação -->
+<style>
+    .pagination {
+        font-size: 0.9rem; /* Tamanho menor para os links */
+    }
+    .pagination .page-link {
+        padding: 0.25rem 0.5rem; /* Menor padding para setas e números */
+    }
+    .pagination .page-item.active .page-link {
+        background-color: #007bff; /* Cor do Bootstrap para página ativa */
+        border-color: #007bff;
+    }
+</style>
 @endsection

@@ -26,7 +26,8 @@ class OrdersController extends Controller
             $query->where('status', $status);
         }
 
-        $orders = $query->latest()->get();
+        // Paginação com 10 itens por página, preservando o parâmetro status
+        $orders = $query->latest()->paginate(10)->appends(['status' => $status]);
 
         return view('admin.orders.index', compact('orders', 'status'));
     }

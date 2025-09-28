@@ -1,12 +1,32 @@
 Ainda falta fazer:
 
+// oq foi feito
+
+- paginação dos produtos e tabela de produtos
+- adicionado o endereço na tabela de pedidos
+- botão para inativar PRODUTOS
+- inativar categorias também (nao sei se é necessario talvez remover..)
+- avaliações de produtos com pagina para administrador gerenciar tambem.
+
+// OQ PERGUNTAR PARA O PROFESSOR
+
+- OQ ADICIONAR A MAIS NO DOCUMENTO QUE ESTÁ FALTANDO
+- OQ PRECISA TER NA PARTE DO DESENVOLVIMENTO DO DOCUMENTO
 
 // SUPER IMPORTANTE
 
 - css em tudo
-- fazer validações para tudo
 
+- adicionar notas na avaliação
+->>>>>>>>>>>>>>>>>>>>> editar o produto NÃO FUNCIONA! nao cadastra variação.
 
+>VALIDAÇÕES<
+- verificar validações
+- validação produto quando sem estoque de variações, colocar tag FORA DE ESTOQUE deixar o item meio cinza
+- validação descrição cadastro camisetas
+- validação, proibir cadastro/edição de produto sem imagem de camiseta
+
+---------------- talvez adicionar cpf para o usuario? ----------------
 // WHATEVER, SE DER TEMPO EU FAÇO
 
 - dashboard do admin com dados de produtos vendidos no mês / preço total vendido etc...
