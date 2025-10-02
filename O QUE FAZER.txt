@@ -1,5 +1,18 @@
 Ainda falta fazer:
 
+// >>>>>>>>>>>>>>>>>> Coisas q tem q fazer ainda e quais CSS falta fazer  <<<<<<<<<<<<<<<<<<<<
+
+- gerenciar categorias editar etc..
+- tabela de ver avaliaçoes
+- estoque
+- gerenciar pedidos
+- pagina do usuários
+- ADICIONAR TAMBÉM EDITAR COMENTÁRIOS DO USUÁRIO NO PERFIL DELE!!! <<<<<<
+- fazer paginação na listagem dos produtos listar produtos
+- paginação nas categorias
+- no gerenciar pedidos na paginação adicionar os botões de next e prev encima tambem
+- paginação na pagina de ver variações também, talvez botar 5 de max? pensar...
+
 // oq foi feito
 
 - paginação dos produtos e tabela de produtos
@@ -15,10 +28,11 @@ Ainda falta fazer:
 
 // SUPER IMPORTANTE
 
-- css em tudo
+- css nas telas de cadastro do admin TODAS
+- css nas paginas do usuario TODAS
+- 
 
-- adicionar notas na avaliação
-->>>>>>>>>>>>>>>>>>>>> editar o produto NÃO FUNCIONA! nao cadastra variação.
+- adicionar notas na avaliação  < menos importante
 
 >VALIDAÇÕES<
 - verificar validações

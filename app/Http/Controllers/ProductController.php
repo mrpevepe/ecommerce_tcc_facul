@@ -53,8 +53,8 @@ public function index(Request $request)
             $query->where('category_id', $request->category_id);
         }
 
-        //>>>>>>>>>> Paginação com 16 produtos por página, preservando parâmetros de filtro <<<<<<<<<<
-        $products = $query->paginate(16)->appends($request->only(['search', 'category_id']));
+        //>>>>>>>>>> Paginação com 16 ou 12 produtos por página, preservando parâmetros de filtro <<<<<<<<<<
+        $products = $query->paginate(12)->appends($request->only(['search', 'category_id']));
 
         $categories = Category::all();
         return view('index', compact('products', 'categories'));

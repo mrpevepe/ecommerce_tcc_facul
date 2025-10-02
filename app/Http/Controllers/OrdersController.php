@@ -56,6 +56,8 @@ class OrdersController extends Controller
 
         $request->validate([
             'payment_method' => 'required|in:pix,boleto,cartao',
+        ], [
+            'payment_method.required' => 'Escolha um método de pagamento!',
         ]);
 
         $totalPrice = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart));

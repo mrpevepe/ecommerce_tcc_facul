@@ -1,0 +1,475 @@
+/* ==================== PRODUCTS LIST PAGE ==================== */
+.products-container {
+    margin: 2rem auto;
+    max-width: 1400px;
+    padding: 0 1.5rem;
+}
+
+.products-title {
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 700;
+    color: var(--secondary-green);
+    margin-bottom: 1.5rem;
+    text-align: center;
+    text-shadow: 0 2px 10px rgba(0, 212, 170, 0.3);
+}
+
+/* Botão criar produto */
+.create-product-btn {
+    background: linear-gradient(135deg, var(--accent), #00b894);
+    color: #0f172a;
+    border: none;
+    border-radius: 8px;
+    padding: 0.7rem 1.5rem;
+    font-weight: 700;
+    transition: var(--transition);
+    box-shadow: 0 4px 12px rgba(0, 212, 170, 0.4);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    text-decoration: none;
+}
+
+.create-product-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 212, 170, 0.6);
+    background: linear-gradient(135deg, #00ff9f, var(--accent));
+    color: #0f172a;
+}
+
+/* Container de filtros */
+.filter-container {
+    background: rgba(31, 41, 55, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    margin-bottom: 2rem;
+    border: 1px solid rgba(0, 212, 170, 0.1);
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+#searchBar {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(0, 212, 170, 0.2);
+    border-radius: 8px;
+    padding: 0.7rem 1rem;
+    transition: var(--transition);
+    color: #e5e7eb;
+    flex: 1;
+}
+
+#searchBar::placeholder {
+    color: #6b7280;
+}
+
+#searchBar:focus {
+    background: rgba(15, 23, 42, 1);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.2);
+    outline: none;
+    color: #fff;
+}
+
+#statusFilter {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(0, 212, 170, 0.2);
+    border-radius: 8px;
+    padding: 0.7rem 1rem;
+    transition: var(--transition);
+    color: #e5e7eb;
+    width: 200px;
+}
+
+#statusFilter:focus {
+    background: rgba(15, 23, 42, 1);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.2);
+    outline: none;
+    color: #fff;
+}
+
+/* Tabela de produtos */
+.products-table-container {
+    background: rgba(31, 41, 55, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid rgba(0, 212, 170, 0.1);
+    overflow: hidden;
+}
+
+.table {
+    margin-bottom: 0;
+    color: var(--dark-text);
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.table thead th {
+    background: rgba(0, 212, 170, 0.1);
+    color: var(--accent);
+    font-weight: 600;
+    border-bottom: 2px solid rgba(0, 212, 170, 0.2);
+    padding: 1rem;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.table tbody tr {
+    background: rgba(15, 23, 42, 0.6);
+    transition: var(--transition);
+}
+
+.table tbody tr:hover {
+    background: rgba(15, 23, 42, 0.9);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 212, 170, 0.2);
+}
+
+.table tbody td {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(0, 212, 170, 0.1);
+    vertical-align: middle;
+}
+
+/* Colunas específicas */
+.table tbody td:first-child {
+    font-weight: 600;
+    color: #1a202c;
+}
+
+/* Imagem do produto */
+.product-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 212, 170, 0.2);
+    transition: var(--transition);
+}
+
+.product-image:hover {
+    transform: scale(1.1);
+    border-color: var(--accent);
+    box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3);
+}
+
+/* Descrição do produto - SIMPLIFICADA */
+.product-description {
+    max-width: 250px;
+    color: #1a202c !important; /* Texto preto como solicitado */
+    font-size: 0.9rem;
+    line-height: 1.4;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    cursor: default;
+}
+
+/* Status do produto */
+.product-status {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-ativo {
+    background: rgba(0, 212, 170, 0.2);
+    color: #1a202c;
+    border: 1px solid rgba(0, 212, 170, 0.3);
+}
+
+.status-inativo {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Ações - Botões em grid 2x2 */
+.product-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    min-width: 180px;
+}
+
+.action-btn {
+    padding: 0.6rem 0.5rem;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: var(--transition);
+    border: none;
+    cursor: pointer;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    text-decoration: none;
+    text-align: center;
+    min-height: 40px;
+}
+
+/* Botão Editar - Verde vibrante */
+.btn-edit {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4);
+}
+
+.btn-edit:hover {
+    background: linear-gradient(135deg, #34d399, #10b981);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.6);
+    color: white;
+}
+
+/* Botão Variações - Azul vibrante */
+.btn-variations {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    box-shadow: 0 2px 6px rgba(59, 130, 246, 0.4);
+}
+
+.btn-variations:hover {
+    background: linear-gradient(135deg, #60a5fa, #3b82f6);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.6);
+    color: white;
+}
+
+/* Botão Avaliações - Roxo vibrante */
+.btn-comments {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    color: white;
+    box-shadow: 0 2px 6px rgba(139, 92, 246, 0.4);
+}
+
+.btn-comments:hover {
+    background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.6);
+    color: white;
+}
+
+/* Botão Ativar - Verde suave */
+.btn-activate {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4);
+}
+
+.btn-activate:hover {
+    background: linear-gradient(135deg, #34d399, #10b981);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.6);
+    color: white;
+}
+
+/* Botão Desativar - Laranja vibrante */
+.btn-deactivate {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+    box-shadow: 0 2px 6px rgba(245, 158, 11, 0.4);
+}
+
+.btn-deactivate:hover {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.6);
+    color: white;
+}
+
+/* Tooltip para descrições longas */
+.description-tooltip {
+    position: fixed;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(10px);
+    color: var(--dark-text);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--accent);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    max-width: 400px;
+    z-index: 10000;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    animation: tooltipFadeIn 0.2s ease-out;
+}
+
+@keyframes tooltipFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.has-tooltip {
+    cursor: help;
+    position: relative;
+}
+
+.has-tooltip:hover::after {
+    content: "🔍";
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .products-container {
+        padding: 0 1rem;
+    }
+
+    .filter-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #statusFilter {
+        width: 100%;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .table thead th:nth-child(2),
+    .table tbody td:nth-child(2) {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .products-table-container {
+        padding: 1rem;
+    }
+
+    .table thead th:nth-child(4),
+    .table tbody td:nth-child(4),
+    .table thead th:nth-child(5),
+    .table tbody td:nth-child(5) {
+        display: none;
+    }
+
+    .product-actions {
+        grid-template-columns: 1fr;
+        gap: 0.3rem;
+    }
+
+    .action-btn {
+        padding: 0.5rem 0.4rem;
+        font-size: 0.7rem;
+    }
+
+    .product-description {
+        max-width: 150px;
+    }
+
+    .description-tooltip {
+        max-width: 300px;
+        left: 50% !important;
+        transform: translateX(-50%);
+    }
+}
+
+@media (max-width: 576px) {
+    .table thead th:nth-child(6),
+    .table tbody td:nth-child(6) {
+        display: none;
+    }
+
+    .product-image {
+        width: 60px;
+        height: 60px;
+    }
+
+    .product-description {
+        max-width: 120px;
+        font-size: 0.8rem;
+    }
+}
+
+/* Estilos adicionais para garantir compatibilidade */
+.products-table-container .table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(15, 23, 42, 0.4);
+}
+
+.products-table-container .table-striped tbody tr:nth-of-type(even) {
+    background-color: rgba(15, 23, 42, 0.6);
+}
+
+.products-table-container .table-striped tbody tr:hover {
+    background-color: rgba(15, 23, 42, 0.9) !important;
+}
+
+/* Ajustes para formulários dentro das ações */
+.product-actions form {
+    margin: 0;
+    display: contents;
+}
+
+/* Garantir que os botões tenham o mesmo tamanho */
+.product-actions .action-btn {
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Melhorar a aparência do texto "Sem Imagem" */
+.no-image {
+    color: var(--light-text);
+    font-size: 0.9rem;
+    font-style: italic;
+    padding: 0.5rem;
+}
+
+/* Ajustes para telas muito pequenas */
+@media (max-width: 480px) {
+    .products-container {
+        padding: 0 0.5rem;
+    }
+
+    .products-table-container {
+        padding: 0.5rem;
+    }
+
+    .table tbody td {
+        padding: 0.7rem 0.5rem;
+    }
+
+    .product-image {
+        width: 50px;
+        height: 50px;
+    }
+
+    .action-btn {
+        font-size: 0.65rem;
+        padding: 0.4rem 0.3rem;
+    }
+
+    .action-btn i {
+        margin-right: 0.2rem;
+    }
+}
