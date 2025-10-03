@@ -20,14 +20,34 @@ class OrdersController extends Controller
     public function index(Request $request)
     {
         $status = $request->query('status', 'all');
-        $query = Order::with('user', 'items.product.category', 'items.variation', 'items.size');
+        $search = $request->query('search', '');
+        $date = $request->query('date', '');
+
+        $query = Order::with('user', 'items.product.category', 'items.variation.images', 'items.size');
 
         if (in_array($status, ['pending', 'cancelled', 'delivered'])) {
             $query->where('status', $status);
         }
 
-        // Paginação com 10 itens por página, preservando o parâmetro status
-        $orders = $query->latest()->paginate(10)->appends(['status' => $status]);
+        if (!empty($search)) {
+            $query->where(function($q) use ($search) {
+                $q->where('id', 'like', "%{$search}%")
+                  ->orWhereHas('user', function($q) use ($search) {
+                      $q->where('name', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        if (!empty($date)) {
+            $query->whereDate('created_at', $date);
+        }
+
+        // Paginação com 10 itens por página, preservando os parâmetros
+        $orders = $query->latest()->paginate(10)->appends([
+            'status' => $status,
+            'search' => $search,
+            'date' => $date
+        ]);
 
         return view('admin.orders.index', compact('orders', 'status'));
     }

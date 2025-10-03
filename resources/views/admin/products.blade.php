@@ -5,9 +5,13 @@
 @section('content')
 <div class="products-container">
     <h1 class="products-title">Listagem de Produtos</h1>
+        <a href="{{ route('admin.dashboard') }}" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Voltar
+        </a>
     <a href="{{ route('admin.products.create') }}" class="create-product-btn">
         <i class="fas fa-plus"></i> Criar Novo Produto
     </a>
+    
     
     <div class="filter-container">
         <input type="text" id="searchBar" class="form-control" placeholder="Pesquisar por nome ou marca..." value="{{ request()->query('search') }}">
@@ -17,6 +21,18 @@
             <option value="inativo" {{ request()->query('status') == 'inativo' ? 'selected' : '' }}>Inativo</option>
         </select>
     </div>
+
+    <!-- Paginação no topo -->
+    @if($products->hasPages())
+    <div class="d-flex justify-content-between align-items-center mt-4">
+        <div>
+            Exibindo {{ $products->firstItem() }} a {{ $products->lastItem() }} de {{ $products->total() }} resultados
+        </div>
+        <div>
+            {{ $products->links('pagination::simple-bootstrap-5') }}
+        </div>
+    </div>
+    @endif
     
     <div class="products-table-container">
         <table class="table table-striped">
@@ -44,7 +60,11 @@
                                 <span class="no-image">Sem Imagem</span>
                             @endif
                         </td>
-                        <td>{{ $product->nome }}</td>
+                        <td>
+                            <div class="product-name" data-full-description="{{ $product->nome }}">
+                                {{ $product->nome }}
+                            </div>
+                        </td>
                         <td>
                             <div class="product-description" data-full-description="{{ $product->descricao ?? 'Sem descrição' }}">
                                 {{ $product->descricao ?? 'Sem descrição' }}
@@ -83,6 +103,18 @@
             </tbody>
         </table>
     </div>
+
+    <!-- Paginação no rodapé -->
+    @if($products->hasPages())
+    <div class="d-flex justify-content-between align-items-center mt-4">
+        <div>
+            Exibindo {{ $products->firstItem() }} a {{ $products->lastItem() }} de {{ $products->total() }} resultados
+        </div>
+        <div>
+            {{ $products->links('pagination::simple-bootstrap-5') }}
+        </div>
+    </div>
+    @endif
 </div>
 
 <script>
@@ -98,22 +130,22 @@
         window.location = url;
     });
 
-    // Tooltip para descrições longas
+    // Tooltip para nomes e descrições longas
     document.addEventListener('DOMContentLoaded', function() {
-        const descriptions = document.querySelectorAll('.product-description');
+        const elements = document.querySelectorAll('.product-description, .product-name');
         
-        descriptions.forEach(desc => {
-            const fullText = desc.getAttribute('data-full-description');
-            const displayText = desc.textContent.trim();
+        elements.forEach(element => {
+            const fullText = element.getAttribute('data-full-description');
+            const displayText = element.textContent.trim();
             
-            // Se o texto for muito longo, aplicar truncamento
-            if (displayText.length > 80) {
-                desc.textContent = displayText.substring(0, 80) + '...';
+            // Se o texto for muito longo (mais de 20 caracteres), aplicar truncamento
+            if (displayText.length > 20) {
+                element.textContent = displayText.substring(0, 20) + '...';
                 
                 // Criar tooltip
-                desc.classList.add('has-tooltip');
+                element.classList.add('has-tooltip');
                 
-                desc.addEventListener('mouseenter', function(e) {
+                element.addEventListener('mouseenter', function(e) {
                     const tooltip = document.createElement('div');
                     tooltip.className = 'description-tooltip';
                     tooltip.textContent = fullText;
@@ -121,12 +153,12 @@
                     document.body.appendChild(tooltip);
                     
                     // Posicionar tooltip
-                    const rect = desc.getBoundingClientRect();
+                    const rect = element.getBoundingClientRect();
                     tooltip.style.left = rect.left + 'px';
                     tooltip.style.top = (rect.top - tooltip.offsetHeight - 10) + 'px';
                 });
                 
-                desc.addEventListener('mouseleave', function() {
+                element.addEventListener('mouseleave', function() {
                     const tooltip = document.querySelector('.description-tooltip');
                     if (tooltip) {
                         tooltip.remove();
@@ -149,50 +181,17 @@
         margin: 0;
         display: contents;
     }
-    
-    /* Tooltip para descrição */
-    .description-tooltip {
-        position: fixed;
-        background: rgba(15, 23, 42, 0.95);
-        backdrop-filter: blur(10px);
-        color: var(--dark-text);
-        padding: 1rem;
-        border-radius: 8px;
-        border: 1px solid var(--accent);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-        max-width: 400px;
-        z-index: 10000;
+
+    /* CSS para ajustar o tamanho da paginação */
+    .pagination {
         font-size: 0.9rem;
-        line-height: 1.5;
-        animation: tooltipFadeIn 0.2s ease-out;
-        white-space: normal; /* Adicionado */
-        word-wrap: break-word; /* Adicionado */
     }
-    
-    @keyframes tooltipFadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(10px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    .pagination .page-link {
+        padding: 0.25rem 0.5rem;
     }
-    
-    .has-tooltip {
-        cursor: help;
-        position: relative;
-    }
-    
-    .has-tooltip:hover::after {
-        content: '🔍';
-        position: absolute;
-        right: 5px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 0.8rem;
-        opacity: 0.7;
+    .pagination .page-item.active .page-link {
+        background-color: #007bff;
+        border-color: #007bff;
     }
 </style>
 @endsection

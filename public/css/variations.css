@@ -1,0 +1,546 @@
+/* ==================== VARIATIONS PAGE ==================== */
+.variations-container {
+    margin: 2rem auto;
+    max-width: 1400px;
+    padding: 0 1.5rem;
+}
+
+.variations-title {
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 700;
+    color: var(--secondary-green);
+    margin-bottom: 1.5rem;
+    text-align: center;
+    text-shadow: 0 2px 10px rgba(0, 212, 170, 0.3);
+}
+
+/* Botões principais */
+.variations-header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.back-btn {
+    background: rgba(31, 41, 55, 0.8);
+    color: var(--accent);
+    border: 1px solid rgba(0, 212, 170, 0.3);
+    padding: 0.7rem 1.5rem;
+    border-radius: 8px;
+    transition: var(--transition);
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+}
+
+.back-btn:hover {
+    background: rgba(0, 212, 170, 0.1);
+    border-color: var(--accent);
+    transform: translateX(-3px);
+    box-shadow: 0 2px 8px rgba(0, 212, 170, 0.3);
+    color: var(--accent);
+}
+
+.add-variation-main-btn {
+    background: linear-gradient(135deg, var(--accent), #00b894);
+    color: #0f172a;
+    border: none;
+    border-radius: 8px;
+    padding: 0.7rem 1.5rem;
+    font-weight: 700;
+    transition: var(--transition);
+    box-shadow: 0 4px 12px rgba(0, 212, 170, 0.4);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.add-variation-main-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 212, 170, 0.6);
+    background: linear-gradient(135deg, #00ff9f, var(--accent));
+    color: #0f172a;
+}
+
+/* Container da tabela */
+.variations-table-container {
+    background: rgba(31, 41, 55, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid rgba(0, 212, 170, 0.1);
+    margin-bottom: 2rem;
+    overflow: hidden;
+    width: 100%;
+}
+
+/* Tabela */
+.variations-table {
+    margin-bottom: 0;
+    color: var(--dark-text);
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.variations-table thead th {
+    background: rgba(0, 212, 170, 0.1);
+    color: var(--accent);
+    font-weight: 600;
+    border-bottom: 2px solid rgba(0, 212, 170, 0.2);
+    padding: 1rem;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.variations-table tbody tr {
+    background: rgba(15, 23, 42, 0.6);
+    transition: var(--transition);
+}
+
+.variations-table tbody tr:hover {
+    background: rgba(15, 23, 42, 0.9);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 212, 170, 0.2);
+}
+
+.variations-table tbody td {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(0, 212, 170, 0.1);
+    vertical-align: middle;
+}
+
+/* Imagem da variação */
+.variation-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 212, 170, 0.2);
+    transition: var(--transition);
+}
+
+.variation-image:hover {
+    transform: scale(1.1);
+    border-color: var(--accent);
+    box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3);
+}
+
+.no-variation-image {
+    color: var(--light-text);
+    font-size: 0.9rem;
+    font-style: italic;
+    padding: 0.5rem;
+}
+
+/* Tabela de estoque dentro da célula */
+.stock-table-inner {
+    background: rgba(15, 23, 42, 0.8);
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 212, 170, 0.1);
+}
+
+.stock-table-inner table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+}
+
+.stock-table-inner th {
+    background: rgba(0, 212, 170, 0.05);
+    color: var(--accent);
+    font-weight: 600;
+    padding: 0.4rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(0, 212, 170, 0.1);
+}
+
+.stock-table-inner td {
+    padding: 0.4rem;
+    border-bottom: 1px solid rgba(0, 212, 170, 0.05);
+    text-align: center;
+}
+
+.stock-table-inner tfoot {
+    background: rgba(0, 212, 170, 0.1);
+    font-weight: 600;
+}
+
+.stock-table-inner tfoot td {
+    border-bottom: none;
+    color: var(--accent);
+}
+
+/* Status da variação */
+.variation-status {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-ativo {
+    background: rgba(0, 212, 170);
+    color: #1a202c;
+    border: 1px solid rgba(0, 212, 170, 0.3);
+}
+
+.status-inativo {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Ações */
+.variation-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 140px;
+}
+
+.variation-action-btn {
+    padding: 0.6rem 0.8rem;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: var(--transition);
+    border: none;
+    cursor: pointer;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    text-decoration: none;
+    text-align: center;
+}
+
+/* Botão Editar Estoque - Azul */
+.btn-edit-stock {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    box-shadow: 0 2px 6px rgba(59, 130, 246, 0.4);
+}
+
+.btn-edit-stock:hover {
+    background: linear-gradient(135deg, #60a5fa, #3b82f6);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.6);
+    color: white;
+}
+
+/* Botão Ativar/Inativar - Laranja/Verde */
+.btn-toggle-status {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+    box-shadow: 0 2px 6px rgba(245, 158, 11, 0.4);
+}
+
+.btn-toggle-status:hover {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.6);
+    color: white;
+}
+
+.btn-toggle-status.active {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.btn-toggle-status.active:hover {
+    background: linear-gradient(135deg, #34d399, #10b981);
+}
+
+/* Formulário de adicionar variação */
+.add-variation-form-container {
+    background: rgba(31, 41, 55, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius);
+    padding: 2rem;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid rgba(0, 212, 170, 0.1);
+    margin-top: 2rem;
+}
+
+.add-variation-form-title {
+    color: var(--secondary-green);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 2px 8px rgba(0, 212, 170, 0.3);
+}
+
+/* Form groups */
+.variation-form-group {
+    margin-bottom: 1.5rem;
+}
+
+.variation-form-label {
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    display: block;
+}
+
+.variation-form-control {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(0, 212, 170, 0.2);
+    border-radius: 8px;
+    padding: 0.7rem 1rem;
+    color: var(--dark-text);
+    transition: var(--transition);
+    font-size: 0.95rem;
+    width: 100%;
+}
+
+.variation-form-control:focus {
+    background: rgba(15, 23, 42, 1);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.2);
+    outline: none;
+    color: #fff;
+}
+
+/* Tabela de estoque no formulário */
+.variation-stock-table {
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 212, 170, 0.1);
+    margin-top: 1rem;
+}
+
+.variation-stock-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.variation-stock-table th {
+    background: rgba(0, 212, 170, 0.1);
+    color: var(--accent);
+    font-weight: 600;
+    padding: 0.8rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(0, 212, 170, 0.2);
+}
+
+.variation-stock-table td {
+    padding: 0.8rem;
+    border-bottom: 1px solid rgba(0, 212, 170, 0.1);
+    background: rgba(15, 23, 42, 0.4);
+}
+
+.variation-stock-table tr:last-child td {
+    border-bottom: none;
+}
+
+.stock-quantity-input {
+    background: rgba(31, 41, 55, 0.8);
+    border: 1px solid rgba(0, 212, 170, 0.2);
+    border-radius: 6px;
+    padding: 0.5rem;
+    color: var(--dark-text);
+    width: 100%;
+    text-align: center;
+    font-weight: 600;
+}
+
+.stock-quantity-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(0, 212, 170, 0.2);
+}
+
+/* Preview de imagem */
+.image-preview-container {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.image-preview {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 8px;
+    border: 2px solid rgba(0, 212, 170, 0.3);
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+    display: none;
+}
+
+.image-preview:hover {
+    border-color: var(--accent);
+    box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3);
+}
+
+/* Botões do formulário */
+.variation-form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(0, 212, 170, 0.2);
+}
+
+.variation-submit-btn {
+    background: linear-gradient(135deg, var(--accent), #00b894);
+    color: #0f172a;
+    border: none;
+    border-radius: 8px;
+    padding: 0.8rem 1.5rem;
+    font-weight: 700;
+    transition: var(--transition);
+    box-shadow: 0 4px 12px rgba(0, 212, 170, 0.4);
+    cursor: pointer;
+}
+
+.variation-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 212, 170, 0.6);
+    background: linear-gradient(135deg, #00ff9f, var(--accent));
+}
+
+.variation-cancel-btn {
+    background: rgba(31, 41, 55, 0.8);
+    color: var(--accent);
+    border: 1px solid rgba(0, 212, 170, 0.3);
+    border-radius: 8px;
+    padding: 0.8rem 1.5rem;
+    font-weight: 600;
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.variation-cancel-btn:hover {
+    background: rgba(0, 212, 170, 0.1);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3);
+}
+
+/* Mensagem sem variações */
+.no-variations-message {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--light-text);
+    font-size: 1.1rem;
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: var(--radius);
+    border: 1px solid rgba(0, 212, 170, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .variations-container {
+        padding: 0 1rem;
+    }
+
+    .variations-table-container {
+        padding: 1rem;
+        overflow-x: auto;
+    }
+
+    .variations-table {
+        min-width: 800px;
+    }
+}
+
+@media (max-width: 768px) {
+    .variations-header-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .back-btn,
+    .add-variation-main-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .variation-actions {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .variation-action-btn {
+        flex: 1;
+        min-width: 120px;
+    }
+
+    .add-variation-form-container {
+        padding: 1.5rem;
+    }
+
+    .variation-form-actions {
+        flex-direction: column;
+    }
+
+    .variation-submit-btn,
+    .variation-cancel-btn {
+        width: 100%;
+    }
+
+    .stock-table-inner {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .variations-table tbody td {
+        padding: 0.7rem 0.5rem;
+    }
+
+    .variation-image {
+        width: 60px;
+        height: 60px;
+    }
+
+    .variation-action-btn {
+        font-size: 0.7rem;
+        padding: 0.5rem 0.6rem;
+    }
+
+    .add-variation-form-container {
+        padding: 1rem;
+    }
+
+    .variation-stock-table th,
+    .variation-stock-table td {
+        padding: 0.6rem 0.4rem;
+        font-size: 0.85rem;
+    }
+}
+
+/* Animações */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.add-variation-form-container {
+    animation: fadeIn 0.3s ease-out;
+}
+
+.variations-table tbody tr {
+    animation: fadeIn 0.3s ease-out;
+}

@@ -5,13 +5,14 @@
 @section('content')
 <div class="create-product-container">
     <h1 class="create-product-title">Criar Novo Produto</h1>
-    
     <form method="POST" action="{{ route('admin.products.store') }}" enctype="multipart/form-data" class="create-product-form">
         @csrf
 
         <div class="form-group">
             <label for="nome" class="form-label">Nome do Produto</label>
-            <input type="text" class="form-control" id="nome" name="nome" maxlength="60" required>
+            <input type="text" class="form-control" id="nome" name="nome" 
+                   maxlength="60" 
+                   oninput="this.value = this.value.slice(0, 60)" required>
             @error('nome')
                 <div class="error-message">{{ $message }}</div>
             @enderror
@@ -19,7 +20,9 @@
 
         <div class="form-group">
             <label for="descricao" class="form-label">Descrição</label>
-            <textarea class="form-control descricao-textarea" id="descricao" name="descricao" maxlength="255"></textarea>
+            <textarea class="form-control descricao-textarea" id="descricao" name="descricao" 
+                      maxlength="255"
+                      oninput="this.value = this.value.slice(0, 255)"></textarea>
             @error('descricao')
                 <div class="error-message">{{ $message }}</div>
             @enderror
@@ -27,7 +30,9 @@
 
         <div class="form-group">
             <label for="marca" class="form-label">Marca</label>
-            <input type="text" class="form-control" id="marca" name="marca" maxlength="64">
+            <input type="text" class="form-control" id="marca" name="marca" 
+                   maxlength="64"
+                   oninput="this.value = this.value.slice(0, 64)">
             @error('marca')
                 <div class="error-message">{{ $message }}</div>
             @enderror
@@ -85,10 +90,8 @@
 </div>
 
 <script>
-    // Debugging: Log to ensure script is running
     console.log('create-product.blade.php script loaded');
 
-    // Pass sizes from Blade to JavaScript
     const sizes = @json($sizes);
     let variacaoIndex = 0;
 
@@ -100,7 +103,10 @@
                 <tr>
                     <td>${size.name}</td>
                     <td>
-                        <input type="number" class="stock-input" name="variations[${variacaoIndex}][quantidade_estoque][${variacaoIndex}_${size.id}][quantity]" min="0" required>
+                        <input type="number" class="stock-input" 
+                               name="variations[${variacaoIndex}][quantidade_estoque][${variacaoIndex}_${size.id}][quantity]" 
+                               min="0" max="99999999"
+                               oninput="this.value = this.value.slice(0, 10)" required>
                         <input type="hidden" name="variations[${variacaoIndex}][quantidade_estoque][${variacaoIndex}_${size.id}][size_id]" value="${size.id}">
                     </td>
                 </tr>
@@ -114,11 +120,17 @@
                 </div>
                 <div class="form-group">
                     <label for="variations[${variacaoIndex}][nome_variacao]" class="form-label">Nome da Variação</label>
-                    <input type="text" class="form-control" name="variations[${variacaoIndex}][nome_variacao]" required maxlength="60">
+                    <input type="text" class="form-control" 
+                           name="variations[${variacaoIndex}][nome_variacao]" 
+                           maxlength="60"
+                           oninput="this.value = this.value.slice(0, 60)" required>
                 </div>
                 <div class="form-group">
                     <label for="variations[${variacaoIndex}][preco]" class="form-label">Preço</label>
-                    <input type="number" step="0.01" class="form-control" name="variations[${variacaoIndex}][preco]" required maxlength="10">
+                    <input type="number" step="0.01" class="form-control" 
+                           name="variations[${variacaoIndex}][preco]" 
+                           maxlength="8"
+                           oninput="this.value = this.value.slice(0, 10)" required>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Estoque por Tamanho</label>
@@ -163,10 +175,51 @@
         }
     });
 
-    // Limitar o comprimento do campo de preço a 10 caracteres
+    // Validação em tempo real para todos os campos
     document.addEventListener('input', function(e) {
+        // Validação para campos de preço
         if (e.target.name.includes('[preco]')) {
-            const maxLength = 10;
+            const maxLength = 8;
+            if (e.target.value.length > maxLength) {
+                e.target.value = e.target.value.slice(0, maxLength);
+            }
+        }
+        
+        // Validação para campos de estoque
+        if (e.target.name.includes('[quantidade_estoque]') && e.target.name.includes('[quantity]')) {
+            const maxLength = 8;
+            if (e.target.value.length > maxLength) {
+                e.target.value = e.target.value.slice(0, maxLength);
+            }
+        }
+        
+        // Validação para nome do produto
+        if (e.target.name === 'nome') {
+            const maxLength = 60;
+            if (e.target.value.length > maxLength) {
+                e.target.value = e.target.value.slice(0, maxLength);
+            }
+        }
+        
+        // Validação para descrição
+        if (e.target.name === 'descricao') {
+            const maxLength = 255;
+            if (e.target.value.length > maxLength) {
+                e.target.value = e.target.value.slice(0, maxLength);
+            }
+        }
+        
+        // Validação para marca
+        if (e.target.name === 'marca') {
+            const maxLength = 64;
+            if (e.target.value.length > maxLength) {
+                e.target.value = e.target.value.slice(0, maxLength);
+            }
+        }
+        
+        // Validação para nome da variação
+        if (e.target.name.includes('[nome_variacao]')) {
+            const maxLength = 60;
             if (e.target.value.length > maxLength) {
                 e.target.value = e.target.value.slice(0, maxLength);
             }
@@ -195,7 +248,6 @@
         if (event.target.files[0]) {
             reader.readAsDataURL(event.target.files[0]);
             
-            // Update the file input label
             const fileName = event.target.files[0].name;
             const label = event.target.nextElementSibling;
             if (label && label.classList.contains('file-input-label')) {
@@ -205,7 +257,6 @@
         }
     }
 
-    // Initialize file input labels
     document.addEventListener('DOMContentLoaded', function() {
         const fileInputs = document.querySelectorAll('input[type="file"]');
         fileInputs.forEach(input => {
@@ -221,20 +272,19 @@
 </script>
 
 <style>
-    /* Additional inline styles for the adjustments */
     .create-product-container {
         margin: 1rem auto;
-        max-width: 900px; /* Formulário mais compacto */
+        max-width: 900px;
     }
 
     .create-product-form {
-        padding: 1.5rem; /* Reduzir padding do formulário */
+        padding: 1.5rem;
     }
 
     .descricao-textarea {
-        min-height: 80px; /* Altura mínima */
-        max-height: 150px; /* Altura máxima */
-        resize: vertical; /* Permitir redimensionamento apenas vertical */
+        min-height: 80px;
+        max-height: 150px;
+        resize: vertical;
     }
 
     .image-preview-container {
@@ -243,7 +293,7 @@
     }
 
     .image-preview {
-        max-width: 150px; /* Preview bem menor */
+        max-width: 150px;
         max-height: 150px;
         border-radius: 8px;
         border: 2px solid rgba(0, 212, 170, 0.3);
@@ -251,18 +301,17 @@
     }
 
     .variation-card {
-        padding: 1.2rem; /* Cartões de variação mais compactos */
+        padding: 1.2rem;
     }
 
     .form-group {
-        margin-bottom: 1rem; /* Menor espaçamento entre campos */
+        margin-bottom: 1rem;
     }
 
     .variations-section {
-        margin: 1.5rem 0; /* Menor margem na seção de variações */
+        margin: 1.5rem 0;
     }
 
-    /* Ajustes para a tabela de estoque */
     .stock-table table {
         font-size: 0.9rem;
     }
@@ -272,7 +321,6 @@
         padding: 0.5rem;
     }
 
-    /* Botões mais compactos */
     .btn {
         padding: 0.6rem 1rem;
     }

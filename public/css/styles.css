@@ -5,6 +5,8 @@
 @import "products.css";
 @import "admin.css";
 @import "edit_product.css";
+@import "variations.css";
+@import "orders.css";
 
 /* Variáveis Globais */
 :root {

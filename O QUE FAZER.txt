@@ -2,16 +2,22 @@ Ainda falta fazer:
 
 // >>>>>>>>>>>>>>>>>> Coisas q tem q fazer ainda e quais CSS falta fazer  <<<<<<<<<<<<<<<<<<<<
 
-- gerenciar categorias editar etc..
-- tabela de ver avaliaçoes
-- estoque
-- gerenciar pedidos
-- pagina do usuários
+>fazer o footer tambem! com algumas paginas falando sobre ecommerce placeholders tipo terms of service<
+
+>ONDE FALTA CSS<
+------------------------------------------------------------------------------------------
+- estoque css
+- perfil user css em tudo
+- paginação nas categorias e CSS 
+- pagina de avaliações do admin
+-------------------------------------------------------------------------------------------
+ > PERFIL DO USUARIO <
+ ----------------------------------------------------------------------------------------
 - ADICIONAR TAMBÉM EDITAR COMENTÁRIOS DO USUÁRIO NO PERFIL DELE!!! <<<<<<
-- fazer paginação na listagem dos produtos listar produtos
-- paginação nas categorias
-- no gerenciar pedidos na paginação adicionar os botões de next e prev encima tambem
-- paginação na pagina de ver variações também, talvez botar 5 de max? pensar...
+- tabela de ver avaliaçoes no perfil do usuário
+-----------------------------------------------------------------------------------------
+
+- CONFERIR DEPOIS validacao inputs
 
 // oq foi feito
 
@@ -47,5 +53,3 @@ Ainda falta fazer:
 - fazer um carrousel com imagens na pagina de show do produto
 
 -VALIDAÇÃO DE AVALIAÇÕES NOS PRODUTOS
-
-preciso de uma migration, preciso adicionar uma coluna na database de status ("ativo", "inativo") em categorias, product_variations, ai caso eu esteja editando uma delas, eu possa inativar, ou ativar novamente o produto ou a  categoria. entende? ai no edit product e edit category, preciso das funcionalidades de desativar/ativar, e na variations.blade.php um botão para inativar e ativar também, ai lá na pagina inicial welcome.blade.php e na show.blade.php, só vão ser puxados na welcome produtos ativos com variações ativas, e dentro do produto na show.blade.php vai ter as variações, porém as que estão inativas não vão poder ser selecionadas. na página de products ali do administrador também eu quero adicionar uma searchbar encima da tabela, e do lado uma caixinha de options com opções "ativo" e "inativo" para poder filtrar os produtos ativos/inativos ai a searchbar vai ser padrão para buscar pelo nome/marca dos produtos, na página do administrador onde ele pode gerenciar as avaliações feitas pelos usuários, eu também quero que ele mostre na tabela qual é o id do produto com nome e imagem,  daquele comentário.

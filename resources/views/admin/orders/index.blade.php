@@ -1,112 +1,185 @@
 @extends('layouts.main')
 @section('title', 'Gerenciar Pedidos')
 @section('content')
-<div class="container mt-5">
-    <h1>Gerenciar Pedidos</h1>
+<div class="orders-container">
+    <h1 class="orders-title">Gerenciar Pedidos</h1>
+    
+    <div class="admin-actions">
+        <a href="{{ route('admin.dashboard') }}" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Voltar
+        </a>
+    </div>
 
-    <!-- Filtro de Status -->
-    <div class="mb-4">
-        <form method="GET" action="{{ route('admin.orders.index') }}">
-            <div class="input-group">
-                <select name="status" class="form-select" onchange="this.form.submit()">
-                    <option value="all" {{ $status == 'all' ? 'selected' : '' }}>Todos</option>
-                    <option value="pending" {{ $status == 'pending' ? 'selected' : '' }}>Pendente</option>
-                    <option value="cancelled" {{ $status == 'cancelled' ? 'selected' : '' }}>Cancelado</option>
-                    <option value="delivered" {{ $status == 'delivered' ? 'selected' : '' }}>Entregue</option>
+    <!-- Filtros -->
+    <div class="filters-container">
+        <form method="GET" action="{{ route('admin.orders.index') }}" class="filters-form">
+            <div class="filter-group">
+                <label for="search" class="filter-label">Pesquisar</label>
+                <input type="text" id="search" name="search" class="filter-input" 
+                       placeholder="ID do pedido ou nome do cliente..." 
+                       value="{{ request()->query('search') }}">
+            </div>
+            
+            <div class="filter-group">
+                <label for="status" class="filter-label">Status</label>
+                <select name="status" id="status" class="filter-select">
+                    <option value="all" {{ request()->query('status', 'all') == 'all' ? 'selected' : '' }}>Todos os Status</option>
+                    <option value="pending" {{ request()->query('status') == 'pending' ? 'selected' : '' }}>Pendente</option>
+                    <option value="cancelled" {{ request()->query('status') == 'cancelled' ? 'selected' : '' }}>Cancelado</option>
+                    <option value="delivered" {{ request()->query('status') == 'delivered' ? 'selected' : '' }}>Entregue</option>
                 </select>
-                <button type="submit" class="btn btn-primary">Filtrar</button>
+            </div>
+            
+            <div class="filter-group">
+                <label for="date" class="filter-label">Data</label>
+                <input type="date" id="date" name="date" class="filter-input" 
+                       value="{{ request()->query('date') }}">
+            </div>
+            
+            <div class="filter-actions">
+                <button type="submit" class="filter-btn">
+                    <i class="fas fa-filter"></i> Filtrar
+                </button>
+                @if(request()->query('search') || request()->query('status') != 'all' || request()->query('date'))
+                <a href="{{ route('admin.orders.index') }}" class="clear-filter-btn">
+                    <i class="fas fa-times"></i> Limpar
+                </a>
+                @endif
             </div>
         </form>
     </div>
 
-    @if ($orders->isEmpty())
-        <p>Nenhum pedido encontrado.</p>
-    @else
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Cliente</th>
-                    <th>Data</th>
-                    <th>Itens</th>
-                    <th>Endereço</th>
-                    <th>Total</th>
-                    <th>Status</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($orders as $order)
-                    <tr>
-                        <td>#{{ $order->id }}</td>
-                        <td>{{ $order->user->name }}</td>
-                        <td>{{ $order->created_at->setTimezone('America/Sao_Paulo')->format('d/m/Y H:i') }}</td>
-                        <td>
-                            <ul>
-                                @foreach ($order->items as $item)
-                                    <li>
-                                        {{ $item->product->nome }} 
-                                        (Categoria: {{ $item->product->category->name ?? 'Sem categoria' }}) 
-                                        ({{ $item->variation->nome_variacao ?? 'Sem variação' }}) 
-                                        - Tamanho: {{ $item->size->name ?? 'N/A' }} 
-                                        - Qtd: {{ $item->quantity }}
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </td>
-                        <td>
-                            {{ $order->logradouro }}, {{ $order->numero }}
-                            @if ($order->complemento)
-                                - {{ $order->complemento }}
-                            @endif
-                            <br>
-                            Bairro: {{ $order->bairro }}
-                            <br>
-                            CEP: {{ $order->cep }}
-                            <br>
-                            {{ $order->nome_cidade }} - {{ $order->estado }}
-                        </td>
-                        <td>R$ {{ number_format($order->total_price, 2, ',', '.') }}</td>
-                        <td>{{ ['pending' => 'Pendente', 'cancelled' => 'Cancelado', 'delivered' => 'Entregue'][$order->status] ?? ucfirst($order->status) }}</td>
-                        <td>
-                            @if ($order->status === 'pending')
-                                <form action="{{ route('admin.orders.deliver', $order->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Deseja Enviar Esse Pedido?');">
-                                    @csrf
-                                    <button type="submit" class="btn btn-success btn-sm">Enviar Pedido</button>
-                                </form>
-                            @endif
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+    <!-- Paginação no topo -->
+    @if($orders->hasPages())
+    <div class="pagination-info">
+        <div class="pagination-results">
+            Exibindo {{ $orders->firstItem() }} a {{ $orders->lastItem() }} de {{ $orders->total() }} resultados
+        </div>
+        <div class="pagination-links">
+            {{ $orders->appends(request()->query())->links('pagination::simple-bootstrap-5') }}
+        </div>
+    </div>
+    @endif
 
-        <!-- Resumo de resultados -->
-        <div class="d-flex justify-content-between align-items-center mt-4">
-            <div>
+    @if ($orders->isEmpty())
+        <div class="empty-state">
+            <i class="fas fa-box-open empty-icon"></i>
+            <h3>Nenhum pedido encontrado</h3>
+            <p>Tente ajustar os filtros para ver mais resultados.</p>
+        </div>
+    @else
+        <div class="orders-table-container">
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Cliente</th>
+                        <th>Data</th>
+                        <th>Itens</th>
+                        <th>Endereço</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($orders as $order)
+                        <tr class="order-row">
+                            <td class="order-id">
+                                <span class="id-badge">#{{ $order->id }}</span>
+                            </td>
+                            <td class="order-customer">
+                                <div class="customer-info">
+                                    <strong>{{ $order->user->name }}</strong>
+                                </div>
+                            </td>
+                            <td class="order-date">
+                                {{ $order->created_at->setTimezone('America/Sao_Paulo')->format('d/m/Y H:i') }}
+                            </td>
+                            <td class="order-items">
+                                <div class="items-list">
+                                    @foreach ($order->items as $item)
+                                        <div class="order-item">
+                                            <div class="item-image">
+                                                @if($item->variation && $item->variation->images->where('is_main', true)->first())
+                                                    <img src="{{ Storage::url($item->variation->images->where('is_main', true)->first()->path) }}" 
+                                                         alt="{{ $item->product->nome }}" 
+                                                         class="variation-image">
+                                                @elseif($item->product->images->where('is_main', true)->first())
+                                                    <img src="{{ Storage::url($item->product->images->where('is_main', true)->first()->path) }}" 
+                                                         alt="{{ $item->product->nome }}" 
+                                                         class="variation-image">
+                                                @else
+                                                    <div class="no-image-placeholder">
+                                                        <i class="fas fa-image"></i>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                            <div class="item-details">
+                                                <div class="item-name">{{ $item->product->nome }}</div>
+                                                <div class="item-meta">
+                                                    <span class="variation-name">{{ $item->variation->nome_variacao ?? 'Sem variação' }}</span>
+                                                    <span class="size">Tamanho: {{ $item->size->name ?? 'N/A' }}</span>
+                                                    <span class="quantity">Qtd: {{ $item->quantity }}</span>
+                                                </div>
+                                                <div class="item-category">
+                                                    {{ $item->product->category->name ?? 'Sem categoria' }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </td>
+                            <td class="order-address">
+                                <div class="address-info">
+                                    <div class="address-line">
+                                        {{ $order->logradouro }}, {{ $order->numero }}
+                                        @if ($order->complemento)
+                                            - {{ $order->complemento }}
+                                        @endif
+                                    </div>
+                                    <div class="address-line">Bairro: {{ $order->bairro }}</div>
+                                    <div class="address-line">CEP: {{ $order->cep }}</div>
+                                    <div class="address-line">{{ $order->nome_cidade }} - {{ $order->estado }}</div>
+                                </div>
+                            </td>
+                            <td class="order-total">
+                                <span class="total-price">R$ {{ number_format($order->total_price, 2, ',', '.') }}</span>
+                            </td>
+                            <td class="order-status">
+                                <span class="status-badge status-{{ $order->status }}">
+                                    {{ ['pending' => 'Pendente', 'cancelled' => 'Cancelado', 'delivered' => 'Entregue'][$order->status] ?? ucfirst($order->status) }}
+                                </span>
+                            </td>
+                            <td class="order-actions">
+                                @if ($order->status === 'pending')
+                                    <form action="{{ route('admin.orders.deliver', $order->id) }}" method="POST" 
+                                          onsubmit="return confirm('Deseja marcar este pedido como entregue?');">
+                                        @csrf
+                                        <button type="submit" class="action-btn deliver-btn">
+                                            <i class="fas fa-shipping-fast"></i>
+                                            <span>Entregar</span>
+                                        </button>
+                                    </form>
+                                @else
+                                    <span class="no-action">Nenhuma ação</span>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Paginação no rodapé -->
+        <div class="pagination-info">
+            <div class="pagination-results">
                 Exibindo {{ $orders->firstItem() }} a {{ $orders->lastItem() }} de {{ $orders->total() }} resultados
             </div>
-            <!-- Paginação com tema compacto personalizado -->
-            <div>
-                {{ $orders->links('pagination::simple-bootstrap-5') }}
+            <div class="pagination-links">
+                {{ $orders->appends(request()->query())->links('pagination::simple-bootstrap-5') }}
             </div>
         </div>
     @endif
-
-    <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary mt-3">Voltar</a>
 </div>
-
-<!-- CSS para ajustar o tamanho da paginação -->
-<style>
-    .pagination {
-        font-size: 0.9rem; /* Tamanho menor para os links */
-    }
-    .pagination .page-link {
-        padding: 0.25rem 0.5rem; /* Menor padding para setas e números */
-    }
-    .pagination .page-item.active .page-link {
-        background-color: #007bff; /* Cor do Bootstrap para página ativa */
-        border-color: #007bff;
-    }
-</style>
 @endsection

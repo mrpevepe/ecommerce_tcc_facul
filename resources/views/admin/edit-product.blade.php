@@ -12,7 +12,10 @@
 
         <div class="edit-form-group">
             <label for="nome" class="edit-form-label">Nome do Produto</label>
-            <input type="text" class="edit-form-control" id="nome" name="nome" value="{{ $product->nome }}" maxlength="60" required>
+            <input type="text" class="edit-form-control" id="nome" name="nome" 
+                   value="{{ $product->nome }}" 
+                   maxlength="60"
+                   oninput="this.value = this.value.slice(0, 60)" required>
             @error('nome')
                 <div class="edit-error-message">{{ $message }}</div>
             @enderror
@@ -20,7 +23,9 @@
 
         <div class="edit-form-group">
             <label for="descricao" class="edit-form-label">Descrição</label>
-            <textarea class="edit-form-control edit-descricao-textarea" id="descricao" name="descricao" maxlength="255">{{ $product->descricao }}</textarea>
+            <textarea class="edit-form-control edit-descricao-textarea" id="descricao" name="descricao" 
+                      maxlength="255"
+                      oninput="this.value = this.value.slice(0, 255)">{{ $product->descricao }}</textarea>
             @error('descricao')
                 <div class="edit-error-message">{{ $message }}</div>
             @enderror
@@ -28,7 +33,10 @@
 
         <div class="edit-form-group">
             <label for="marca" class="edit-form-label">Marca</label>
-            <input type="text" class="edit-form-control" id="marca" name="marca" value="{{ $product->marca }}" maxlength="64">
+            <input type="text" class="edit-form-control" id="marca" name="marca" 
+                   value="{{ $product->marca }}" 
+                   maxlength="64"
+                   oninput="this.value = this.value.slice(0, 64)">
             @error('marca')
                 <div class="edit-error-message">{{ $message }}</div>
             @enderror
@@ -78,11 +86,19 @@
                         <input type="hidden" name="variations[{{ $index }}][id]" value="{{ $variation->id }}">
                         <div class="edit-form-group">
                             <label class="edit-form-label">Nome da Variação</label>
-                            <input type="text" class="edit-form-control" name="variations[{{ $index }}][nome_variacao]" value="{{ $variation->nome_variacao }}" required maxlength="60">
+                            <input type="text" class="edit-form-control" 
+                                   name="variations[{{ $index }}][nome_variacao]" 
+                                   value="{{ $variation->nome_variacao }}" 
+                                   maxlength="60"
+                                   oninput="this.value = this.value.slice(0, 60)" required>
                         </div>
                         <div class="edit-form-group">
                             <label class="edit-form-label">Preço</label>
-                            <input type="number" step="0.01" class="edit-form-control" name="variations[{{ $index }}][preco]" value="{{ $variation->preco }}" required maxlength="10">
+                            <input type="number" step="0.01" class="edit-form-control" 
+                                   name="variations[{{ $index }}][preco]" 
+                                   value="{{ $variation->preco }}" 
+                                   maxlength="10"
+                                   oninput="this.value = this.value.slice(0, 10)" required>
                         </div>
                         <div class="edit-form-group">
                             <label class="edit-form-label">Estoque por Tamanho</label>
@@ -99,7 +115,11 @@
                                             <tr>
                                                 <td>{{ $size->name }}</td>
                                                 <td>
-                                                    <input type="number" class="edit-stock-input" name="variations[{{ $index }}][quantidade_estoque][{{ $index }}_{{ $size->id }}][quantity]" value="{{ $variation->sizes->where('id', $size->id)->first()->pivot->quantity ?? 0 }}" min="0" required>
+                                                    <input type="number" class="edit-stock-input" 
+                                                           name="variations[{{ $index }}][quantidade_estoque][{{ $index }}_{{ $size->id }}][quantity]" 
+                                                           value="{{ $variation->sizes->where('id', $size->id)->first()->pivot->quantity ?? 0 }}" 
+                                                           min="0" max="99999999"
+                                                           oninput="this.value = this.value.slice(0, 10)" required>
                                                     <input type="hidden" name="variations[{{ $index }}][quantidade_estoque][{{ $index }}_{{ $size->id }}][size_id]" value="{{ $size->id }}">
                                                 </td>
                                             </tr>
@@ -148,7 +168,6 @@
 </div>
 
 <script>
-    // O script JavaScript pode permanecer igual, pois não depende das classes CSS para funcionalidade.
     let variacaoIndex = {{ count($product->variations) }};
     const sizes = @json($sizes);
 
@@ -160,7 +179,10 @@
                 <tr>
                     <td>${size.name}</td>
                     <td>
-                        <input type="number" class="edit-stock-input" name="variations[${variacaoIndex}][quantidade_estoque][${variacaoIndex}_${size.id}][quantity]" min="0" required>
+                        <input type="number" class="edit-stock-input" 
+                               name="variations[${variacaoIndex}][quantidade_estoque][${variacaoIndex}_${size.id}][quantity]" 
+                               min="0" max="99999999"
+                               oninput="this.value = this.value.slice(0, 10)" required>
                         <input type="hidden" name="variations[${variacaoIndex}][quantidade_estoque][${variacaoIndex}_${size.id}][size_id]" value="${size.id}">
                     </td>
                 </tr>
@@ -174,11 +196,17 @@
                 </div>
                 <div class="edit-form-group">
                     <label class="edit-form-label">Nome da Variação</label>
-                    <input type="text" class="edit-form-control" name="variations[${variacaoIndex}][nome_variacao]" required maxlength="60">
+                    <input type="text" class="edit-form-control" 
+                           name="variations[${variacaoIndex}][nome_variacao]" 
+                           maxlength="60"
+                           oninput="this.value = this.value.slice(0, 60)" required>
                 </div>
                 <div class="edit-form-group">
                     <label class="edit-form-label">Preço</label>
-                    <input type="number" step="0.01" class="edit-form-control" name="variations[${variacaoIndex}][preco]" required maxlength="10">
+                    <input type="number" step="0.01" class="edit-form-control" 
+                           name="variations[${variacaoIndex}][preco]" 
+                           maxlength="10"
+                           oninput="this.value = this.value.slice(0, 10)" required>
                 </div>
                 <div class="edit-form-group">
                     <label class="edit-form-label">Estoque por Tamanho</label>
@@ -223,6 +251,67 @@
         }
     });
 
+    // Validação em tempo real para todos os campos
+    document.addEventListener('input', function(e) {
+        // Validação para campos de preço
+        if (e.target.name.includes('[preco]')) {
+            const maxLength = 10;
+            if (e.target.value.length > maxLength) {
+                e.target.value = e.target.value.slice(0, maxLength);
+            }
+        }
+        
+        // Validação para campos de estoque
+        if (e.target.name.includes('[quantidade_estoque]') && e.target.name.includes('[quantity]')) {
+            const maxLength = 8;
+            if (e.target.value.length > maxLength) {
+                e.target.value = e.target.value.slice(0, maxLength);
+            }
+        }
+        
+        // Validação para nome do produto
+        if (e.target.name === 'nome') {
+            const maxLength = 60;
+            if (e.target.value.length > maxLength) {
+                e.target.value = e.target.value.slice(0, maxLength);
+            }
+        }
+        
+        // Validação para descrição
+        if (e.target.name === 'descricao') {
+            const maxLength = 255;
+            if (e.target.value.length > maxLength) {
+                e.target.value = e.target.value.slice(0, maxLength);
+            }
+        }
+        
+        // Validação para marca
+        if (e.target.name === 'marca') {
+            const maxLength = 64;
+            if (e.target.value.length > maxLength) {
+                e.target.value = e.target.value.slice(0, maxLength);
+            }
+        }
+        
+        // Validação para nome da variação
+        if (e.target.name.includes('[nome_variacao]')) {
+            const maxLength = 60;
+            if (e.target.value.length > maxLength) {
+                e.target.value = e.target.value.slice(0, maxLength);
+            }
+        }
+        
+        // Update file input labels
+        if (e.target.type === 'file') {
+            const fileName = e.target.files[0] ? e.target.files[0].name : 'Nenhum arquivo selecionado';
+            const label = e.target.nextElementSibling;
+            if (label && label.classList.contains('edit-file-input-label')) {
+                label.innerHTML = `<i class="fas fa-file-image"></i> ${fileName}`;
+                label.classList.add('has-file');
+            }
+        }
+    });
+
     function previewImage(event, previewId) {
         const reader = new FileReader();
         reader.onload = function() {
@@ -234,7 +323,6 @@
         if (event.target.files[0]) {
             reader.readAsDataURL(event.target.files[0]);
             
-            // Update the file input label
             const fileName = event.target.files[0].name;
             const label = event.target.nextElementSibling;
             if (label && label.classList.contains('edit-file-input-label')) {
@@ -244,7 +332,6 @@
         }
     }
 
-    // Initialize file input labels
     document.addEventListener('DOMContentLoaded', function() {
         const fileInputs = document.querySelectorAll('input[type="file"]');
         fileInputs.forEach(input => {

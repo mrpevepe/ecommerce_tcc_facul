@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-public function index(Request $request)
+    public function index(Request $request)
     {
         $query = Product::with('category');
 
@@ -29,7 +29,9 @@ public function index(Request $request)
             $query->where('status', $request->status);
         }
 
-        $products = $query->get();
+        // Paginação com 10 produtos por página
+        $products = $query->paginate(10)->appends($request->only(['search', 'status']));
+
         return view('admin.products', compact('products'));
     }
 
@@ -53,7 +55,6 @@ public function index(Request $request)
             $query->where('category_id', $request->category_id);
         }
 
-        //>>>>>>>>>> Paginação com 16 ou 12 produtos por página, preservando parâmetros de filtro <<<<<<<<<<
         $products = $query->paginate(12)->appends($request->only(['search', 'category_id']));
 
         $categories = Category::all();
@@ -71,14 +72,14 @@ public function index(Request $request)
     {
         $request->validate([
             'nome' => 'required|string|max:60',
-            'descricao' => 'nullable|string',
-            'marca' => 'nullable|string|max:255',
+            'descricao' => 'nullable|string|max:255',
+            'marca' => 'nullable|string|max:64',
             'category_id' => 'nullable|exists:categories,id',
             'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'variations.*.nome_variacao' => 'required|string|max:255',
-            'variations.*.preco' => 'required|numeric|min:0',
+            'variations.*.nome_variacao' => 'required|string|max:60',
+            'variations.*.preco' => 'required|numeric|min:0|max:99999999.99',
             'variations.*.quantidade_estoque.*.size_id' => 'required|exists:sizes,id',
-            'variations.*.quantidade_estoque.*.quantity' => 'required|integer|min:0',
+            'variations.*.quantidade_estoque.*.quantity' => 'required|integer|min:0|max:9999999999',
             'variations.*.imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -135,20 +136,20 @@ public function index(Request $request)
         return view('admin.edit-product', compact('product', 'sizes', 'categories'));
     }
 
-public function update(Request $request, $id)
+    public function update(Request $request, $id)
     {
         $product = Product::findOrFail($id);
 
         $request->validate([
             'nome' => 'required|string|max:60',
-            'descricao' => 'nullable|string',
-            'marca' => 'nullable|string|max:255',
+            'descricao' => 'nullable|string|max:255',
+            'marca' => 'nullable|string|max:64',
             'category_id' => 'nullable|exists:categories,id',
             'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'variations.*.nome_variacao' => 'required|string|max:255',
-            'variations.*.preco' => 'required|numeric|min:0',
+            'variations.*.nome_variacao' => 'required|string|max:60',
+            'variations.*.preco' => 'required|numeric|min:0|max:99999999.99',
             'variations.*.quantidade_estoque.*.size_id' => 'required|exists:sizes,id',
-            'variations.*.quantidade_estoque.*.quantity' => 'required|integer|min:0',
+            'variations.*.quantidade_estoque.*.quantity' => 'required|integer|min:0|max:9999999999',
             'variations.*.imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -206,12 +207,11 @@ public function update(Request $request, $id)
                         }
                     }
                 } else {
-                    // Cria uma nova variação se ID não estiver presente
                     $variation = ProductVariation::create([
                         'product_id' => $product->id,
                         'nome_variacao' => $variationData['nome_variacao'],
                         'preco' => $variationData['preco'],
-                        'status' => 'ativo', // Defina o status padrão para novas variações
+                        'status' => 'ativo',
                     ]);
 
                     if (isset($variationData['quantidade_estoque']) && is_array($variationData['quantidade_estoque'])) {
@@ -235,20 +235,22 @@ public function update(Request $request, $id)
         return redirect()->route('admin.products.index')->with('success', 'Produto atualizado com sucesso!');
     }
 
+
     public function showVariations($id)
     {
-        $product = Product::with('variations.images', 'variations.sizes', 'category')->findOrFail($id);
+        $product = Product::with('category')->findOrFail($id);
+        $variations = $product->variations()->with('images', 'sizes')->paginate(5); // 5 variações por página
         $sizes = Size::all();
-        return view('admin.variations', compact('product', 'sizes'));
+        return view('admin.variations', compact('product', 'variations', 'sizes'));
     }
 
     public function storeVariation(Request $request, $id)
     {
         $request->validate([
-            'nome_variacao' => 'required|string|max:255',
-            'preco' => 'required|numeric|min:0',
+            'nome_variacao' => 'required|string|max:60',
+            'preco' => 'required|numeric|min:0|max:99999999.99',
             'quantidade_estoque.*.size_id' => 'required|exists:sizes,id',
-            'quantidade_estoque.*.quantity' => 'required|integer|min:0',
+            'quantidade_estoque.*.quantity' => 'required|integer|min:0|max:9999999999',
             'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -290,7 +292,7 @@ public function update(Request $request, $id)
     {
         $request->validate([
             'quantidade_estoque.*.size_id' => 'required|exists:sizes,id',
-            'quantidade_estoque.*.quantity' => 'required|integer|min:0',
+            'quantidade_estoque.*.quantity' => 'required|integer|min:0|max:9999999999',
         ]);
 
         $variation = ProductVariation::findOrFail($variationId);
@@ -405,7 +407,7 @@ public function update(Request $request, $id)
     {
         $query = Category::query();
 
-        if ($request->has('search')) {
+        if ($request->has('search') && !empty($request->search)) {
             $search = $request->query('search');
             $query->where('name', 'like', "%{$search}%");
         }
@@ -428,7 +430,10 @@ public function update(Request $request, $id)
             'name' => $request->name,
         ]);
 
-        return redirect()->route('admin.categories.create')->with('success', 'Categoria criada com sucesso!');
+        return redirect()->route('admin.categories.create', [
+            'search' => $request->search,
+            'status' => $request->status
+        ])->with('success', 'Categoria criada com sucesso!');
     }
 
     public function editCategory($id)
@@ -450,7 +455,10 @@ public function update(Request $request, $id)
             'name' => $request->name,
         ]);
 
-        return redirect()->route('admin.categories.create')->with('success', 'Categoria atualizada com sucesso!');
+        return redirect()->route('admin.categories.create', [
+            'search' => $request->search,
+            'status' => $request->status
+        ])->with('success', 'Categoria atualizada com sucesso!');
     }
 
     public function destroyCategory($id)
@@ -482,7 +490,10 @@ public function update(Request $request, $id)
         $category = Category::findOrFail($categoryId);
         $newStatus = $category->status === 'ativo' ? 'inativo' : 'ativo';
         $category->update(['status' => $newStatus]);
-        return redirect()->back()->with('success', 'Status da categoria atualizado com sucesso!');
-    }
 
+        return redirect()->route('admin.categories.create', [
+            'search' => request()->search,
+            'status' => request()->status
+        ])->with('success', 'Status da categoria atualizado com sucesso!');
+    }
 }
