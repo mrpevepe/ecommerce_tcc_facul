@@ -18,8 +18,22 @@ class CommentsController extends Controller
      */
     public function index($productId)
     {
-        $product = Product::with('comments.user')->findOrFail($productId);
-        return view('admin.comments', compact('product'));
+        $product = Product::findOrFail($productId);
+        $comments = $product->comments()
+            ->with('user')
+            ->when(request('search'), function($query) {
+                $search = request('search');
+                $query->where('id', 'LIKE', "%{$search}%")
+                    ->orWhere('titulo', 'LIKE', "%{$search}%")
+                    ->orWhere('descricao', 'LIKE', "%{$search}%")
+                    ->orWhereHas('user', function($q) use ($search) {
+                        $q->where('name', 'LIKE', "%{$search}%");
+                    })
+                    ->orWhereDate('created_at', 'LIKE', "%{$search}%");
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(5);
+        return view('admin.comments', compact('product', 'comments'));
     }
 
     /**

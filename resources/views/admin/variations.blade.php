@@ -50,7 +50,7 @@
                 </thead>
                 <tbody>
                     @foreach ($variations as $variation)
-                        <tr>
+                        <tr data-variation-id="{{ $variation->id }}" data-save-url="{{ route('admin.products.saveStock', $variation->id) }}">
                             <td>
                                 @if ($variation->images->where('is_main', true)->first())
                                     <img src="{{ Storage::url($variation->images->where('is_main', true)->first()->path) }}" 
@@ -71,18 +71,37 @@
                                                 <th>Quantidade</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody class="stock-display">
                                             @foreach ($variation->sizes as $size)
                                                 <tr>
                                                     <td>{{ $size->name }}</td>
-                                                    <td>{{ $size->pivot->quantity }}</td>
+                                                    <td class="stock-quantity" data-size-id="{{ $size->id }}">
+                                                        {{ $size->pivot->quantity }}
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                        <tbody class="stock-edit" style="display: none;">
+                                            @foreach ($variation->sizes as $size)
+                                                <tr>
+                                                    <td>{{ $size->name }}</td>
+                                                    <td>
+                                                        <input type="number" 
+                                                               class="stock-edit-input" 
+                                                               data-size-id="{{ $size->id }}"
+                                                               value="{{ $size->pivot->quantity }}" 
+                                                               min="0" 
+                                                               max="99999999"
+                                                               maxlength="8"
+                                                               oninput="this.value = this.value.slice(0, 8)">
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
                                         <tfoot>
                                             <tr>
                                                 <td><strong>Total</strong></td>
-                                                <td><strong>{{ $variation->sizes->sum('pivot.quantity') }}</strong></td>
+                                                <td><strong class="stock-total">{{ $variation->sizes->sum('pivot.quantity') }}</strong></td>
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -95,9 +114,17 @@
                             </td>
                             <td>
                                 <div class="variation-actions">
-                                    <a href="{{ route('admin.products.editStock', $variation->id) }}" class="variation-action-btn btn-edit-stock">
+                                    <button type="button" class="variation-action-btn btn-edit-stock" onclick="toggleStockEdit({{ $variation->id }})">
                                         <i class="fas fa-edit"></i> Editar Estoque
-                                    </a>
+                                    </button>
+                                    <div class="stock-edit-actions" style="display: none;">
+                                        <button type="button" class="variation-action-btn btn-save-stock" onclick="saveStock({{ $variation->id }})">
+                                            <i class="fas fa-save"></i> Salvar
+                                        </button>
+                                        <button type="button" class="variation-action-btn btn-cancel-stock" onclick="cancelStockEdit({{ $variation->id }})">
+                                            <i class="fas fa-times"></i> Cancelar
+                                        </button>
+                                    </div>
                                     <form action="{{ route('admin.variations.updateStatus', $variation->id) }}" method="POST">
                                         @csrf
                                         @method('PATCH')
@@ -216,6 +243,160 @@
 </div>
 
 <script>
+    // Função para alternar entre modo de visualização e edição do estoque
+    function toggleStockEdit(variationId) {
+        const row = document.querySelector(`tr[data-variation-id="${variationId}"]`);
+        const displayBody = row.querySelector('.stock-display');
+        const editBody = row.querySelector('.stock-edit');
+        const editBtn = row.querySelector('.btn-edit-stock');
+        const editActions = row.querySelector('.stock-edit-actions');
+
+        if (displayBody.style.display === 'none') {
+            // Sair do modo de edição
+            displayBody.style.display = 'table-row-group';
+            editBody.style.display = 'none';
+            editBtn.style.display = 'flex';
+            editActions.style.display = 'none';
+        } else {
+            // Entrar no modo de edição
+            displayBody.style.display = 'none';
+            editBody.style.display = 'table-row-group';
+            editBtn.style.display = 'none';
+            editActions.style.display = 'flex';
+        }
+    }
+
+    // Função para cancelar a edição do estoque
+    function cancelStockEdit(variationId) {
+        const row = document.querySelector(`tr[data-variation-id="${variationId}"]`);
+        const displayBody = row.querySelector('.stock-display');
+        const editBody = row.querySelector('.stock-edit');
+        const editBtn = row.querySelector('.btn-edit-stock');
+        const editActions = row.querySelector('.stock-edit-actions');
+
+        // Restaurar valores originais
+        const inputs = editBody.querySelectorAll('.stock-edit-input');
+        inputs.forEach(input => {
+            const sizeId = input.getAttribute('data-size-id');
+            const originalValue = row.querySelector(`.stock-quantity[data-size-id="${sizeId}"]`).textContent;
+            input.value = originalValue;
+        });
+
+        // Voltar para modo de visualização
+        displayBody.style.display = 'table-row-group';
+        editBody.style.display = 'none';
+        editBtn.style.display = 'flex';
+        editActions.style.display = 'none';
+    }
+
+    // Função para salvar o estoque
+    function saveStock(variationId) {
+        const row = document.querySelector(`tr[data-variation-id="${variationId}"]`);
+        const saveUrl = row.getAttribute('data-save-url');
+        const inputs = row.querySelectorAll('.stock-edit-input');
+        const stockData = [];
+
+        // Coletar dados do formulário
+        inputs.forEach(input => {
+            const sizeId = input.getAttribute('data-size-id');
+            stockData.push({
+                size_id: sizeId,
+                quantity: input.value
+            });
+        });
+
+        // Enviar requisição AJAX
+        fetch(saveUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                quantidade_estoque: stockData
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro na requisição');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                // Atualizar display com novos valores
+                inputs.forEach(input => {
+                    const sizeId = input.getAttribute('data-size-id');
+                    const displayCell = row.querySelector(`.stock-quantity[data-size-id="${sizeId}"]`);
+                    displayCell.textContent = input.value;
+                });
+
+                // Atualizar total
+                const total = stockData.reduce((sum, item) => sum + parseInt(item.quantity), 0);
+                row.querySelector('.stock-total').textContent = total;
+
+                // Sair do modo de edição
+                toggleStockEdit(variationId);
+
+                // Mostrar mensagem de sucesso
+                showFlashMessage('Estoque atualizado com sucesso!', 'success');
+            } else {
+                showFlashMessage('Erro ao atualizar estoque!', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showFlashMessage('Erro ao atualizar estoque!', 'error');
+        });
+    }
+
+    // Função para mostrar mensagens flash
+    function showFlashMessage(message, type) {
+        // Criar elemento de mensagem
+        const flashMessage = document.createElement('div');
+        flashMessage.className = `flash-message ${type}`;
+        flashMessage.innerHTML = `
+            <div class="flash-message-content">${message}</div>
+            <button class="flash-message-close" onclick="this.parentElement.remove()">&times;</button>
+        `;
+
+        // Adicionar ao container de mensagens
+        const flashContainer = document.querySelector('.flash-messages') || createFlashContainer();
+        flashContainer.appendChild(flashMessage);
+
+        // Remover automaticamente após 5 segundos
+        setTimeout(() => {
+            if (flashMessage.parentElement) {
+                flashMessage.remove();
+            }
+        }, 5000);
+    }
+
+    // Criar container para mensagens flash se não existir
+    function createFlashContainer() {
+        const container = document.createElement('div');
+        container.className = 'flash-messages';
+        document.body.appendChild(container);
+        return container;
+    }
+
+    // Validação em tempo real para inputs de estoque
+    document.addEventListener('input', function(e) {
+        if (e.target.classList.contains('stock-edit-input')) {
+            const maxLength = 8;
+            if (e.target.value.length > maxLength) {
+                e.target.value = e.target.value.slice(0, maxLength);
+            }
+            
+            // Garantir que não seja negativo
+            if (e.target.value < 0) {
+                e.target.value = 0;
+            }
+        }
+    });
+
+    // Código existente para adicionar variação
     document.getElementById('addVariationBtn').addEventListener('click', function() {
         document.getElementById('addVariationForm').style.display = 'block';
         this.style.display = 'none';
@@ -227,7 +408,6 @@
         document.getElementById('imagePreview').style.display = 'none';
         document.getElementById('imagePreview').src = '#';
         
-        // Reset file input label
         const fileLabel = document.getElementById('imagem-label');
         fileLabel.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Clique para selecionar uma imagem';
         fileLabel.classList.remove('has-file');
@@ -243,7 +423,6 @@
         if (event.target.files[0]) {
             reader.readAsDataURL(event.target.files[0]);
             
-            // Update file input label
             const fileName = event.target.files[0].name;
             const label = event.target.nextElementSibling;
             if (label && label.classList.contains('file-input-label')) {
@@ -265,7 +444,7 @@
         
         // Validação para campos de estoque
         if (e.target.name.includes('[quantidade_estoque]') && e.target.name.includes('[quantity]')) {
-            const maxLength = 7;
+            const maxLength = 8;
             if (e.target.value.length > maxLength) {
                 e.target.value = e.target.value.slice(0, maxLength);
             }
@@ -292,6 +471,59 @@
 </script>
 
 <style>
+    /* Estilos para edição inline de estoque */
+    .stock-edit-input {
+        background: rgba(31, 41, 55, 0.8);
+        border: 1px solid rgba(0, 212, 170, 0.3);
+        border-radius: 4px;
+        padding: 0.3rem 0.5rem;
+        color: var(--dark-text);
+        width: 80px;
+        text-align: center;
+        font-weight: 600;
+        transition: var(--transition);
+    }
+
+    .stock-edit-input:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 2px rgba(0, 212, 170, 0.2);
+        background: rgba(15, 23, 42, 1);
+    }
+
+    .stock-edit-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Botões específicos para edição de estoque */
+    .btn-save-stock {
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+        box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4);
+    }
+
+    .btn-save-stock:hover {
+        background: linear-gradient(135deg, #34d399, #10b981);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.6);
+    }
+
+    .btn-cancel-stock {
+        background: rgba(31, 41, 55, 0.8);
+        color: var(--accent);
+        border: 1px solid rgba(0, 212, 170, 0.3);
+    }
+
+    .btn-cancel-stock:hover {
+        background: rgba(0, 212, 170, 0.1);
+        border-color: var(--accent);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3);
+    }
+
     .error-message {
         color: #ef4444;
         font-size: 0.8rem;
@@ -394,6 +626,81 @@
 
     .pagination-bottom {
         margin-top: 0.5rem;
+    }
+
+    /* Flash messages styling */
+    .flash-messages {
+        position: fixed;
+        top: 90px;
+        right: 20px;
+        z-index: 9999;
+        max-width: 400px;
+    }
+
+    .flash-message {
+        background: rgba(31, 41, 55, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 8px;
+        padding: 1rem 1.5rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        border-left: 4px solid;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        animation: slideIn 0.3s ease-out;
+    }
+
+    .flash-message.success {
+        border-color: var(--accent);
+    }
+
+    .flash-message.error {
+        border-color: #ef4444;
+    }
+
+    .flash-message-content {
+        color: #e5e7eb;
+        font-size: 0.95rem;
+    }
+
+    .flash-message-close {
+        background: transparent;
+        border: none;
+        color: #9ca3af;
+        cursor: pointer;
+        font-size: 1.2rem;
+        padding: 0;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition);
+    }
+
+    .flash-message-close:hover {
+        color: #fff;
+    }
+
+    @keyframes slideIn {
+        from {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .flash-messages {
+            right: 10px;
+            left: 10px;
+            max-width: none;
+        }
     }
 </style>
 @endsection

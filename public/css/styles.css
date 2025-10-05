@@ -7,6 +7,13 @@
 @import "edit_product.css";
 @import "variations.css";
 @import "orders.css";
+@import "edit_stock.css";
+@import "comments.css";
+@import "user.css";
+@import "reviews.css";
+@import "order-details.css";
+@import "address.css";
+@import "auth.css";
 
 /* Variáveis Globais */
 :root {

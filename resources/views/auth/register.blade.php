@@ -2,44 +2,50 @@
 
 @section('title', 'Registrar')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
+@endpush
+
 @section('content')
+<div class="auth-container">
+    <h1 class="auth-title">Registrar Novo Usuário</h1>
+    
+    <div class="auth-card">
+        <form method="POST" action="{{ route('register') }}" class="auth-form" onsubmit="return validarFormulario()">
+            @csrf
 
-<div class="container mt-5">
-    <h1>Registrar Novo Usuário</h1>
-    <form method="POST" action="{{ route('register') }}" onsubmit="return validarFormulario()">
-        @csrf
+            <div class="form-group">
+                <label for="name">Nome</label>
+                <input type="text" class="form-control" id="name" name="name" maxlength="60" required>
+                <div class="invalid-feedback" id="name-error"></div>
+            </div>
 
-        <div class="mb-3">
-            <label for="name" class="form-label">Nome</label>
-            <input type="text" class="form-control" id="name" name="name" maxlength="60" required>
-            <div class="invalid-feedback" id="name-error"></div>
-        </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" maxlength="80" required>
+                <div class="invalid-feedback" id="email-error"></div>
+            </div>
 
-        <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email" maxlength="80" required>
-            <div class="invalid-feedback" id="email-error"></div>
-        </div>
+            <div class="form-group">
+                <label for="telefone">Telefone</label>
+                <input type="text" class="form-control" id="telefone" name="telefone" maxlength="20" required>
+                <div class="invalid-feedback" id="telefone-error"></div>
+            </div>
 
-        <div class="mb-3">
-            <label for="telefone" class="form-label">Telefone</label>
-            <input type="text" class="form-control" id="telefone" name="telefone" maxlength="20" required>
-            <div class="invalid-feedback" id="telefone-error"></div>
-        </div>
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" class="form-control" id="password" name="password" maxlength="60" required>
+                <div class="invalid-feedback" id="password-error"></div>
+            </div>
 
-        <div class="mb-3">
-            <label for="password" class="form-label">Senha</label>
-            <input type="password" class="form-control" id="password" name="password" maxlength="60" required>
-            <div class="invalid-feedback" id="password-error"></div>
-        </div>
+            <div class="form-group">
+                <label for="password_confirmation">Confirmar Senha</label>
+                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" maxlength="60" required>
+            </div>
 
-        <div class="mb-3">
-            <label for="password_confirmation" class="form-label">Confirmar Senha</label>
-            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" maxlength="60" required>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Registrar</button>
-    </form>
+            <button type="submit" class="btn btn-primary">Registrar</button>
+        </form>
+    </div>
 </div>
 
 <script>
@@ -69,11 +75,4 @@ function validarFormulario() {
     return isValid;
 }
 </script>
-
-<style>
-.invalid-feedback {
-    display: block;
-}
-</style>
-
 @endsection

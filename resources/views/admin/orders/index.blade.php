@@ -78,8 +78,7 @@
                         <th>Itens</th>
                         <th>Endereço</th>
                         <th>Total</th>
-                        <th>Status</th>
-                        <th>Ações</th>
+                        <th>Status & Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -132,12 +131,11 @@
                             </td>
                             <td class="order-address">
                                 <div class="address-info">
-                                    <div class="address-line">
-                                        {{ $order->logradouro }}, {{ $order->numero }}
-                                        @if ($order->complemento)
-                                            - {{ $order->complemento }}
-                                        @endif
-                                    </div>
+                                    <div class="address-line">{{ $order->logradouro }}</div>
+                                    <div class="address-line">Nº {{ $order->numero }}</div>
+                                    @if ($order->complemento)
+                                        <div class="address-line">Complemento: {{ $order->complemento }}</div>
+                                    @endif
                                     <div class="address-line">Bairro: {{ $order->bairro }}</div>
                                     <div class="address-line">CEP: {{ $order->cep }}</div>
                                     <div class="address-line">{{ $order->nome_cidade }} - {{ $order->estado }}</div>
@@ -150,8 +148,6 @@
                                 <span class="status-badge status-{{ $order->status }}">
                                     {{ ['pending' => 'Pendente', 'cancelled' => 'Cancelado', 'delivered' => 'Entregue'][$order->status] ?? ucfirst($order->status) }}
                                 </span>
-                            </td>
-                            <td class="order-actions">
                                 @if ($order->status === 'pending')
                                     <form action="{{ route('admin.orders.deliver', $order->id) }}" method="POST" 
                                           onsubmit="return confirm('Deseja marcar este pedido como entregue?');">

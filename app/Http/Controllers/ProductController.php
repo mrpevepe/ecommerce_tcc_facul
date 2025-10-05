@@ -29,8 +29,8 @@ class ProductController extends Controller
             $query->where('status', $request->status);
         }
 
-        // Paginação com 10 produtos por página
-        $products = $query->paginate(10)->appends($request->only(['search', 'status']));
+        // Paginação com 5 produtos por página
+        $products = $query->paginate(5)->appends($request->only(['search', 'status']));
 
         return view('admin.products', compact('products'));
     }
@@ -290,17 +290,29 @@ class ProductController extends Controller
 
     public function saveStock(Request $request, $variationId)
     {
+        // Se for uma requisição JSON, usar os dados do JSON
+        if ($request->wantsJson() || $request->isJson()) {
+            $stockData = $request->json('quantidade_estoque');
+        } else {
+            $stockData = $request->quantidade_estoque;
+        }
+
         $request->validate([
             'quantidade_estoque.*.size_id' => 'required|exists:sizes,id',
-            'quantidade_estoque.*.quantity' => 'required|integer|min:0|max:9999999999',
+            'quantidade_estoque.*.quantity' => 'required|integer|min:0|max:99999999',
         ]);
 
         $variation = ProductVariation::findOrFail($variationId);
         $variation->sizes()->sync(
-            collect($request->quantidade_estoque)->mapWithKeys(function ($stock) {
+            collect($stockData)->mapWithKeys(function ($stock) {
                 return [$stock['size_id'] => ['quantity' => $stock['quantity']]];
             })->toArray()
         );
+
+        // Retornar JSON para requisições AJAX
+        if ($request->wantsJson() || $request->isJson()) {
+            return response()->json(['success' => true, 'message' => 'Estoque atualizado com sucesso!']);
+        }
 
         return redirect()->route('admin.products.variations', $variation->product_id)->with('success', 'Estoque atualizado com sucesso!');
     }

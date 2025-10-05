@@ -49,6 +49,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/orders', [OrdersController::class, 'store'])->name('orders.store');
     Route::get('/user/orders/{id}', [OrdersController::class, 'show'])->name('user.orders.show');
     Route::post('/user/orders/{id}/cancel', [OrdersController::class, 'cancel'])->name('user.orders.cancel');
+
+    Route::get('/user/reviews', [UserController::class, 'reviews'])->name('user.reviews');
+    Route::get('/user/orders', [UserController::class, 'orders'])->name('user.orders.index');
 });
 
 // Rotas Admin

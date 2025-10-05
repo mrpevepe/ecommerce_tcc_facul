@@ -15,10 +15,23 @@ class UserController extends Controller
      *
      * @return \Illuminate\View\View
      */
+
     public function index()
     {
-        $user = Auth::user();
-        $orders = Order::where('user_id', $user->id)->latest()->get();
+        $user = auth()->user();
+        $search = request('search');
+        
+        $orders = $user->orders()
+            ->when($search, function($query) use ($search) {
+                $query->where(function($q) use ($search) {
+                    $q->where('id', 'LIKE', "%{$search}%")
+                    ->orWhereHas('items.product', function($q) use ($search) {
+                        $q->where('nome', 'LIKE', "%{$search}%");
+                    });
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(5); // 5 pedidos por página
 
         return view('user.index', compact('user', 'orders'));
     }
@@ -79,4 +92,40 @@ public function saveAddress(Request $request)
             return redirect()->back()->with('error', 'Erro ao salvar endereço: ' . $e->getMessage())->withInput();
         }
     }
+
+    public function orders()
+    {
+        return $this->index();
+    }
+
+    public static function translateStatus($status)
+    {
+        $statusMap = [
+            'pending' => 'Pendente',
+            'processing' => 'Processando',
+            'shipped' => 'Enviado',
+            'delivered' => 'Entregue',
+            'cancelled' => 'Cancelado'
+        ];
+        return $statusMap[$status] ?? $status;
+    }
+
+    public function reviews()
+    {
+        $search = request('search');
+        $user = Auth::user();
+        
+        $reviews = $user->comments()
+            ->with('product.images', 'product.category')
+            ->when($search, function($query) use ($search) {
+                $query->whereHas('product', function($q) use ($search) {
+                    $q->where('nome', 'like', "%{$search}%");
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(5);
+
+        return view('user.reviews', compact('reviews'));
+    }
+    
 }

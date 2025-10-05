@@ -5,11 +5,16 @@ Ainda falta fazer:
 >fazer o footer tambem! com algumas paginas falando sobre ecommerce placeholders tipo terms of service<
 
 >ONDE FALTA CSS<
+
+VER COMO FICA NOME DE CLIENTE MUITO GRANDE NA TABELA  > FEITO
 ------------------------------------------------------------------------------------------
-- estoque css
-- perfil user css em tudo
-- paginação nas categorias e CSS 
-- pagina de avaliações do admin
+- paginação nas categorias e CSS > fazendo.....................
+- estoque css > FEITO
+- perfil user css em tudo, e adicionar minhas avaliações no perfil > FEITO
+- pagina de avaliações do admin > FEITO
+- pagina de editar endereço > FEITO
+- css login e register auth > FEITO
+- VALIDAÇÃO AVALIAÇÃO SHOW E PAGINAÇÃO DE AVALIAÇ~EOS > FEITO
 -------------------------------------------------------------------------------------------
  > PERFIL DO USUARIO <
  ----------------------------------------------------------------------------------------
