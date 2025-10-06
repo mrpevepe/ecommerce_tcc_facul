@@ -9,7 +9,7 @@
             <i class="fas fa-arrow-left"></i> Voltar para Produtos
         </a>
         
-        <h1 class="variations-title">Variações do Produto: {{ $product->nome }}</h1>
+        <h1 class="variations-title break-word">Variações do Produto: {{ $product->nome }}</h1>
         
         <button type="button" class="add-variation-main-btn" id="addVariationBtn">
             <i class="fas fa-plus"></i> Adicionar Variação
@@ -59,8 +59,8 @@
                                     <span class="no-variation-image">Sem Imagem</span>
                                 @endif
                             </td>
-                            <td>{{ $variation->nome_variacao }}</td>
-                            <td>{{ $product->category->name ?? 'Sem categoria' }}</td>
+                            <td class="break-word">{{ $variation->nome_variacao }}</td>
+                            <td class="break-word">{{ $product->category->name ?? 'Sem categoria' }}</td>
                             <td>R$ {{ number_format($variation->preco, 2, ',', '.') }}</td>
                             <td>
                                 <div class="stock-table-inner">
@@ -166,6 +166,7 @@
                        value="{{ old('nome_variacao') }}" 
                        maxlength="60"
                        oninput="this.value = this.value.slice(0, 60)" required>
+                <small class="text-muted"><span id="nome_variacao_count">0</span>/60 caracteres</small>
                 @error('nome_variacao')
                     <div class="error-message">{{ $message }}</div>
                 @enderror
@@ -411,6 +412,12 @@
         const fileLabel = document.getElementById('imagem-label');
         fileLabel.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Clique para selecionar uma imagem';
         fileLabel.classList.remove('has-file');
+
+        // Resetar o contador do campo nome_variacao
+        const nomeVariacaoCount = document.getElementById('nome_variacao_count');
+        if (nomeVariacaoCount) {
+            nomeVariacaoCount.textContent = '0';
+        }
     });
 
     function previewImage(event) {
@@ -467,6 +474,30 @@
                 label.classList.add('has-file');
             }
         }
+    });
+
+    // Configurar contador de caracteres para o campo nome_variacao
+    document.addEventListener('DOMContentLoaded', function() {
+        const nomeVariacaoInput = document.getElementById('nome_variacao');
+        const nomeVariacaoCount = document.getElementById('nome_variacao_count');
+        
+        if (nomeVariacaoInput && nomeVariacaoCount) {
+            nomeVariacaoInput.addEventListener('input', function() {
+                nomeVariacaoCount.textContent = this.value.length;
+            });
+        }
+
+        // File inputs
+        const fileInputs = document.querySelectorAll('input[type="file"]');
+        fileInputs.forEach(input => {
+            const label = input.nextElementSibling;
+            if (label && label.classList.contains('file-input-label')) {
+                if (input.files.length > 0) {
+                    label.innerHTML = `<i class="fas fa-file-image"></i> ${input.files[0].name}`;
+                    label.classList.add('has-file');
+                }
+            }
+        });
     });
 </script>
 
@@ -621,11 +652,11 @@
 
     /* Remove espaçamento excessivo */
     .pagination-top {
-        margin-bottom: 0.5rem;
+        margin-bottom: 0rem;
     }
 
     .pagination-bottom {
-        margin-top: 0.5rem;
+        margin-top: 0rem;
     }
 
     /* Flash messages styling */
@@ -701,6 +732,23 @@
             left: 10px;
             max-width: none;
         }
+    }
+
+    /* Adicionar quebra de palavras para textos longos */
+    .variations-table tbody td.break-word {
+        word-wrap: break-word;
+        word-break: break-word;
+        overflow-wrap: break-word;
+        max-width: 200px;
+        white-space: normal;
+    }
+
+    .variations-title.break-word {
+        word-wrap: break-word;
+        word-break: break-word;
+        overflow-wrap: break-word;
+        white-space: normal;
+        line-height: 1.3;
     }
 </style>
 @endsection

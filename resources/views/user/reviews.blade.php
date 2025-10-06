@@ -5,6 +5,9 @@
 @endpush
 @section('content')
 <div class="reviews-container">
+    <a href="{{ route('user.index') }}" class="back-btn">
+        <i class="fas fa-arrow-left"></i> Voltar
+    </a>
     <h1 class="reviews-title">Minhas Avaliações</h1>
     
     <div class="reviews-card">

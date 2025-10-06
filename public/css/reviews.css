@@ -444,3 +444,52 @@
 .review-edit-form {
     animation: fadeIn 0.3s ease-out;
 }
+
+/* ==================== BOTÃO VOLTAR ==================== */
+.back-btn {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(0, 212, 170, 0.2);
+    border-radius: 8px;
+    padding: 0.7rem 1.5rem;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.8rem;
+    box-shadow: 0 2px 6px rgba(0, 212, 170, 0.2);
+}
+
+.back-btn:hover {
+    background: rgba(0, 212, 170, 0.1);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3);
+    color: var(--accent);
+}
+
+/* Ajuste no título para acomodar o botão */
+.reviews-container {
+    position: relative;
+}
+
+.reviews-title {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+/* Responsive para o botão voltar */
+@media (max-width: 768px) {
+    .back-btn {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 0rem;
+    }
+
+    .reviews-title {
+        text-align: center;
+        width: 100%;
+    }
+}

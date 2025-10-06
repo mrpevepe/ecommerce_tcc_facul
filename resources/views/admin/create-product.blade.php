@@ -13,6 +13,7 @@
             <input type="text" class="form-control" id="nome" name="nome" 
                    maxlength="60" 
                    oninput="this.value = this.value.slice(0, 60)" required>
+            <small class="text-muted"><span id="nome-count">0</span>/60 caracteres</small>
             @error('nome')
                 <div class="error-message">{{ $message }}</div>
             @enderror
@@ -23,6 +24,7 @@
             <textarea class="form-control descricao-textarea" id="descricao" name="descricao" 
                       maxlength="255"
                       oninput="this.value = this.value.slice(0, 255)"></textarea>
+            <small class="text-muted"><span id="descricao-count">0</span>/255 caracteres</small>
             @error('descricao')
                 <div class="error-message">{{ $message }}</div>
             @enderror
@@ -33,6 +35,7 @@
             <input type="text" class="form-control" id="marca" name="marca" 
                    maxlength="64"
                    oninput="this.value = this.value.slice(0, 64)">
+            <small class="text-muted"><span id="marca-count">0</span>/64 caracteres</small>
             @error('marca')
                 <div class="error-message">{{ $message }}</div>
             @enderror
@@ -124,6 +127,7 @@
                            name="variations[${variacaoIndex}][nome_variacao]" 
                            maxlength="60"
                            oninput="this.value = this.value.slice(0, 60)" required>
+                    <small class="text-muted"><span id="nome_variacao-count-${variacaoIndex}">0</span>/60 caracteres</small>
                 </div>
                 <div class="form-group">
                     <label for="variations[${variacaoIndex}][preco]" class="form-label">Preço</label>
@@ -166,6 +170,16 @@
             </div>
         `;
         container.insertAdjacentHTML('beforeend', variacaoHtml);
+        
+        // Configurar contador de caracteres para o novo campo de nome_variacao
+        const nomeVariacaoInput = document.querySelector(`input[name="variations[${variacaoIndex}][nome_variacao]"]`);
+        const nomeVariacaoCount = document.getElementById(`nome_variacao-count-${variacaoIndex}`);
+        if (nomeVariacaoInput && nomeVariacaoCount) {
+            nomeVariacaoInput.addEventListener('input', function() {
+                nomeVariacaoCount.textContent = this.value.length;
+            });
+        }
+        
         variacaoIndex++;
     });
 
@@ -257,7 +271,35 @@
         }
     }
 
+    // Configurar contadores de caracteres iniciais
     document.addEventListener('DOMContentLoaded', function() {
+        // Campos principais
+        const nomeInput = document.getElementById('nome');
+        const descricaoInput = document.getElementById('descricao');
+        const marcaInput = document.getElementById('marca');
+        const nomeCount = document.getElementById('nome-count');
+        const descricaoCount = document.getElementById('descricao-count');
+        const marcaCount = document.getElementById('marca-count');
+
+        if (nomeInput && nomeCount) {
+            nomeInput.addEventListener('input', function() {
+                nomeCount.textContent = this.value.length;
+            });
+        }
+
+        if (descricaoInput && descricaoCount) {
+            descricaoInput.addEventListener('input', function() {
+                descricaoCount.textContent = this.value.length;
+            });
+        }
+
+        if (marcaInput && marcaCount) {
+            marcaInput.addEventListener('input', function() {
+                marcaCount.textContent = this.value.length;
+            });
+        }
+
+        // File inputs
         const fileInputs = document.querySelectorAll('input[type="file"]');
         fileInputs.forEach(input => {
             const label = input.nextElementSibling;

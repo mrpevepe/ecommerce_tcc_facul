@@ -104,9 +104,9 @@
                                         <p class="no-order-item-image">Sem Imagem</p>
                                     @endif
                                 </td>
-                                <td>{{ $item->product->nome }}</td>
-                                <td>{{ $item->product->category->name ?? 'Sem categoria' }}</td>
-                                <td>{{ $item->variation->nome_variacao ?? 'Sem variação' }}</td>
+                                <td class="break-word">{{ $item->product->nome }}</td>
+                                <td class="break-word">{{ $item->product->category->name ?? 'Sem categoria' }}</td>
+                                <td class="break-word">{{ $item->variation->nome_variacao ?? 'Sem variação' }}</td>
                                 <td>{{ $item->size->name ?? 'N/A' }}</td>
                                 <td>{{ $item->quantity }}</td>
                                 <td>R$ {{ number_format($item->price_at_purchase, 2, ',', '.') }}</td>

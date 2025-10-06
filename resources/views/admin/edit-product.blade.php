@@ -5,7 +5,7 @@
 @section('content')
 
 <div class="edit-product-container">
-    <h1 class="edit-product-title">Editar Produto: {{ $product->nome }}</h1>
+    <h1 class="edit-product-title">Editar Produto</h1>
     <form method="POST" action="{{ route('admin.products.update', $product->id) }}" enctype="multipart/form-data" class="edit-product-form">
         @csrf
         @method('PUT')
@@ -16,6 +16,7 @@
                    value="{{ $product->nome }}" 
                    maxlength="60"
                    oninput="this.value = this.value.slice(0, 60)" required>
+            <small class="text-muted"><span id="nome-count">{{ strlen($product->nome) }}</span>/60 caracteres</small>
             @error('nome')
                 <div class="edit-error-message">{{ $message }}</div>
             @enderror
@@ -26,6 +27,7 @@
             <textarea class="edit-form-control edit-descricao-textarea" id="descricao" name="descricao" 
                       maxlength="255"
                       oninput="this.value = this.value.slice(0, 255)">{{ $product->descricao }}</textarea>
+            <small class="text-muted"><span id="descricao-count">{{ strlen($product->descricao) }}</span>/255 caracteres</small>
             @error('descricao')
                 <div class="edit-error-message">{{ $message }}</div>
             @enderror
@@ -37,6 +39,7 @@
                    value="{{ $product->marca }}" 
                    maxlength="64"
                    oninput="this.value = this.value.slice(0, 64)">
+            <small class="text-muted"><span id="marca-count">{{ strlen($product->marca) }}</span>/64 caracteres</small>
             @error('marca')
                 <div class="edit-error-message">{{ $message }}</div>
             @enderror
@@ -91,6 +94,7 @@
                                    value="{{ $variation->nome_variacao }}" 
                                    maxlength="60"
                                    oninput="this.value = this.value.slice(0, 60)" required>
+                            <small class="text-muted"><span id="nome_variacao-count-{{ $index }}">{{ strlen($variation->nome_variacao) }}</span>/60 caracteres</small>
                         </div>
                         <div class="edit-form-group">
                             <label class="edit-form-label">Preço</label>
@@ -200,6 +204,7 @@
                            name="variations[${variacaoIndex}][nome_variacao]" 
                            maxlength="60"
                            oninput="this.value = this.value.slice(0, 60)" required>
+                    <small class="text-muted"><span id="nome_variacao-count-${variacaoIndex}">0</span>/60 caracteres</small>
                 </div>
                 <div class="edit-form-group">
                     <label class="edit-form-label">Preço</label>
@@ -242,6 +247,16 @@
             </div>
         `;
         container.insertAdjacentHTML('beforeend', variacaoHtml);
+        
+        // Configurar contador de caracteres para o novo campo de nome_variacao
+        const nomeVariacaoInput = document.querySelector(`input[name="variations[${variacaoIndex}][nome_variacao]"]`);
+        const nomeVariacaoCount = document.getElementById(`nome_variacao-count-${variacaoIndex}`);
+        if (nomeVariacaoInput && nomeVariacaoCount) {
+            nomeVariacaoInput.addEventListener('input', function() {
+                nomeVariacaoCount.textContent = this.value.length;
+            });
+        }
+        
         variacaoIndex++;
     });
 
@@ -332,7 +347,48 @@
         }
     }
 
+    // Configurar contadores de caracteres iniciais
     document.addEventListener('DOMContentLoaded', function() {
+        // Campos principais
+        const nomeInput = document.getElementById('nome');
+        const descricaoInput = document.getElementById('descricao');
+        const marcaInput = document.getElementById('marca');
+        const nomeCount = document.getElementById('nome-count');
+        const descricaoCount = document.getElementById('descricao-count');
+        const marcaCount = document.getElementById('marca-count');
+
+        if (nomeInput && nomeCount) {
+            nomeInput.addEventListener('input', function() {
+                nomeCount.textContent = this.value.length;
+            });
+        }
+
+        if (descricaoInput && descricaoCount) {
+            descricaoInput.addEventListener('input', function() {
+                descricaoCount.textContent = this.value.length;
+            });
+        }
+
+        if (marcaInput && marcaCount) {
+            marcaInput.addEventListener('input', function() {
+                marcaCount.textContent = this.value.length;
+            });
+        }
+
+        // Configurar contadores para variações existentes
+        @foreach ($product->variations as $index => $variation)
+            (function() {
+                const nomeVariacaoInput = document.querySelector('input[name="variations[{{ $index }}][nome_variacao]"]');
+                const nomeVariacaoCount = document.getElementById('nome_variacao-count-{{ $index }}');
+                if (nomeVariacaoInput && nomeVariacaoCount) {
+                    nomeVariacaoInput.addEventListener('input', function() {
+                        nomeVariacaoCount.textContent = this.value.length;
+                    });
+                }
+            })();
+        @endforeach
+
+        // File inputs
         const fileInputs = document.querySelectorAll('input[type="file"]');
         fileInputs.forEach(input => {
             const label = input.nextElementSibling;

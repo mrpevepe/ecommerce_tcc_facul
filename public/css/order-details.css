@@ -128,6 +128,15 @@
     vertical-align: middle;
 }
 
+/* Quebra de palavras para textos longos */
+.order-items-table tbody td.break-word {
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 200px;
+    white-space: normal;
+}
+
 /* Imagem do produto na tabela */
 .order-item-image {
     width: 60px;

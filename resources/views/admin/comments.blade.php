@@ -69,22 +69,22 @@
                                 @endif
                             </td>
                             <td class="col-product">
-                                <div class="product-name">{{ Str::limit($product->nome, 25) }}</div>
+                                <div class="product-name">{{ $product->nome }}</div>
                             </td>
                             <td class="col-title">
-                                <div class="comment-title" title="{{ $comment->titulo }}">
-                                    {{ Str::limit($comment->titulo, 35) }}
+                                <div class="comment-title">
+                                    {{ $comment->titulo }}
                                 </div>
                             </td>
                             <td class="col-description">
-                                <div class="comment-description" title="{{ $comment->descricao }}">
-                                    {{ Str::limit($comment->descricao, 60) }}
+                                <div class="comment-description">
+                                    {{ $comment->descricao }}
                                 </div>
                             </td>
                             <td class="col-user">
                                 <div class="comment-user">
                                     <i class="fas fa-user"></i>
-                                    {{ Str::limit($comment->user->name, 20) }}
+                                    {{ $comment->user->name }}
                                 </div>
                             </td>
                             <td class="col-date">

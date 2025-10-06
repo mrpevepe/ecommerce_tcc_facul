@@ -142,13 +142,13 @@
     width: 80px;
 }
 .col-product {
-    width: 150px;
+    width: 180px;
 }
 .col-title {
     width: 200px;
 }
 .col-description {
-    width: 250px;
+    width: 300px;
 }
 .col-user {
     width: 150px;
@@ -163,6 +163,8 @@
 .comments-table tbody tr {
     background: rgba(15, 23, 42, 0.6);
     transition: var(--transition);
+    height: auto;
+    min-height: 80px;
 }
 
 .comments-table tbody tr:hover {
@@ -174,7 +176,26 @@
 .comments-table tbody td {
     padding: 1rem;
     border-bottom: 1px solid rgba(0, 212, 170, 0.1);
-    vertical-align: middle;
+    vertical-align: top;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+/* Quebra de linha para textos longos */
+.col-product .product-name,
+.col-title .comment-title,
+.col-description .comment-description,
+.col-user .comment-user {
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    word-break: break-word !important;
+    line-height: 1.4;
+}
+
+/* Ajuste específico para descrição */
+.col-description .comment-description {
+    max-height: none;
+    overflow: visible;
 }
 
 /* Conteúdo das células */
