@@ -48,8 +48,8 @@ class CommentsController extends Controller
         $product = Product::findOrFail($productId);
 
         $request->validate([
-            'titulo' => 'required|string|max:255',
-            'descricao' => 'required|string',
+            'titulo' => 'required|string|max:40',
+            'descricao' => 'required|string|max:140',
         ]);
 
         // Verificar se o usuário comprou e recebeu o produto
@@ -92,8 +92,8 @@ class CommentsController extends Controller
         }
 
         $request->validate([
-            'titulo' => 'required|string|max:255',
-            'descricao' => 'required|string',
+            'titulo' => 'required|string|max:40',
+            'descricao' => 'required|string|max:140',
         ]);
 
         $comment->update([

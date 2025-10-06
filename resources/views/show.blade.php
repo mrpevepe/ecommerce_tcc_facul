@@ -9,80 +9,80 @@
     </a>
 
     <div class="row">
-<!-- Carrossel de Imagens -->
-<div class="col-md-6">
-    <div class="product-carousel">
-        <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                @php
-                    $allImages = [];
-                    
-                    // Adiciona imagem principal do produto
-                    if ($product->images->where('is_main', true)->first()) {
-                        $allImages[] = [
-                            'path' => Storage::url($product->images->where('is_main', true)->first()->path),
-                            'type' => 'produto',
-                            'name' => $product->nome,
-                            'badge_text' => 'PRODUTO'
-                        ];
-                    }
-                    
-                    // Adiciona imagens das variações ativas
-                    foreach ($product->variations->where('status', 'ativo') as $variation) {
-                        if ($variation->images->where('is_main', true)->first()) {
-                            $allImages[] = [
-                                'path' => Storage::url($variation->images->where('is_main', true)->first()->path),
-                                'type' => 'variação',
-                                'name' => $variation->nome_variacao,
-                                'badge_text' => 'VARIAÇÃO: ' . $variation->nome_variacao
-                            ];
-                        }
-                    }
-                    
-                    // Se não houver nenhuma imagem, usa uma placeholder
-                    if (empty($allImages)) {
-                        $allImages[] = [
-                            'path' => 'https://via.placeholder.com/500x500/1f2937/00d4aa?text=Sem+Imagem',
-                            'type' => 'placeholder',
-                            'name' => 'Imagem não disponível',
-                            'badge_text' => 'SEM IMAGEM'
-                        ];
-                    }
-                @endphp
+        <!-- Carrossel de Imagens -->
+        <div class="col-md-6">
+            <div class="product-carousel">
+                <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        @php
+                            $allImages = [];
+                            
+                            // Adiciona imagem principal do produto
+                            if ($product->images->where('is_main', true)->first()) {
+                                $allImages[] = [
+                                    'path' => Storage::url($product->images->where('is_main', true)->first()->path),
+                                    'type' => 'produto',
+                                    'name' => $product->nome,
+                                    'badge_text' => 'PRODUTO'
+                                ];
+                            }
+                            
+                            // Adiciona imagens das variações ativas
+                            foreach ($product->variations->where('status', 'ativo') as $variation) {
+                                if ($variation->images->where('is_main', true)->first()) {
+                                    $allImages[] = [
+                                        'path' => Storage::url($variation->images->where('is_main', true)->first()->path),
+                                        'type' => 'variação',
+                                        'name' => $variation->nome_variacao,
+                                        'badge_text' => 'VARIAÇÃO: ' . $variation->nome_variacao
+                                    ];
+                                }
+                            }
+                            
+                            // Se não houver nenhuma imagem, usa uma placeholder
+                            if (empty($allImages)) {
+                                $allImages[] = [
+                                    'path' => 'https://via.placeholder.com/500x500/1f2937/00d4aa?text=Sem+Imagem',
+                                    'type' => 'placeholder',
+                                    'name' => 'Imagem não disponível',
+                                    'badge_text' => 'SEM IMAGEM'
+                                ];
+                            }
+                        @endphp
 
-                @foreach ($allImages as $index => $image)
-                    <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                        <img src="{{ $image['path'] }}" 
-                             alt="{{ $image['name'] }}" 
-                             class="d-block w-100">
-                        <div class="carousel-caption d-none d-md-block">
-                            <small class="image-type-badge">{{ $image['badge_text'] }}</small>
-                        </div>
+                        @foreach ($allImages as $index => $image)
+                            <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                                <img src="{{ $image['path'] }}" 
+                                     alt="{{ $image['name'] }}" 
+                                     class="d-block w-100">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <small class="image-type-badge">{{ $image['badge_text'] }}</small>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
-                @endforeach
-            </div>
-            
-            @if(count($allImages) > 1)
-                <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-                <div class="carousel-indicators">
-                    @foreach ($allImages as $index => $image)
-                        <button type="button" data-bs-target="#productCarousel" 
-                                data-bs-slide-to="{{ $index }}" 
-                                class="{{ $index === 0 ? 'active' : '' }}"
-                                aria-label="Slide {{ $index + 1 }}"></button>
-                    @endforeach
+                    
+                    @if(count($allImages) > 1)
+                        <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                        <div class="carousel-indicators">
+                            @foreach ($allImages as $index => $image)
+                                <button type="button" data-bs-target="#productCarousel" 
+                                        data-bs-slide-to="{{ $index }}" 
+                                        class="{{ $index === 0 ? 'active' : '' }}"
+                                        aria-label="Slide {{ $index + 1 }}"></button>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
-            @endif
+            </div>
         </div>
-    </div>
-</div>
 
         <!-- Informações do Produto -->
         <div class="col-md-6">
@@ -220,12 +220,17 @@
                                 @csrf
                                 @method('PUT')
                                 <div class="mb-3">
-                                    <label for="titulo-edit-{{ $comment->id }}" class="form-label">Título</label>
-                                    <input type="text" class="form-control" id="titulo-edit-{{ $comment->id }}" name="titulo" value="{{ $comment->titulo }}" required>
+                                    <label for="titulo-edit-{{ $comment->id }}" class="form-label">Título (máx. 40 caracteres)</label>
+                                    <input type="text" class="form-control" id="titulo-edit-{{ $comment->id }}" 
+                                           name="titulo" value="{{ $comment->titulo }}" 
+                                           maxlength="40" required>
+                                    <small class="text-muted"><span id="titulo-count-{{ $comment->id }}">{{ strlen($comment->titulo) }}</span>/40 caracteres</small>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="descricao-edit-{{ $comment->id }}" class="form-label">Descrição</label>
-                                    <textarea class="form-control" id="descricao-edit-{{ $comment->id }}" name="descricao" rows="4" required>{{ $comment->descricao }}</textarea>
+                                    <label for="descricao-edit-{{ $comment->id }}" class="form-label">Descrição (máx. 140 caracteres)</label>
+                                    <textarea class="form-control" id="descricao-edit-{{ $comment->id }}" 
+                                              name="descricao" rows="4" maxlength="140" required>{{ $comment->descricao }}</textarea>
+                                    <small class="text-muted"><span id="descricao-count-{{ $comment->id }}">{{ strlen($comment->descricao) }}</span>/140 caracteres</small>
                                 </div>
                                 <div class="comment-actions">
                                     <button type="submit" class="btn btn-primary">
@@ -258,12 +263,16 @@
                     <form action="{{ route('comments.store', $product->id) }}" method="POST">
                         @csrf
                         <div class="mb-3">
-                            <label for="titulo" class="form-label">Título</label>
-                            <input type="text" class="form-control" id="titulo" name="titulo" required>
+                            <label for="titulo" class="form-label">Título (máx. 40 caracteres)</label>
+                            <input type="text" class="form-control" id="titulo" name="titulo" 
+                                   maxlength="40" required>
+                            <small class="text-muted"><span id="titulo-count">0</span>/40 caracteres</small>
                         </div>
                         <div class="mb-3">
-                            <label for="descricao" class="form-label">Descrição</label>
-                            <textarea class="form-control" id="descricao" name="descricao" rows="4" required></textarea>
+                            <label for="descricao" class="form-label">Descrição (máx. 140 caracteres)</label>
+                            <textarea class="form-control" id="descricao" name="descricao" 
+                                      rows="4" maxlength="140" required></textarea>
+                            <small class="text-muted"><span id="descricao-count">0</span>/140 caracteres</small>
                         </div>
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-paper-plane"></i> Enviar Avaliação
@@ -450,7 +459,55 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Attach size button listeners initially
     attachSizeButtonListeners();
+
+    // Character counters for comment forms
+    function setupCharacterCounters() {
+        // New comment form
+        const tituloInput = document.getElementById('titulo');
+        const descricaoInput = document.getElementById('descricao');
+        const tituloCount = document.getElementById('titulo-count');
+        const descricaoCount = document.getElementById('descricao-count');
+
+        if (tituloInput && tituloCount) {
+            tituloInput.addEventListener('input', function() {
+                tituloCount.textContent = this.value.length;
+            });
+        }
+
+        if (descricaoInput && descricaoCount) {
+            descricaoInput.addEventListener('input', function() {
+                descricaoCount.textContent = this.value.length;
+            });
+        }
+
+        // Edit comment forms
+        @foreach ($product->comments as $comment)
+            @if (Auth::check() && Auth::id() === $comment->user_id)
+                (function() {
+                    const tituloEdit = document.getElementById('titulo-edit-{{ $comment->id }}');
+                    const descricaoEdit = document.getElementById('descricao-edit-{{ $comment->id }}');
+                    const tituloCountEdit = document.getElementById('titulo-count-{{ $comment->id }}');
+                    const descricaoCountEdit = document.getElementById('descricao-count-{{ $comment->id }}');
+
+                    if (tituloEdit && tituloCountEdit) {
+                        tituloEdit.addEventListener('input', function() {
+                            tituloCountEdit.textContent = this.value.length;
+                        });
+                    }
+
+                    if (descricaoEdit && descricaoCountEdit) {
+                        descricaoEdit.addEventListener('input', function() {
+                            descricaoCountEdit.textContent = this.value.length;
+                        });
+                    }
+                })();
+            @endif
+        @endforeach
+    }
+
+    setupCharacterCounters();
 });
+
 // Função para alternar edição de comentário
 function toggleEditComment(commentId) {
     const displayDiv = document.getElementById('display-' + commentId);
@@ -466,6 +523,7 @@ function toggleEditComment(commentId) {
         }
     }
 }
+
 // Funções para incrementar/decrementar quantidade
 window.incrementQuantity = function() {
     const input = document.getElementById('quantity');

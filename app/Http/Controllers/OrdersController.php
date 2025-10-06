@@ -213,4 +213,34 @@ class OrdersController extends Controller
 
         return redirect()->route('admin.orders.index')->with('success', 'Pedido marcado como entregue!');
     }
+
+    /**
+     * Cancela um pedido (apenas para admin, status pending).
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function adminCancel($id)
+    {
+        $order = Order::with('items.variation', 'items.size')->findOrFail($id);
+        if (Auth::user()->cargo !== 'administrador') {
+            abort(403);
+        }
+
+        if ($order->status !== 'pending') {
+            return redirect()->route('admin.orders.index')->with('error', 'Este pedido não pode ser cancelado.');
+        }
+
+        // Restaurar o estoque ao cancelar
+        foreach ($order->items as $item) {
+            DB::table('product_variation_sizes')
+                ->where('product_variation_id', $item->variation_id)
+                ->where('size_id', $item->size_id)
+                ->increment('quantity', $item->quantity);
+        }
+
+        $order->update(['status' => 'cancelled']);
+
+        return redirect()->route('admin.orders.index')->with('success', 'Pedido cancelado com sucesso!');
+    }
 }

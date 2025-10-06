@@ -148,18 +148,28 @@
                                 <span class="status-badge status-{{ $order->status }}">
                                     {{ ['pending' => 'Pendente', 'cancelled' => 'Cancelado', 'delivered' => 'Entregue'][$order->status] ?? ucfirst($order->status) }}
                                 </span>
-                                @if ($order->status === 'pending')
-                                    <form action="{{ route('admin.orders.deliver', $order->id) }}" method="POST" 
-                                          onsubmit="return confirm('Deseja marcar este pedido como entregue?');">
-                                        @csrf
-                                        <button type="submit" class="action-btn deliver-btn">
-                                            <i class="fas fa-shipping-fast"></i>
-                                            <span>Entregar</span>
-                                        </button>
-                                    </form>
-                                @else
-                                    <span class="no-action">Nenhuma ação</span>
-                                @endif
+                                <div class="action-buttons">
+                                    @if ($order->status === 'pending')
+                                        <form action="{{ route('admin.orders.deliver', $order->id) }}" method="POST" 
+                                              onsubmit="return confirm('Deseja marcar este pedido como entregue?');">
+                                            @csrf
+                                            <button type="submit" class="action-btn deliver-btn">
+                                                <i class="fas fa-shipping-fast"></i>
+                                                <span>Entregar</span>
+                                            </button>
+                                        </form>
+                                        <form action="{{ route('admin.orders.cancel', $order->id) }}" method="POST" 
+                                              onsubmit="return confirm('Deseja cancelar este pedido?');">
+                                            @csrf
+                                            <button type="submit" class="btn-cancel cancel-order-btn">
+                                                <i class="fas fa-times"></i>
+                                                <span>Cancelar</span>
+                                            </button>
+                                        </form>
+                                    @else
+                                        <span class="no-action">Nenhuma ação</span>
+                                    @endif
+                                </div>
                             </td>
                         </tr>
                     @endforeach

@@ -49,7 +49,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/orders', [OrdersController::class, 'store'])->name('orders.store');
     Route::get('/user/orders/{id}', [OrdersController::class, 'show'])->name('user.orders.show');
     Route::post('/user/orders/{id}/cancel', [OrdersController::class, 'cancel'])->name('user.orders.cancel');
-
     Route::get('/user/reviews', [UserController::class, 'reviews'])->name('user.reviews');
     Route::get('/user/orders', [UserController::class, 'orders'])->name('user.orders.index');
 });
@@ -62,6 +61,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
 
     Route::get('/orders', [OrdersController::class, 'index'])->name('admin.orders.index');
     Route::post('/orders/{id}/deliver', [OrdersController::class, 'markAsDelivered'])->name('admin.orders.deliver');
+    Route::post('/orders/{id}/cancel', [OrdersController::class, 'cancel'])->name('admin.orders.cancel'); // Nova rota
 
     Route::get('/products', [ProductController::class, 'index'])->name('admin.products.index');
     Route::get('/products/create', [ProductController::class, 'create'])->name('admin.products.create');

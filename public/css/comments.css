@@ -208,15 +208,15 @@
     font-style: italic;
 }
 
-.product-name {
+tr .col-product > .product-name {
     font-weight: 600;
-    color: var(--dark-text);
+    color: #fff !important;
     word-wrap: break-word;
 }
 
 .comment-title {
     font-weight: 600;
-    color: var(--dark-text);
+    color: var(--light-text);
     word-wrap: break-word;
     line-height: 1.3;
 }

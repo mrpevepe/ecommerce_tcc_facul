@@ -15,6 +15,8 @@ VER COMO FICA NOME DE CLIENTE MUITO GRANDE NA TABELA  > FEITO
 - pagina de editar endereço > FEITO
 - css login e register auth > FEITO
 - VALIDAÇÃO AVALIAÇÃO SHOW E PAGINAÇÃO DE AVALIAÇ~EOS > FEITO
+- BOTÃO DE VOLTAR NA PAGINA DE AVALIAÇÕES DO USUÁRIO >
+
 -------------------------------------------------------------------------------------------
  > PERFIL DO USUARIO <
  ----------------------------------------------------------------------------------------
