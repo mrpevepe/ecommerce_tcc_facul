@@ -101,7 +101,7 @@
                             <input type="number" step="0.01" class="edit-form-control" 
                                    name="variations[{{ $index }}][preco]" 
                                    value="{{ $variation->preco }}" 
-                                   maxlength="10"
+                                   maxlength="8"
                                    oninput="this.value = this.value.slice(0, 10)" required>
                         </div>
                         <div class="edit-form-group">
@@ -161,7 +161,7 @@
         </div>
 
         <div class="edit-form-actions">
-            <a href="{{ route('admin.products.index') }}" class="edit-btn edit-btn-secondary">
+            <a href="{{ route('admin.products.index') }}" class="edit-btn edit-btn-secondary btn-secondary">
                 <i class="fas fa-arrow-left"></i> Cancelar
             </a>
             <button type="submit" class="edit-btn edit-btn-primary">
@@ -210,7 +210,7 @@
                     <label class="edit-form-label">Preço</label>
                     <input type="number" step="0.01" class="edit-form-control" 
                            name="variations[${variacaoIndex}][preco]" 
-                           maxlength="10"
+                           maxlength="8"
                            oninput="this.value = this.value.slice(0, 10)" required>
                 </div>
                 <div class="edit-form-group">
@@ -270,7 +270,7 @@
     document.addEventListener('input', function(e) {
         // Validação para campos de preço
         if (e.target.name.includes('[preco]')) {
-            const maxLength = 10;
+            const maxLength = 8;
             if (e.target.value.length > maxLength) {
                 e.target.value = e.target.value.slice(0, maxLength);
             }

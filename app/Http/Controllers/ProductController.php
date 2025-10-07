@@ -55,6 +55,7 @@ class ProductController extends Controller
             $query->where('category_id', $request->category_id);
         }
 
+        // paginate da homepage
         $products = $query->paginate(12)->appends($request->only(['search', 'category_id']));
 
         $categories = Category::all();
@@ -421,14 +422,14 @@ class ProductController extends Controller
 
         if ($request->has('search') && !empty($request->search)) {
             $search = $request->query('search');
-            $query->where('name', 'like', "%{$search}%");
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                ->orWhere('id', 'like', "%{$search}%");
+            });
         }
+        // Paginação com 5 categorias por página
+        $categories = $query->paginate(5)->appends($request->only(['search']));
 
-        if ($request->has('status') && $request->status !== 'all') {
-            $query->where('status', $request->status);
-        }
-
-        $categories = $query->get();
         return view('admin.create-category', compact('categories'));
     }
 
@@ -476,9 +477,16 @@ class ProductController extends Controller
     public function destroyCategory($id)
     {
         $category = Category::findOrFail($id);
+        
+        // Atualiza todos os produtos que usam esta categoria para category_id = null
+        Product::where('category_id', $id)->update(['category_id' => null]);
+        
         $category->delete();
 
-        return redirect()->route('admin.categories.create')->with('success', 'Categoria excluída com sucesso!');
+        return redirect()->route('admin.categories.create', [
+            'search' => request()->search,
+            'status' => request()->status
+        ])->with('success', 'Categoria excluída com sucesso! Os produtos relacionados foram atualizados.');
     }
 
     public function updateVariationStatus($variationId)

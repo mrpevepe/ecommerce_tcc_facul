@@ -4,6 +4,10 @@ Ainda falta fazer:
 
 >fazer o footer tambem! com algumas paginas falando sobre ecommerce placeholders tipo terms of service<
 
+06-10-26 > fazendo....:
+> footer
+>
+
 -> 06-10-26 > oq alterei:
 -> adicionei contador de caracteres no create/edit product.
 -> adicionei quebra de linha na descrição da tabela de comments do admin para melhor visualização.
