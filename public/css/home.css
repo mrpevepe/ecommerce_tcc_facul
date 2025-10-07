@@ -51,7 +51,7 @@
 
 .home-filter-button {
     background: var(--accent);
-    color: #fff;
+    color: #0f172a;
     border: none;
     border-radius: 8px;
     padding: 0.7rem 2rem;
@@ -61,6 +61,7 @@
 }
 
 .home-filter-button:hover {
+    color: #0f172a;
     background: var(--secondary-green);
     transform: translateY(-2px);
 }
@@ -134,8 +135,8 @@
 }
 
 .home-product-card-title {
-    font-size: 1.1rem;
-    font-weight: 600;
+    font-size: 1.2rem;
+    font-weight: bold;
     color: #fff;
     margin: 1rem 1rem 0.5rem;
     display: -webkit-box;
@@ -148,6 +149,9 @@
     font-size: 0.85rem;
     color: #eaeaea;
     margin: 0.3rem 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .home-product-card-price {
