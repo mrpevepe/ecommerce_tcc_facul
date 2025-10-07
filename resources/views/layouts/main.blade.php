@@ -61,8 +61,63 @@
         <main>
             @yield('content')
         </main>
+        <!-- FOOTER -->
         <footer class="sitezudo-footer">
-            <p>E-Commerce TCC &copy; 2025</p>
+            <div class="footer-container">
+                <div class="footer-section">
+                    <h4>Dúvidas</h4>
+                    <ul>
+                        <li><a href="#">Política de privacidade e segurança</a></li>
+                        <li><a href="#">Termos e condições de uso</a></li>
+                        <li><a href="#">Ajuda FAQ</a></li>
+                        <li><a href="#">Trocas e devoluções</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Sobre</h4>
+                    <ul>
+                        <li><a href="#">Sobre nós</a></li>
+                        <li><a href="#">Nossa missão</a></li>
+                        <li><a href="#">Trabalhe conosco</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li><a href="mailto:contato@sitezudo.com">contato@sitezudo.com</a></li>
+                        <li>
+                            <a href="#" aria-label="Facebook">
+                                <i class="fab fa-facebook"></i> Facebook
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" aria-label="Instagram">
+                                <i class="fab fa-instagram"></i> Instagram
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Formas de pagamento</h4>
+                    <ul class="payment-methods">
+                        <li>
+                            <i class="fas fa-qrcode"></i>
+                            <span>Pix</span>
+                        </li>
+                        <li>
+                            <i class="fab fa-cc-visa"></i>
+                            <span>Cartão de crédito</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-barcode"></i>
+                            <span>Boleto</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>E-Commerce TCC &copy; 2025</p>
+            </div>
         </footer>
         <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>

@@ -189,33 +189,104 @@ a:hover {
 /* ==================== FOOTER ==================== */
 .sitezudo-footer {
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
-    color: var(--secondary-green);
-    text-align: center;
-    padding: 2.5rem 1rem;
+    color: var(--dark-text);
+    padding: 3rem 1rem 1rem;
     margin-top: auto;
     border-top: 3px solid var(--accent);
 }
 
-.sitezudo-footer p {
-    margin: 0;
-    font-size: 0.9rem;
-    opacity: 0.85;
-    letter-spacing: 0.5px;
+.footer-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-/* ==================== RESPONSIVE ==================== */
+.footer-section h4 {
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    position: relative;
+}
+
+.footer-section h4::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+    width: 40px;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 2px;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 0.8rem;
+}
+
+.footer-section ul li a {
+    color: var(--dark-text);
+    text-decoration: none;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.footer-section ul li a:hover {
+    color: var(--accent);
+    transform: translateX(5px);
+}
+
+.footer-section ul li i {
+    font-size: 1.1rem;
+    width: 20px;
+    text-align: center;
+}
+
+.payment-methods li {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: var(--dark-text);
+}
+
+.payment-methods i {
+    font-size: 1.3rem;
+    color: var(--accent);
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--light-text);
+    font-size: 0.9rem;
+}
+
+/* Responsivo */
 @media (max-width: 768px) {
-    .sitezudo-navbar {
-        padding: 1rem;
+    .footer-container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        text-align: center;
     }
 
-    .navbar-nav {
-        margin-top: 1rem;
-        gap: 0.3rem;
+    .footer-section h4::after {
+        left: 50%;
+        transform: translateX(-50%);
     }
 
-    .sitezudo-nav-link::after {
-        display: none;
+    .footer-section ul li a {
+        justify-content: center;
     }
 }
 

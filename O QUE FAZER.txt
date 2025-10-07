@@ -18,14 +18,14 @@ Ainda falta fazer:
 
 VER COMO FICA NOME DE CLIENTE MUITO GRANDE NA TABELA  > FEITO
 ------------------------------------------------------------------------------------------
-- paginação nas categorias e CSS > fazendo.....................
+- paginação nas categorias e CSS > FEITO
 - estoque css > FEITO
 - perfil user css em tudo, e adicionar minhas avaliações no perfil > FEITO
 - pagina de avaliações do admin > FEITO
 - pagina de editar endereço > FEITO
 - css login e register auth > FEITO
 - VALIDAÇÃO AVALIAÇÃO SHOW E PAGINAÇÃO DE AVALIAÇ~EOS > FEITO
-- BOTÃO DE VOLTAR NA PAGINA DE AVALIAÇÕES DO USUÁRIO >
+- BOTÃO DE VOLTAR NA PAGINA DE AVALIAÇÕES DO USUÁRIO > FEITO
 
 -------------------------------------------------------------------------------------------
  > PERFIL DO USUARIO <
