@@ -8,6 +8,9 @@ Ainda falta fazer:
 > footer
 >
 
+---- 09-10-25 oq foi feito:
+> alteraçao icone
+
 -> 06-10-26 > oq alterei:
 -> adicionei contador de caracteres no create/edit product.
 -> adicionei quebra de linha na descrição da tabela de comments do admin para melhor visualização.
@@ -15,7 +18,6 @@ Ainda falta fazer:
 -> css remodelado para algumas paginas
 
 >ONDE FALTA CSS<
-
 VER COMO FICA NOME DE CLIENTE MUITO GRANDE NA TABELA  > FEITO
 ------------------------------------------------------------------------------------------
 - paginação nas categorias e CSS > FEITO
@@ -70,3 +72,35 @@ VER COMO FICA NOME DE CLIENTE MUITO GRANDE NA TABELA  > FEITO
 - fazer um carrousel com imagens na pagina de show do produto
 
 -VALIDAÇÃO DE AVALIAÇÕES NOS PRODUTOS
+
+
+>titulo mais completo
+>trocar alaercio por charlize
+
+>deixar embaixo da pagina
+
+>pegar o template, e passar o tcc para o template
+no word
+
+> nao tem espaço entre paragrafos
+> citacao direta tem que ter pagina
+> livro ou pdf tem que ter paginana citação
+> unidade de estudo falar sobre os ecommerces online
+> alinhar com o paragrafo 2 a
+
+> arrumar as tabelas dos RFS
+propriedadades, linha, delisga o 1 e liga o 2
+> diagrama casos de uso sem flecha so a linha reta
+> diagrama de classes, usuario endereço é compsosicao
+> remover a setinha
+> arquitetura, adicionar tipo um diagrama/imagem
+de como o MVC relaciona entre si
+
+> codigo muito grande, fazer em texto com fundo preto
+entregar prox quarta
+
+---------------------------------------------------
+>>>>>>>>> O QUE AINDA FALTA NO TCC <<<<<<<<<<<<
+> tabelas dos RFS;
+> conferir as paginas nas referencias, deve tar certo já;
+

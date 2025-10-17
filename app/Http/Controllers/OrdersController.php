@@ -130,7 +130,7 @@ class OrdersController extends Controller
                     'price_at_purchase' => $item['price'],
                 ]);
 
-                // Reduzir o estoque
+                // Reduz o estoque
                 DB::table('product_variation_sizes')
                     ->where('product_variation_id', $variationId)
                     ->where('size_id', $sizeId)
@@ -179,7 +179,7 @@ class OrdersController extends Controller
             return redirect()->route('user.index')->with('error', 'Este pedido não pode ser cancelado.');
         }
 
-        // Restaurar o estoque ao cancelar
+        // Restaura o estoque ao cancelar
         foreach ($order->items as $item) {
             DB::table('product_variation_sizes')
                 ->where('product_variation_id', $item->variation_id)

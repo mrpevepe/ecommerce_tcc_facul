@@ -40,7 +40,7 @@ class AuthController extends Controller
             'email' => $request->email,
             'telefone' => $request->telefone,
             'password' => Hash::make($request->password),
-            'cargo' => 'cliente', // Definido como cliente por padrão
+            'cargo' => 'cliente', // default é cliente
         ]);
 
         Auth::login($user);

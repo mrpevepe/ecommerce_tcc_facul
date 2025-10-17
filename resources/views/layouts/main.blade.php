@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>@yield('title')</title>
+        <link rel="icon" type="image/png" href="{{ asset('img/favicon.jpg') }}">
         <!-- Fonte -->
         <link href="https://fonts.googleapis.com/css2?family=Roboto" rel="stylesheet">
         <!-- Bootstrap -->
@@ -21,7 +22,7 @@
         <header>
             <nav class="navbar navbar-expand-sm navbar-light sitezudo-navbar">
                 <a href="/" class="navbar-brand sitezudo-navbar-brand">
-                    <img src="{{ asset('img/logo.jpg') }}" alt="logo" style="width: 40px">
+                    <img src="{{ asset('img/favicon.jpg') }}" alt="logo" style="width: 40px">
                 </a>
                 <button class="navbar-toggler sitezudo-navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon sitezudo-navbar-toggler-icon"></span>

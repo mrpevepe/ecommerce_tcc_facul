@@ -8,7 +8,7 @@
 
 @section('content')
 <div class="auth-container">
-    <h1 class="auth-title">Registrar Novo Usuário</h1>
+    <h1 class="auth-title">Cadastro</h1>
     
     <div class="auth-card">
         <form method="POST" action="{{ route('register') }}" class="auth-form" onsubmit="return validarFormulario()">

@@ -240,7 +240,8 @@ class ProductController extends Controller
     public function showVariations($id)
     {
         $product = Product::with('category')->findOrFail($id);
-        $variations = $product->variations()->with('images', 'sizes')->paginate(5); // 5 variações por página
+        // paginate com 5 variações por página
+        $variations = $product->variations()->with('images', 'sizes')->paginate(5); 
         $sizes = Size::all();
         return view('admin.variations', compact('product', 'variations', 'sizes'));
     }

@@ -457,10 +457,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Attach size button listeners initially
+    // inicializa os botoes de tamanho
     attachSizeButtonListeners();
 
-    // Character counters for comment forms
+    // counter de caracteres para o form de avaliação
     function setupCharacterCounters() {
         // New comment form
         const tituloInput = document.getElementById('titulo');
