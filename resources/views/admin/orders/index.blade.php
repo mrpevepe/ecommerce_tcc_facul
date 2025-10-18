@@ -1,5 +1,8 @@
 @extends('layouts.main')
 @section('title', 'Gerenciar Pedidos')
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/orders.css') }}">
+@endpush
 @section('content')
 <div class="orders-container">
     <h1 class="orders-title">Gerenciar Pedidos</h1>
@@ -56,7 +59,7 @@
             Exibindo {{ $orders->firstItem() }} a {{ $orders->lastItem() }} de {{ $orders->total() }} resultados
         </div>
         <div class="pagination-links">
-            {{ $orders->appends(request()->query())->links('pagination::simple-bootstrap-5') }}
+            {{ $orders->links('pagination::bootstrap-4') }}
         </div>
     </div>
     @endif
@@ -161,7 +164,7 @@
                                         <form action="{{ route('admin.orders.cancel', $order->id) }}" method="POST" 
                                               onsubmit="return confirm('Deseja cancelar este pedido?');">
                                             @csrf
-                                            <button type="submit" class="btn-cancel cancel-order-btn">
+                                            <button type="submit" class="cancel-order-btn">
                                                 <i class="fas fa-times"></i>
                                                 <span>Cancelar</span>
                                             </button>
@@ -178,14 +181,32 @@
         </div>
 
         <!-- Paginação no rodapé -->
+        @if($orders->hasPages())
         <div class="pagination-info">
             <div class="pagination-results">
                 Exibindo {{ $orders->firstItem() }} a {{ $orders->lastItem() }} de {{ $orders->total() }} resultados
             </div>
             <div class="pagination-links">
-                {{ $orders->appends(request()->query())->links('pagination::simple-bootstrap-5') }}
+                {{ $orders->links('pagination::bootstrap-4') }}
             </div>
         </div>
+        @endif
     @endif
 </div>
+
+<style>
+    /* Correção adicional para evitar scrollbar no hover */
+    .orders-table tbody tr {
+        transform: none;
+        transition: none;
+    }
+    
+    .orders-table tbody tr:hover {
+        transform: none;
+    }
+    
+    .order-item:hover {
+        transform: none;
+    }
+</style>
 @endsection

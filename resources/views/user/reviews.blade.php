@@ -20,9 +20,15 @@
                            value="{{ request('search') }}">
                 </form>
                 
+                <!-- Paginação no topo -->
                 @if($reviews->hasPages())
-                <div class="reviews-pagination-top">
-                    {{ $reviews->links('pagination::simple-bootstrap-5') }}
+                <div class="reviews-pagination-wrapper">
+                    <div class="reviews-pagination-info">
+                        Exibindo {{ $reviews->firstItem() }} a {{ $reviews->lastItem() }} de {{ $reviews->total() }} avaliações
+                    </div>
+                    <div class="reviews-pagination">
+                        {{ $reviews->links('pagination::bootstrap-4') }}
+                    </div>
                 </div>
                 @endif
             </div>
@@ -135,8 +141,11 @@
                 <!-- Paginação no rodapé -->
                 @if($reviews->hasPages())
                 <div class="reviews-pagination-wrapper">
+                    <div class="reviews-pagination-info">
+                        Exibindo {{ $reviews->firstItem() }} a {{ $reviews->lastItem() }} de {{ $reviews->total() }} avaliações
+                    </div>
                     <div class="reviews-pagination">
-                        {{ $reviews->links('pagination::simple-bootstrap-5') }}
+                        {{ $reviews->links('pagination::bootstrap-4') }}
                     </div>
                 </div>
                 @endif

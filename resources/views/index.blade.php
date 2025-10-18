@@ -19,14 +19,17 @@
         </form>
     </div>
 
-    <div class="home-pagination-container">
-        <div class="home-pagination-text">
+    <!-- Paginação no topo -->
+    @if($products->hasPages())
+    <div class="comments-pagination-wrapper">
+        <div class="comments-pagination-info">
             Exibindo {{ $products->firstItem() }} a {{ $products->lastItem() }} de {{ $products->total() }} produtos
         </div>
-        <div class="home-pagination">
-            {{ $products->links('pagination::simple-bootstrap-5') }}
+        <div class="comments-pagination">
+            {{ $products->links('pagination::bootstrap-4') }}
         </div>
     </div>
+    @endif
 
     <div id="productList" class="row">
         @foreach ($products as $product)
@@ -54,14 +57,17 @@
         @endforeach
     </div>
 
-    <div class="home-pagination-container">
-        <div class="home-pagination-text">
+    <!-- Paginação no rodapé -->
+    @if($products->hasPages())
+    <div class="comments-pagination-wrapper">
+        <div class="comments-pagination-info">
             Exibindo {{ $products->firstItem() }} a {{ $products->lastItem() }} de {{ $products->total() }} produtos
         </div>
-        <div class="home-pagination">
-            {{ $products->links('pagination::simple-bootstrap-5') }}
+        <div class="comments-pagination">
+            {{ $products->links('pagination::bootstrap-4') }}
         </div>
     </div>
+    @endif
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 @endsection

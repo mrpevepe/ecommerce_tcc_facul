@@ -5,8 +5,9 @@ Ainda falta fazer:
 >fazer o footer tambem! com algumas paginas falando sobre ecommerce placeholders tipo terms of service<
 
 06-10-26 > fazendo....:
-> footer
->
+> footer > TERMINAR AS PAGINAS DO FOOTER, SOBRE, DUVIDAS....
+> Paginação user botões 1,2,3,4,5 > FEITO
+> paginação com botões 1,2,3,4,5 na pagina de pedidos > FEITO
 
 ---- 09-10-25 oq foi feito:
 > alteraçao icone

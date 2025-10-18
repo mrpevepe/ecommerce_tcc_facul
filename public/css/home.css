@@ -66,7 +66,7 @@
     transform: translateY(-2px);
 }
 
-/* PaginaÃ§Ã£o */
+/* PaginaÃ§Ã£o - Estilos específicos para homepage */
 .home-pagination-container {
     display: flex;
     justify-content: space-between;
@@ -80,6 +80,51 @@
     color: var(--secondary-green);
     font-size: 0.9rem;
     opacity: 0.8;
+}
+
+/* Estilos para paginação completa na homepage */
+.comments-pagination-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+    padding: 1rem 0;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.comments-pagination-info {
+    color: var(--light-text);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.comments-pagination {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.comments-pagination .pagination {
+    margin: 0;
+}
+
+.comments-pagination .page-link {
+    background: rgba(31, 41, 55, 0.8);
+    border: 1px solid rgba(0, 212, 170, 0.3);
+    color: var(--accent);
+    padding: 0.5rem 0.8rem;
+}
+
+.comments-pagination .page-item.active .page-link {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #1a202c;
+}
+
+.comments-pagination .page-link:hover {
+    background: rgba(0, 212, 170, 0.1);
+    border-color: var(--accent);
+    color: var(--accent);
 }
 
 /* Grid de Produtos */
@@ -174,5 +219,15 @@
 
     .home-product-card img {
         height: 220px;
+    }
+
+    .comments-pagination-wrapper {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .home-pagination-container {
+        flex-direction: column;
+        text-align: center;
     }
 }

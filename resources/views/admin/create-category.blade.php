@@ -7,9 +7,12 @@
 
 <div class="categories-container">
     <h1 class="categories-title">Gerenciar Categorias</h1>
-    <a href="{{ route('admin.dashboard') }}" class="back-btn">
-        <i class="fas fa-arrow-left"></i> Voltar
-    </a>
+    
+    <div class="admin-actions">
+        <a href="{{ route('admin.dashboard') }}" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Voltar
+        </a>
+    </div>
 
     <!-- Formulário de Criação -->
     <div class="create-category-form">
@@ -58,15 +61,17 @@
         </form>
     </div>
 
-    <!-- Paginação -->
+    <!-- Paginação no topo -->
+    @if($categories->hasPages())
     <div class="pagination-info">
         <div class="pagination-results">
             Exibindo {{ $categories->firstItem() }} a {{ $categories->lastItem() }} de {{ $categories->total() }} resultados
         </div>
         <div class="pagination-links">
-            {{ $categories->appends(request()->query())->links('pagination::simple-bootstrap-5') }}
+            {{ $categories->appends(request()->query())->links('pagination::bootstrap-4') }}
         </div>
     </div>
+    @endif
 
     <!-- Tabela de Categorias -->
     @if ($categories->isEmpty())
@@ -154,15 +159,17 @@
             </table>
         </div>
 
-        <!-- Paginação -->
+        <!-- Paginação no rodapé -->
+        @if($categories->hasPages())
         <div class="pagination-info">
             <div class="pagination-results">
                 Exibindo {{ $categories->firstItem() }} a {{ $categories->lastItem() }} de {{ $categories->total() }} resultados
             </div>
             <div class="pagination-links">
-                {{ $categories->appends(request()->query())->links('pagination::simple-bootstrap-5') }}
+                {{ $categories->appends(request()->query())->links('pagination::bootstrap-4') }}
             </div>
         </div>
+        @endif
     @endif
 </div>
 

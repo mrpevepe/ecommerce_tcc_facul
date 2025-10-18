@@ -24,12 +24,12 @@
 
     <!-- Paginação no topo -->
     @if($products->hasPages())
-    <div class="d-flex justify-content-between align-items-center mt-4">
-        <div>
-            Exibindo {{ $products->firstItem() }} a {{ $products->lastItem() }} de {{ $products->total() }} resultados
+    <div class="comments-pagination-wrapper">
+        <div class="comments-pagination-info">
+            Mostrando {{ $products->firstItem() }} a {{ $products->lastItem() }} de {{ $products->total() }} produtos
         </div>
-        <div>
-            {{ $products->links('pagination::simple-bootstrap-5') }}
+        <div class="comments-pagination">
+            {{ $products->links('pagination::bootstrap-4') }}
         </div>
     </div>
     @endif
@@ -106,12 +106,12 @@
 
     <!-- Paginação no rodapé -->
     @if($products->hasPages())
-    <div class="d-flex justify-content-between align-items-center mt-4">
-        <div>
-            Exibindo {{ $products->firstItem() }} a {{ $products->lastItem() }} de {{ $products->total() }} resultados
+    <div class="comments-pagination-wrapper">
+        <div class="comments-pagination-info">
+            Mostrando {{ $products->firstItem() }} a {{ $products->lastItem() }} de {{ $products->total() }} produtos
         </div>
-        <div>
-            {{ $products->links('pagination::simple-bootstrap-5') }}
+        <div class="comments-pagination">
+            {{ $products->links('pagination::bootstrap-4') }}
         </div>
     </div>
     @endif
@@ -182,16 +182,101 @@
         display: contents;
     }
 
-    /* CSS para ajustar o tamanho da paginação */
-    .pagination {
+    /* Estilos para paginação */
+    .comments-pagination-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 2rem;
+        padding: 1rem 0;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .comments-pagination-info {
+        color: var(--light-text);
         font-size: 0.9rem;
+        font-weight: 600;
     }
-    .pagination .page-link {
-        padding: 0.25rem 0.5rem;
+
+    .comments-pagination {
+        display: flex;
+        gap: 0.5rem;
     }
-    .pagination .page-item.active .page-link {
-        background-color: #007bff;
-        border-color: #007bff;
+
+    .comments-pagination .pagination {
+        margin: 0;
+    }
+
+    .comments-pagination .page-link {
+        background: rgba(31, 41, 55, 0.8);
+        border: 1px solid rgba(0, 212, 170, 0.3);
+        color: var(--accent);
+        padding: 0.5rem 0.8rem;
+    }
+
+    .comments-pagination .page-item.active .page-link {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #1a202c;
+    }
+
+    .comments-pagination .page-link:hover {
+        background: rgba(0, 212, 170, 0.1);
+        border-color: var(--accent);
+        color: var(--accent);
+    }
+
+    /* Tooltip para nomes e descrições longas */
+    .description-tooltip {
+        position: fixed;
+        background: rgba(15, 23, 42, 0.95);
+        backdrop-filter: blur(10px);
+        color: var(--dark-text);
+        padding: 1rem;
+        border-radius: 8px;
+        border: 1px solid var(--accent);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+        max-width: 400px;
+        z-index: 10000;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        animation: tooltipFadeIn 0.2s ease-out;
+        white-space: normal;
+        word-wrap: break-word;
+    }
+
+    @keyframes tooltipFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .has-tooltip {
+        cursor: help;
+        position: relative;
+    }
+
+    .has-tooltip:hover::after {
+        content: "🔍";
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 0.8rem;
+        opacity: 0.7;
+    }
+
+    @media (max-width: 768px) {
+        .comments-pagination-wrapper {
+            flex-direction: column;
+            text-align: center;
+        }
     }
 </style>
 @endsection

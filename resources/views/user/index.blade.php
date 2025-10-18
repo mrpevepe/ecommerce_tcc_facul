@@ -82,13 +82,11 @@
                 <!-- Paginação no topo -->
                 @if($orders->hasPages())
                 <div class="user-pagination-wrapper">
-                    <div class="user-pagination-top">
-                        <div class="user-pagination-info">
-                            Exibindo {{ $orders->firstItem() }} a {{ $orders->lastItem() }} de {{ $orders->total() }} pedidos
-                        </div>
-                        <div class="user-pagination">
-                            {{ $orders->links('pagination::simple-bootstrap-5') }}
-                        </div>
+                    <div class="user-pagination-info">
+                        Exibindo {{ $orders->firstItem() }} a {{ $orders->lastItem() }} de {{ $orders->total() }} pedidos
+                    </div>
+                    <div class="user-pagination">
+                        {{ $orders->links('pagination::bootstrap-4') }}
                     </div>
                 </div>
                 @endif
@@ -143,13 +141,11 @@
                 <!-- Paginação no rodapé -->
                 @if($orders->hasPages())
                 <div class="user-pagination-wrapper">
-                    <div class="user-pagination-bottom">
-                        <div class="user-pagination-info">
-                            Exibindo {{ $orders->firstItem() }} a {{ $orders->lastItem() }} de {{ $orders->total() }} pedidos
-                        </div>
-                        <div class="user-pagination">
-                            {{ $orders->links('pagination::simple-bootstrap-5') }}
-                        </div>
+                    <div class="user-pagination-info">
+                        Exibindo {{ $orders->firstItem() }} a {{ $orders->lastItem() }} de {{ $orders->total() }} pedidos
+                    </div>
+                    <div class="user-pagination">
+                        {{ $orders->links('pagination::bootstrap-4') }}
                     </div>
                 </div>
                 @endif

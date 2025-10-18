@@ -21,19 +21,15 @@
             <p>Nenhuma variação cadastrada para este produto.</p>
         </div>
     @else
-        <!-- Paginação no topo -->
-        @if($variations->hasPages())
-        <div class="pagination-wrapper">
-            <div class="pagination-top">
-                <div class="pagination-info">
-                    Exibindo {{ $variations->firstItem() }} a {{ $variations->lastItem() }} de {{ $variations->total() }} resultados
-                </div>
-                <div>
-                    {{ $variations->links('pagination::simple-bootstrap-5') }}
-                </div>
+        <!-- Paginação no topo - SEMPRE VISÍVEL -->
+        <div class="comments-pagination-wrapper">
+            <div class="comments-pagination-info">
+                Mostrando {{ $variations->firstItem() }} a {{ $variations->lastItem() }} de {{ $variations->total() }} variações
+            </div>
+            <div class="comments-pagination">
+                {{ $variations->links('pagination::bootstrap-4') }}
             </div>
         </div>
-        @endif
 
         <div class="variations-table-container">
             <table class="variations-table">
@@ -141,19 +137,15 @@
             </table>
         </div>
 
-        <!-- Paginação no rodapé -->
-        @if($variations->hasPages())
-        <div class="pagination-wrapper">
-            <div class="pagination-bottom">
-                <div class="pagination-info">
-                    Exibindo {{ $variations->firstItem() }} a {{ $variations->lastItem() }} de {{ $variations->total() }} resultados
-                </div>
-                <div>
-                    {{ $variations->links('pagination::simple-bootstrap-5') }}
-                </div>
+        <!-- Paginação no rodapé - SEMPRE VISÍVEL -->
+        <div class="comments-pagination-wrapper">
+            <div class="comments-pagination-info">
+                Mostrando {{ $variations->firstItem() }} a {{ $variations->lastItem() }} de {{ $variations->total() }} variações
+            </div>
+            <div class="comments-pagination">
+                {{ $variations->links('pagination::bootstrap-4') }}
             </div>
         </div>
-        @endif
     @endif
 
     <div class="add-variation-form-container" id="addVariationForm" style="display: none;">
@@ -502,6 +494,27 @@
 </script>
 
 <style>
+    /* Garantir que a paginação seja sempre visível */
+    .comments-pagination-wrapper {
+        display: flex !important;
+    }
+
+    /* Estilo para itens de paginação desabilitados (quando há apenas uma página) */
+    .page-item.disabled .page-link {
+        background: rgba(31, 41, 55, 0.5);
+        border-color: rgba(0, 212, 170, 0.2);
+        color: var(--light-text);
+        cursor: not-allowed;
+    }
+
+    .page-item.disabled .page-link:hover {
+        background: rgba(31, 41, 55, 0.5);
+        border-color: rgba(0, 212, 170, 0.2);
+        color: var(--light-text);
+        transform: none;
+        box-shadow: none;
+    }
+
     /* Estilos para edição inline de estoque */
     .stock-edit-input {
         background: rgba(31, 41, 55, 0.8);
@@ -569,26 +582,49 @@
         font-size: 0.8rem;
     }
 
-    /* CSS para ajustar o tamanho da paginação */
-    .pagination {
+    /* Estilos para paginação */
+    .comments-pagination-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 2rem;
+        padding: 1rem 0;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .comments-pagination-info {
+        color: var(--light-text);
         font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    .comments-pagination {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .comments-pagination .pagination {
         margin: 0;
     }
-    .pagination .page-link {
-        padding: 0.25rem 0.5rem;
-        color: #fff;
-        background-color: rgba(31, 41, 55, 0.8);
+
+    .comments-pagination .page-link {
+        background: rgba(31, 41, 55, 0.8);
         border: 1px solid rgba(0, 212, 170, 0.3);
+        color: var(--accent);
+        padding: 0.5rem 0.8rem;
     }
-    .pagination .page-item.active .page-link {
-        background-color: #00d4aa;
-        border-color: #00d4aa;
+
+    .comments-pagination .page-item.active .page-link {
+        background: var(--accent);
+        border-color: var(--accent);
         color: #1a202c;
     }
-    .pagination .page-link:hover {
-        background-color: rgba(0, 212, 170, 0.2);
-        border-color: #00d4aa;
-        color: #fff;
+
+    .comments-pagination .page-link:hover {
+        background: rgba(0, 212, 170, 0.1);
+        border-color: var(--accent);
+        color: var(--accent);
     }
 
     /* File input styling para variações */
@@ -631,32 +667,6 @@
         border-color: var(--accent);
         background: rgba(0, 212, 170, 0.1);
         color: var(--accent);
-    }
-
-    /* Estilo simplificado para paginação */
-    .pagination-wrapper {
-        margin: 0.5rem 0;
-    }
-
-    .pagination-top, .pagination-bottom {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0.5rem 0;
-    }
-
-    .pagination-info {
-        color: #fff;
-        font-size: 0.9rem;
-    }
-
-    /* Remove espaçamento excessivo */
-    .pagination-top {
-        margin-bottom: 0rem;
-    }
-
-    .pagination-bottom {
-        margin-top: 0rem;
     }
 
     /* Flash messages styling */
@@ -731,6 +741,11 @@
             right: 10px;
             left: 10px;
             max-width: none;
+        }
+        
+        .comments-pagination-wrapper {
+            flex-direction: column;
+            text-align: center;
         }
     }
 

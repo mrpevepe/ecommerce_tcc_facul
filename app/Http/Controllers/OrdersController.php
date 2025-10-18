@@ -42,8 +42,8 @@ class OrdersController extends Controller
             $query->whereDate('created_at', $date);
         }
 
-        // Paginação com 10 itens por página, preservando os parâmetros
-        $orders = $query->latest()->paginate(10)->appends([
+        // Paginação com 5 itens por página, preservando os parâmetros
+        $orders = $query->latest()->paginate(5)->appends([
             'status' => $status,
             'search' => $search,
             'date' => $date
