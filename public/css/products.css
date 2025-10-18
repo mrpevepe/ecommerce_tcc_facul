@@ -194,7 +194,7 @@
 /* Nome do produto - MÁXIMO 20 CARACTERES */
 .product-name {
     max-width: 100%;
-    color: #1a202c !important;
+    color: #ffffff !important;
     font-size: 0.9rem;
     line-height: 1.4;
     overflow: hidden;
@@ -207,7 +207,7 @@
 /* Descrição do produto - MÁXIMO 20 CARACTERES */
 .product-description {
     max-width: 100%;
-    color: #1a202c !important;
+    color: #ffffff !important;
     font-size: 0.9rem;
     line-height: 1.4;
     overflow: hidden;
@@ -573,4 +573,52 @@
     .product-description {
         max-width: 80px;
     }
+}
+
+/* ==================== SOBRESCREVER BOOTSTRAP TABLE STYLES ==================== */
+.products-table-container .table {
+    --bs-table-bg: transparent;
+    --bs-table-striped-bg: rgba(15, 23, 42, 0.4);
+    --bs-table-striped-color: #e5e7eb;
+    --bs-table-active-bg: rgba(15, 23, 42, 0.6);
+    --bs-table-active-color: #e5e7eb;
+    --bs-table-hover-bg: rgba(15, 23, 42, 0.9);
+    --bs-table-hover-color: #e5e7eb;
+}
+
+.products-table-container .table-striped > tbody > tr:nth-of-type(odd) > * {
+    --bs-table-color-type: var(--bs-table-striped-color) !important;
+    --bs-table-bg-type: var(--bs-table-striped-bg) !important;
+    color: var(--bs-table-color-type) !important;
+    background-color: var(--bs-table-bg-type) !important;
+}
+
+.products-table-container .table-striped > tbody > tr:nth-of-type(even) > * {
+    --bs-table-color-type: var(--bs-table-striped-color) !important;
+    --bs-table-bg-type: rgba(15, 23, 42, 0.6) !important;
+    color: var(--bs-table-color-type) !important;
+    background-color: var(--bs-table-bg-type) !important;
+}
+
+/* Garantir que nossos estilos tenham prioridade */
+.products-table-container .table tbody tr {
+    background: rgba(15, 23, 42, 0.6) !important;
+}
+
+.products-table-container .table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(15, 23, 42, 0.4) !important;
+}
+
+.products-table-container .table-striped tbody tr:nth-of-type(even) {
+    background-color: rgba(15, 23, 42, 0.6) !important;
+}
+
+.products-table-container .table tbody tr:hover {
+    background-color: rgba(15, 23, 42, 0.9) !important;
+}
+
+/* Texto sempre visível */
+.products-table-container .table td,
+.products-table-container .table th {
+    color: #e5e7eb !important;
 }

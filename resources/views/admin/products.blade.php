@@ -170,6 +170,57 @@
 </script>
 
 <style>
+    /* ==================== SOBRESCREVER VARIÁVEIS DO BOOTSTRAP ==================== */
+    .table {
+        --bs-table-bg: transparent;
+        --bs-table-striped-bg: rgba(15, 23, 42, 0.4);
+        --bs-table-striped-color: #e5e7eb;
+        --bs-table-active-bg: rgba(15, 23, 42, 0.6);
+        --bs-table-active-color: #e5e7eb;
+        --bs-table-hover-bg: rgba(15, 23, 42, 0.9);
+        --bs-table-hover-color: #e5e7eb;
+    }
+
+    /* Forçar as cores do tema dark */
+    .table-striped>tbody>tr:nth-of-type(odd)>* {
+        --bs-table-color-type: var(--bs-table-striped-color) !important;
+        --bs-table-bg-type: var(--bs-table-striped-bg) !important;
+        color: var(--bs-table-color-type) !important;
+        background-color: var(--bs-table-bg-type) !important;
+    }
+
+    .table-striped>tbody>tr:nth-of-type(even)>* {
+        --bs-table-color-type: var(--bs-table-striped-color) !important;
+        --bs-table-bg-type: rgba(15, 23, 42, 0.6) !important;
+        color: var(--bs-table-color-type) !important;
+        background-color: var(--bs-table-bg-type) !important;
+    }
+
+    /* Estilos específicos para nossa tabela */
+    .products-table-container .table tbody tr {
+        background: rgba(15, 23, 42, 0.6) !important;
+    }
+
+    .products-table-container .table-striped tbody tr:nth-of-type(odd) {
+        background-color: rgba(15, 23, 42, 0.4) !important;
+    }
+
+    .products-table-container .table-striped tbody tr:nth-of-type(even) {
+        background-color: rgba(15, 23, 42, 0.6) !important;
+    }
+
+    .products-table-container .table tbody tr:hover {
+        background-color: rgba(15, 23, 42, 0.9) !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 212, 170, 0.2);
+    }
+
+    /* Garantir que o texto fique legível */
+    .table td, .table th {
+        color: #e5e7eb !important;
+        border-color: rgba(0, 212, 170, 0.1) !important;
+    }
+
     /* Estilos adicionais específicos para esta página */
     .no-image {
         color: var(--light-text);

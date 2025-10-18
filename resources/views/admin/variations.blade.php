@@ -21,7 +21,7 @@
             <p>Nenhuma variação cadastrada para este produto.</p>
         </div>
     @else
-        <!-- Paginação no topo - SEMPRE VISÍVEL -->
+        <!-- Paginação no topo -->
         <div class="comments-pagination-wrapper">
             <div class="comments-pagination-info">
                 Mostrando {{ $variations->firstItem() }} a {{ $variations->lastItem() }} de {{ $variations->total() }} variações
