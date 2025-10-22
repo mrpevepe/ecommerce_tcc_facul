@@ -86,3 +86,34 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::patch('/categories/{id}/status', [ProductController::class, 'updateCategoryStatus'])->name('admin.categories.updateStatus');
     Route::delete('/categories/{id}', [ProductController::class, 'destroyCategory'])->name('admin.categories.destroy');
 });
+
+
+// Rotas para as páginas de Dúvidas
+Route::get('/politica-privacidade-seguranca', function () {
+    return view('footer.duvidas.politica_privacidade_seguranca');
+})->name('footer.politica');
+
+Route::get('/termos-condicoes', function () {
+    return view('footer.duvidas.termos_condicoes');
+})->name('footer.termos');
+
+Route::get('/ajuda-faq', function () {
+    return view('footer.duvidas.ajuda_faq');
+})->name('footer.faq');
+
+Route::get('/trocas-devolucoes', function () {
+    return view('footer.duvidas.trocas_devolucoes');
+})->name('footer.trocas');
+
+// Rotas para as páginas Sobre
+Route::get('/sobre-nos', function () {
+    return view('footer.sobre.sobre_nos');
+})->name('footer.sobre');
+
+Route::get('/nossa-missao', function () {
+    return view('footer.sobre.nossa_missao');
+})->name('footer.missao');
+
+Route::get('/trabalhe-conosco', function () {
+    return view('footer.sobre.trabalhe_conosco');
+})->name('footer.trabalhe');

@@ -68,18 +68,18 @@
                 <div class="footer-section">
                     <h4>Dúvidas</h4>
                     <ul>
-                        <li><a href="#">Política de privacidade e segurança</a></li>
-                        <li><a href="#">Termos e condições de uso</a></li>
-                        <li><a href="#">Ajuda FAQ</a></li>
-                        <li><a href="#">Trocas e devoluções</a></li>
+                        <li><a href="{{ route('footer.politica') }}">Política de privacidade e segurança</a></li>
+                        <li><a href="{{ route('footer.termos') }}">Termos e condições de uso</a></li>
+                        <li><a href="{{ route('footer.faq') }}">Ajuda FAQ</a></li>
+                        <li><a href="{{ route('footer.trocas') }}">Trocas e devoluções</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h4>Sobre</h4>
                     <ul>
-                        <li><a href="#">Sobre nós</a></li>
-                        <li><a href="#">Nossa missão</a></li>
-                        <li><a href="#">Trabalhe conosco</a></li>
+                        <li><a href="{{ route('footer.sobre') }}">Sobre nós</a></li>
+                        <li><a href="{{ route('footer.missao') }}">Nossa missão</a></li>
+                        <li><a href="{{ route('footer.trabalhe') }}">Trabalhe conosco</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
