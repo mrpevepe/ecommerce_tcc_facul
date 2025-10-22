@@ -62,12 +62,14 @@ public function saveAddress(Request $request)
 
             $request->validate([
                 'logradouro' => 'required|string|max:40',
-                'numero' => 'required|string|max:20',
+                'numero' => 'required|string|max:20|regex:/^[0-9]+$/',
                 'complemento' => 'nullable|string|max:100',
                 'bairro' => 'required|string|max:40',
                 'cep' => 'required|string|size:9',
                 'nome_cidade' => 'required|string|max:30',
                 'estado' => 'required|string|size:2',
+            ], [
+                'numero.regex' => 'O campo número deve conter apenas números.',
             ]);
 
             $user = Auth::user();

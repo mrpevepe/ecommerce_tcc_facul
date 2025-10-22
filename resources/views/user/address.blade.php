@@ -150,5 +150,12 @@
             this.setCustomValidity('Erro ao validar CEP.');
         }
     });
+
+    // Validação do campo número para aceitar apenas números
+    const numeroInput = document.getElementById('numero');
+    numeroInput.addEventListener('input', function(e) {
+        // Remove qualquer caractere que não seja número
+        this.value = this.value.replace(/\D/g, '');
+    });
 </script>
 @endsection
