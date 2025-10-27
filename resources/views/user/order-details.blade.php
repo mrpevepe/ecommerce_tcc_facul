@@ -36,10 +36,18 @@
                     <span class="order-info-label">Data do Pedido</span>
                     <p class="order-info-value">{{ $order->created_at->setTimezone('America/Sao_Paulo')->format('d/m/Y H:i') }}</p>
                 </div>
+                {{-- Adicione este campo para a data de entrega --}}
+                @if($order->status == 'delivered')
+                <div class="order-info-field">
+                    <span class="order-info-label">Data de Entrega</span>
+                    <p class="order-info-value">{{ $order->updated_at->setTimezone('America/Sao_Paulo')->format('d/m/Y H:i') }}</p>
+                </div>
+                @endif
             </div>
         </div>
     </div>
 
+    {{-- Resto do código permanece igual --}}
     <div class="order-details-card">
         <div class="order-details-card-header">
             <h2 class="order-details-card-title">Endereço de Entrega</h2>

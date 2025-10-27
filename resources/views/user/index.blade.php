@@ -109,7 +109,7 @@
                                     <td>{{ $order->created_at->setTimezone('America/Sao_Paulo')->format('d/m/Y H:i') }}</td>
                                     <td>R$ {{ number_format($order->total_price, 2, ',', '.') }}</td>
                                     <td>
-                                        <span class="order-status status-{{ $order->status }}">
+                                        <span class="order-status-badge status-{{ $order->status }}">
                                             {{ App\Http\Controllers\UserController::translateStatus($order->status) }}
                                         </span>
                                     </td>

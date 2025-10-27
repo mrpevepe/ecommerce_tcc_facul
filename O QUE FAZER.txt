@@ -4,6 +4,13 @@ Ainda falta fazer:
 
 >fazer o footer tambem! com algumas paginas falando sobre ecommerce placeholders tipo terms of service<
 
+27-10-25 > feito;
+> Paginação nos comentários na pagina show do produto.
+> correção css no status na pagina do usuário.
+> data enterga pagina de order do user
+> data entrega na pagina order do admin
+
+
 06-10-26 > fazendo....:
 > footer > TERMINAR AS PAGINAS DO FOOTER, SOBRE, DUVIDAS.... >> FEITO
 > Paginação user botões 1,2,3,4,5 > FEITO

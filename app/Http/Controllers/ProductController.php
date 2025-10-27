@@ -319,12 +319,20 @@ class ProductController extends Controller
         return redirect()->route('admin.products.variations', $variation->product_id)->with('success', 'Estoque atualizado com sucesso!');
     }
 
+    // ProductController.php - modifique o método show()
     public function show($id)
     {
         $product = Product::with(['variations' => function ($q) {
             $q->where('status', 'ativo')->with('sizes', 'images');
-        }, 'images', 'category', 'comments.user'])->findOrFail($id);
-        return view('show', compact('product'));
+        }, 'images', 'category'])->findOrFail($id);
+
+        // Paginação de comentários - 3 por página
+        $comments = $product->comments()
+            ->with('user')
+            ->orderBy('created_at', 'desc')
+            ->paginate(3);
+
+        return view('show', compact('product', 'comments'));
     }
 
     public function addToCart(Request $request, $id)

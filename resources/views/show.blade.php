@@ -188,10 +188,10 @@
     <div class="comments-section">
         <h3 class="comments-title">Avaliações do Produto</h3>
         
-        @if ($product->comments->isEmpty())
+        @if ($comments->isEmpty())
             <p class="text-center">Sem avaliações para este produto.</p>
         @else
-            @foreach ($product->comments as $comment)
+            @foreach ($comments as $comment)
                 <div class="comment" id="comment-{{ $comment->id }}">
                     <div class="comment-display" id="display-{{ $comment->id }}">
                         <h5>{{ $comment->titulo }}</h5>
@@ -245,6 +245,18 @@
                     @endif
                 </div>
             @endforeach
+
+            <!-- Paginação das avaliações -->
+            @if($comments->hasPages())
+            <div class="comments-pagination-wrapper">
+                <div class="comments-pagination-info">
+                    Exibindo {{ $comments->firstItem() }} a {{ $comments->lastItem() }} de {{ $comments->total() }} avaliações
+                </div>
+                <div class="comments-pagination">
+                    {{ $comments->links('pagination::bootstrap-4') }}
+                </div>
+            </div>
+            @endif
         @endif
 
         <!-- Formulário para Adicionar Avaliação -->
@@ -481,7 +493,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Edit comment forms
-        @foreach ($product->comments as $comment)
+        @foreach ($comments as $comment)
             @if (Auth::check() && Auth::id() === $comment->user_id)
                 (function() {
                     const tituloEdit = document.getElementById('titulo-edit-{{ $comment->id }}');

@@ -96,7 +96,18 @@
                                 </div>
                             </td>
                             <td class="order-date">
-                                {{ $order->created_at->setTimezone('America/Sao_Paulo')->format('d/m/Y H:i') }}
+                                <div class="date-info">
+                                    <div class="date-line">
+                                        <span class="date-label">Pedido:</span>
+                                        <span class="date-value">{{ $order->created_at->setTimezone('America/Sao_Paulo')->format('d/m/Y H:i') }}</span>
+                                    </div>
+                                    @if($order->status == 'delivered')
+                                    <div class="date-line delivered-date">
+                                        <span class="date-label">Entrega:</span>
+                                        <span class="date-value">{{ $order->updated_at->setTimezone('America/Sao_Paulo')->format('d/m/Y H:i') }}</span>
+                                    </div>
+                                    @endif
+                                </div>
                             </td>
                             <td class="order-items">
                                 <div class="items-list">
