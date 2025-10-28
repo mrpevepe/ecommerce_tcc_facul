@@ -5,7 +5,7 @@
 - verificar validações
 - validação produto quando sem estoque de variações, colocar tag FORA DE ESTOQUE deixar o item meio cinza
 - validação descrição cadastro camisetas >> FEITO
-- validação, proibir cadastro/edição de produto sem imagem de camiseta
+- validação, proibir cadastro/edição de produto sem imagem de camiseta > FEITO
 
 
 

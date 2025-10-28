@@ -1,61 +1,155 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🛍️ E-commerce de Roupas – Laravel & MySQL
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+### 📖 Descrição do Projeto
 
-## About Laravel
+Este projeto consiste no **desenvolvimento de um sistema web de e-commerce** voltado à venda de camisetas online, criado para oferecer uma plataforma **funcional, prática e segura** tanto para clientes quanto para administradores.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+O sistema foi desenvolvido em **PHP com o framework Laravel**, utilizando **MySQL** como banco de dados, e integra tecnologias como **HTML, CSS e JavaScript**, seguindo o padrão arquitetural **MVC (Model-View-Controller)**.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+O objetivo principal é disponibilizar uma solução acessível para **pequenos empreendedores** que desejam comercializar produtos na internet com **baixo custo, boa usabilidade e segurança.**
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+### 🚀 Funcionalidades Principais
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+#### 👤 Usuário (Cliente)
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+-   Cadastro e login de usuários com autenticação segura (bcrypt);
+-   Navegação por catálogo de produtos com filtros e busca;
+-   Visualização detalhada dos produtos (descrição, preço, variações e avaliações);
+-   Carrinho de compras com atualização de quantidades e cálculo automático do total;
+-   Finalização de pedidos e acompanhamento do status;
+-   Gerenciamento de endereço de entrega e perfil;
+-   Avaliação de produtos adquiridos.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+#### 🧑‍💼 Administrador
 
-## Laravel Sponsors
+-   Painel administrativo (dashboard) com acesso restrito;
+-   Cadastro, edição e exclusão de produtos, variações e categorias;
+-   Controle de estoque em tempo real;
+-   Gerenciamento de pedidos e atualização de status (pendente, em andamento, entregue);
+-   Moderação de avaliações de usuários.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+### 🧩 Tecnologias Utilizadas
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+| Camada                 | Tecnologia                                                |
+| ---------------------- | --------------------------------------------------------- |
+| **Frontend**           | HTML5, CSS3, JavaScript                                   |
+| **Backend**            | PHP 8.x com Framework Laravel                             |
+| **Banco de Dados**     | MySQL                                                     |
+| **Arquitetura**        | MVC (Model-View-Controller)                               |
+| **Outras Ferramentas** | Blade Templates, Bootstrap, Laravel Artisan, Eloquent ORM |
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 🧠 Padrão Arquitetural
 
-## Code of Conduct
+O projeto segue o padrão **MVC**, garantindo:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+-   Separação de responsabilidades (Model, View e Controller);
+-   Facilidade de manutenção e escalabilidade;
+-   Organização e reuso de código;
+-   Integração entre camadas de forma estruturada.
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 🧱 Estrutura do Sistema
 
-## License
+```
+├── app/
+│   ├── Http/Controllers/       # Controladores das rotas
+│   ├── Models/                 # Modelos de dados (Produto, Pedido, Usuário, etc.)
+│
+├── resources/
+│   ├── views/                  # Templates Blade (páginas do sistema)
+│
+├── routes/
+│   ├── web.php                 # Definição das rotas principais
+│
+├── public/
+│   ├── css/                    # Arquivos de estilo
+│   ├── js/                     # Scripts de interação
+│   ├── images/                 # Imagens dos produtos
+│
+├── database/
+│   ├── migrations/             # Estrutura das tabelas
+│
+└── README.md
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+### ⚙️ Requisitos de Instalação
+
+#### ✅ Pré-requisitos
+
+-   PHP 8.x+
+-   Composer
+-   MySQL
+-   XAMPP, Laragon ou similar
+
+#### 🔧 Passos para rodar o projeto localmente
+
+```bash
+# 1. Clonar o repositório
+git clone https://github.com/mrpevepe/ecommerce_tcc_facul.git
+
+# 2. Acessar a pasta do projeto
+cd ecommerce_tcc_facul
+
+# 3. Instalar dependências do Laravel
+composer install
+
+# 4. Criar o arquivo de ambiente
+cp .env.example .env
+
+# 5. Configurar as credenciais do banco de dados no arquivo .env
+DB_DATABASE=ecommercedb
+DB_USERNAME=root
+DB_PASSWORD=
+
+# 6. Gerar a chave da aplicação
+php artisan key:generate
+
+# 7. Rodar as migrações
+php artisan migrate
+
+# 8. Iniciar o servidor local
+php artisan serve
+```
+
+Após isso, acesse o projeto em:  
+➡️ **http://localhost:8000**
+
+---
+
+### 🔐 Segurança Implementada
+
+-   Senhas criptografadas (bcrypt);
+-   Proteção contra **CSRF, XSS e SQL Injection**;
+-   Sessões seguras com controle de acesso por **roles (usuário e administrador)**;
+-   Validação de entrada de dados no servidor.
+
+---
+
+### 📊 Resultados e Conclusões
+
+O sistema desenvolvido atendeu aos objetivos propostos, oferecendo:
+
+-   Uma **plataforma funcional e intuitiva**;
+-   **Gestão integrada** de produtos, pedidos e estoque;
+-   **Segurança** nas transações e autenticação de usuários;
+-   Estrutura **escalável e de fácil manutenção**.
+
+---
+
+### 🔮 Possíveis Melhorias Futuras
+
+-   Integração com gateways de pagamento (PIX, Mercado Pago, PayPal);
+-   Relatórios gerenciais e estatísticas de vendas;
+-   Versão mobile (aplicativo);
+-   Implementação de sistema de cupons e promoções.
+
+---
