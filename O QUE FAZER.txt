@@ -1,14 +1,21 @@
-Ainda falta fazer:
+// >>>>>>>>>>>>>>>>>> Oq fazer/foi feito <<<<<<<<<<<<<<<<<<<<
 
-// >>>>>>>>>>>>>>>>>> Coisas q tem q fazer ainda e quais CSS falta fazer  <<<<<<<<<<<<<<<<<<<<
+>>> OQ FALTA <<<
+>VALIDAÇÕES<
+- verificar validações
+- validação produto quando sem estoque de variações, colocar tag FORA DE ESTOQUE deixar o item meio cinza
+- validação descrição cadastro camisetas >> FEITO
+- validação, proibir cadastro/edição de produto sem imagem de camiseta
 
->fazer o footer tambem! com algumas paginas falando sobre ecommerce placeholders tipo terms of service<
+
+
+<<<<<< FEITOS v >>>>>>
 
 27-10-25 > feito;
-> Paginação nos comentários na pagina show do produto.
-> correção css no status na pagina do usuário.
-> data enterga pagina de order do user
-> data entrega na pagina order do admin
+> Paginação nos comentários na pagina show do produto. > feito
+> correção css no status na pagina do usuário. > feito
+> data enterga pagina de order do user > feito
+> data entrega na pagina order do admin > feito
 
 
 06-10-26 > fazendo....:
@@ -17,13 +24,13 @@ Ainda falta fazer:
 > paginação com botões 1,2,3,4,5 na pagina de pedidos > FEITO
 
 ---- 09-10-25 oq foi feito:
-> alteraçao icone
+> alteraçao icone > feito
 
 -> 06-10-26 > oq alterei:
--> adicionei contador de caracteres no create/edit product.
--> adicionei quebra de linha na descrição da tabela de comments do admin para melhor visualização.
--> adicionei quebra de linha na pagina de descrição do pedido.
--> css remodelado para algumas paginas
+-> adicionei contador de caracteres no create/edit product. > feito
+-> adicionei quebra de linha na descrição da tabela de comments do admin para melhor visualização. > feito
+-> adicionei quebra de linha na pagina de descrição do pedido. > feito
+-> css remodelado para algumas paginas > feito
 
 >ONDE FALTA CSS<
 VER COMO FICA NOME DE CLIENTE MUITO GRANDE NA TABELA  > FEITO
@@ -40,75 +47,32 @@ VER COMO FICA NOME DE CLIENTE MUITO GRANDE NA TABELA  > FEITO
 -------------------------------------------------------------------------------------------
  > PERFIL DO USUARIO <
  ----------------------------------------------------------------------------------------
-- ADICIONAR TAMBÉM EDITAR COMENTÁRIOS DO USUÁRIO NO PERFIL DELE!!! <<<<<<
-- tabela de ver avaliaçoes no perfil do usuário
+- ADICIONAR TAMBÉM EDITAR COMENTÁRIOS DO USUÁRIO NO PERFIL DELE!!! <<<<<< > feito
+- tabela de ver avaliaçoes no perfil do usuário > feito
 -----------------------------------------------------------------------------------------
-
-- CONFERIR DEPOIS validacao inputs
 
 // oq foi feito
 
-- paginação dos produtos e tabela de produtos
-- adicionado o endereço na tabela de pedidos
-- botão para inativar PRODUTOS
-- inativar categorias também (nao sei se é necessario talvez remover..)
-- avaliações de produtos com pagina para administrador gerenciar tambem.
-
-// OQ PERGUNTAR PARA O PROFESSOR
-
-- OQ ADICIONAR A MAIS NO DOCUMENTO QUE ESTÁ FALTANDO
-- OQ PRECISA TER NA PARTE DO DESENVOLVIMENTO DO DOCUMENTO
+- paginação dos produtos e tabela de produtos > feito
+- adicionado o endereço na tabela de pedidos > feito
+- botão para inativar PRODUTOS > feito
+- inativar categorias também (nao sei se é necessario talvez remover..) > feito
+- avaliações de produtos com pagina para administrador gerenciar tambem. > feito
 
 // SUPER IMPORTANTE
 
-- css nas telas de cadastro do admin TODAS
-- css nas paginas do usuario TODAS
+- css nas telas de cadastro do admin TODAS > Feito
+- css nas paginas do usuario TODAS > Feito
 - 
 
 - adicionar notas na avaliação  < menos importante
 
->VALIDAÇÕES<
-- verificar validações
-- validação produto quando sem estoque de variações, colocar tag FORA DE ESTOQUE deixar o item meio cinza
-- validação descrição cadastro camisetas
-- validação, proibir cadastro/edição de produto sem imagem de camiseta
+
 
 ---------------- talvez adicionar cpf para o usuario? ----------------
 // WHATEVER, SE DER TEMPO EU FAÇO
 
 - dashboard do admin com dados de produtos vendidos no mês / preço total vendido etc...
-- fazer um carrousel com imagens na pagina de show do produto
-
--VALIDAÇÃO DE AVALIAÇÕES NOS PRODUTOS
-
-
->titulo mais completo
->trocar alaercio por charlize
-
->deixar embaixo da pagina
-
->pegar o template, e passar o tcc para o template
-no word
-
-> nao tem espaço entre paragrafos
-> citacao direta tem que ter pagina
-> livro ou pdf tem que ter paginana citação
-> unidade de estudo falar sobre os ecommerces online
-> alinhar com o paragrafo 2 a
-
-> arrumar as tabelas dos RFS
-propriedadades, linha, delisga o 1 e liga o 2
-> diagrama casos de uso sem flecha so a linha reta
-> diagrama de classes, usuario endereço é compsosicao
-> remover a setinha
-> arquitetura, adicionar tipo um diagrama/imagem
-de como o MVC relaciona entre si
-
-> codigo muito grande, fazer em texto com fundo preto
-entregar prox quarta
+- fazer um carrousel com imagens na pagina de show do produto  > feito
 
 ---------------------------------------------------
->>>>>>>>> O QUE AINDA FALTA NO TCC <<<<<<<<<<<<
-> tabelas dos RFS;
-> conferir as paginas nas referencias, deve tar certo já;
-

@@ -311,6 +311,66 @@
             }
         });
     });
+
+    // Validação da imagem principal do produto <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    document.querySelector('.create-product-form').addEventListener('submit', function(e) {
+        const imagemInput = document.getElementById('imagem');
+        const previewMain = document.getElementById('preview-main');
+        let isValid = true;
+        
+        // Remove mensagens de erro anteriores
+        const existingError = document.querySelector('.image-required-error');
+        if (existingError) {
+            existingError.remove();
+        }
+        
+        // Verifica se não há arquivo selecionado E não há preview visível
+        if (!imagemInput.files.length && (!previewMain || previewMain.style.display === 'none' || !previewMain.src || previewMain.src === '#')) {
+            isValid = false;
+            
+            // Cria e exibe a mensagem de erro
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message image-required-error';
+            errorDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Selecione uma imagem principal para o produto.';
+            errorDiv.style.color = '#dc3545';
+            errorDiv.style.marginTop = '8px';
+            errorDiv.style.padding = '8px 12px';
+            errorDiv.style.borderRadius = '4px';
+            errorDiv.style.backgroundColor = '#f8d7da';
+            errorDiv.style.border = '1px solid #f5c6cb';
+            
+            // Insere a mensagem após o file input wrapper
+            const fileInputWrapper = document.querySelector('.file-input-wrapper');
+            fileInputWrapper.parentNode.insertBefore(errorDiv, fileInputWrapper.nextSibling);
+            
+            // Destaca visualmente o campo
+            imagemInput.style.borderColor = '#dc3545';
+            const label = document.getElementById('imagem-label');
+            if (label) {
+                label.style.borderColor = '#dc3545';
+            }
+        }
+        
+        if (!isValid) {
+            e.preventDefault();
+            // Rola a página até o campo com erro
+            imagemInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return false;
+        }
+    });
+
+    // Remove a mensagem de erro quando uma imagem é selecionada
+    document.getElementById('imagem').addEventListener('change', function() {
+        const existingError = document.querySelector('.image-required-error');
+        if (existingError) {
+            existingError.remove();
+        }
+        this.style.borderColor = '';
+        const label = document.getElementById('imagem-label');
+        if (label) {
+            label.style.borderColor = '';
+        }
+    });
 </script>
 
 <style>

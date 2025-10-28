@@ -274,7 +274,7 @@
 }
 
 .status-cancelled {
-    background: linear-gradient(135deg, #6b7280, #4b5563);
+    background: #ef4444;
     color: white;
 }
 
