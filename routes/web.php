@@ -117,3 +117,7 @@ Route::get('/nossa-missao', function () {
 Route::get('/trabalhe-conosco', function () {
     return view('footer.sobre.trabalhe_conosco');
 })->name('footer.trabalhe');
+
+// edit user
+Route::get('/user/edit', [UserController::class, 'showEditForm'])->name('user.edit.form');
+Route::post('/user/edit', [UserController::class, 'update'])->name('user.update');

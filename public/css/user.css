@@ -13,6 +13,14 @@
     text-shadow: 0 2px 10px rgba(0, 212, 170, 0.3);
 }
 
+/* Grid para Dados Pessoais e Endereço */
+.user-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
 /* Cards de Informações */
 .user-card {
     background: rgba(31, 41, 55, 0.8);
@@ -21,8 +29,8 @@
     padding: 2rem;
     box-shadow: var(--shadow-lg);
     border: 1px solid rgba(0, 212, 170, 0.1);
-    margin-bottom: 2rem;
     transition: var(--transition);
+    height: fit-content;
 }
 
 .user-card:hover {
@@ -46,10 +54,43 @@
     margin: 0;
 }
 
-/* Informações de Endereço */
+/* Informações de Dados Pessoais - 2 por linha */
+.user-data-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.data-field {
+    padding: 0.8rem;
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 8px;
+    border-left: 3px solid #f59e0b;
+}
+
+.data-label {
+    color: #f59e0b;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+    display: block;
+}
+
+.data-value {
+    color: var(--dark-text);
+    font-size: 0.95rem;
+    margin: 0;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    line-height: 1.4;
+}
+
+/* Informações de Endereço - 2 por linha */
 .user-address-info {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: 1fr 1fr;
     gap: 1rem;
     margin-bottom: 1.5rem;
 }
@@ -59,6 +100,10 @@
     background: rgba(15, 23, 42, 0.6);
     border-radius: 8px;
     border-left: 3px solid var(--accent);
+}
+
+.address-field.full-width {
+    grid-column: 1 / -1;
 }
 
 .address-label {
@@ -78,6 +123,92 @@
     word-break: break-word;
     line-height: 1.4;
 }
+
+/* Botões */
+.btn-add-address {
+    background: linear-gradient(135deg, var(--accent), #00b894);
+    color: #0f172a;
+    border: none;
+    border-radius: 8px;
+    padding: 0.8rem 1.5rem;
+    font-weight: 700;
+    transition: var(--transition);
+    box-shadow: 0 4px 12px rgba(0, 212, 170, 0.4);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.btn-add-address:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 212, 170, 0.6);
+    background: linear-gradient(135deg, #00ff9f, var(--accent));
+    color: #0f172a;
+}
+
+/* Botão Editar Dados */
+.btn-edit-data {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.8rem 1.5rem;
+    font-weight: 700;
+    transition: var(--transition);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.btn-edit-data:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.6);
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: white;
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 1024px) {
+    .user-container {
+        padding: 0 1rem;
+    }
+
+    .user-info-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .user-card {
+        padding: 1.5rem;
+    }
+
+    .user-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    /* Em telas menores, volta para 1 coluna */
+    .user-data-info,
+    .user-address-info {
+        grid-template-columns: 1fr;
+    }
+
+    .address-field.full-width {
+        grid-column: 1;
+    }
+}
+
+/* O resto do CSS permanece igual - mantendo os estilos existentes para tabelas, paginação, etc. */
 
 /* ==================== SEARCH AND FILTERS ==================== */
 .user-orders-header {
@@ -400,124 +531,6 @@
     background: rgba(15, 23, 42, 0.6);
     border-radius: var(--radius);
     border: 1px solid rgba(0, 212, 170, 0.1);
-}
-
-/* Botão Adicionar Endereço */
-.btn-add-address {
-    background: linear-gradient(135deg, var(--accent), #00b894);
-    color: #0f172a;
-    border: none;
-    border-radius: 8px;
-    padding: 0.8rem 1.5rem;
-    font-weight: 700;
-    transition: var(--transition);
-    box-shadow: 0 4px 12px rgba(0, 212, 170, 0.4);
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    text-decoration: none;
-    cursor: pointer;
-    margin-top: 1rem;
-}
-
-.btn-add-address:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 212, 170, 0.6);
-    background: linear-gradient(135deg, #00ff9f, var(--accent));
-    color: #0f172a;
-}
-
-/* ==================== RESPONSIVE ==================== */
-@media (max-width: 1024px) {
-    .user-container {
-        padding: 0 1rem;
-    }
-
-    .user-orders-table-container {
-        padding: 1rem;
-        overflow-x: auto;
-    }
-
-    .user-orders-table {
-        min-width: 800px;
-    }
-
-    .user-address-info {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 768px) {
-    .user-orders-header {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .user-search-container {
-        flex-direction: column;
-        width: 100%;
-    }
-
-    .user-search-form {
-        min-width: auto;
-        width: 100%;
-    }
-
-    .user-actions {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .order-actions {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .order-action-btn {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .user-pagination-top,
-    .user-pagination-bottom {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .user-card {
-        padding: 1.5rem;
-    }
-
-    .user-card-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-    }
-}
-
-@media (max-width: 576px) {
-    .user-orders-table tbody td {
-        padding: 0.7rem 0.5rem;
-    }
-
-    .order-status {
-        font-size: 0.7rem;
-        padding: 0.2rem 0.6rem;
-    }
-
-    .user-pagination .page-link {
-        padding: 0.4rem 0.8rem;
-        font-size: 0.9rem;
-        min-width: 35px;
-    }
-
-    .user-pagination {
-        gap: 0.3rem;
-    }
-
-    .user-card {
-        padding: 1rem;
-    }
 }
 
 /* Animações */

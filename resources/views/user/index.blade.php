@@ -7,48 +7,77 @@
 <div class="user-container">
     <h1 class="user-title">Minha Conta</h1>
 
-    <!-- Seção de Endereço -->
-    <div class="user-card">
-        <div class="user-card-header">
-            <h2 class="user-card-title">Endereço de Entrega</h2>
-        </div>
-        <div class="user-card-body">
-            @if ($user->endereco)
-                <div class="user-address-info">
-                    <div class="address-field">
-                        <span class="address-label">Logradouro</span>
-                        <p class="address-value">{{ $user->endereco->logradouro }}, {{ $user->endereco->numero }}</p>
+    <!-- Seção de Dados Pessoais e Endereço lado a lado -->
+    <div class="user-info-grid">
+        <!-- Card de Dados Pessoais -->
+        <div class="user-card">
+            <div class="user-card-header">
+                <h2 class="user-card-title">Dados Pessoais</h2>
+            </div>
+            <div class="user-card-body">
+                <div class="user-data-info">
+                    <div class="data-field">
+                        <span class="data-label">Nome</span>
+                        <p class="data-value">{{ $user->name }}</p>
                     </div>
-                    <div class="address-field">
-                        <span class="address-label">Bairro</span>
-                        <p class="address-value">{{ $user->endereco->bairro }}</p>
+                    <div class="data-field">
+                        <span class="data-label">Email</span>
+                        <p class="data-value">{{ $user->email }}</p>
                     </div>
-                    <div class="address-field">
-                        <span class="address-label">Cidade/Estado</span>
-                        <p class="address-value">{{ $user->endereco->nome_cidade }} - {{ $user->endereco->estado }}</p>
+                    <div class="data-field">
+                        <span class="data-label">Telefone</span>
+                        <p class="data-value">{{ $user->telefone }}</p>
                     </div>
-                    <div class="address-field">
-                        <span class="address-label">CEP</span>
-                        <p class="address-value">{{ $user->endereco->cep }}</p>
-                    </div>
-                    @if ($user->endereco->complemento)
-                    <div class="address-field">
-                        <span class="address-label">Complemento</span>
-                        <p class="address-value">{{ $user->endereco->complemento }}</p>
-                    </div>
-                    @endif
                 </div>
-                <a href="{{ route('user.address.form') }}" class="btn-add-address">
-                    <i class="fas fa-edit"></i> Editar Endereço
+                <a href="{{ route('user.edit.form') }}" class="btn-edit-data">
+                    <i class="fas fa-user-edit"></i> Editar Dados
                 </a>
-            @else
-                <div class="user-no-address">
-                    <p>Você não possui um endereço cadastrado.</p>
+            </div>
+        </div>
+
+        <!-- Card de Endereço -->
+        <div class="user-card">
+            <div class="user-card-header">
+                <h2 class="user-card-title">Endereço de Entrega</h2>
+            </div>
+            <div class="user-card-body">
+                @if ($user->endereco)
+                    <div class="user-address-info">
+                        <div class="address-field">
+                            <span class="address-label">Logradouro</span>
+                            <p class="address-value">{{ $user->endereco->logradouro }}, {{ $user->endereco->numero }}</p>
+                        </div>
+                        <div class="address-field">
+                            <span class="address-label">Bairro</span>
+                            <p class="address-value">{{ $user->endereco->bairro }}</p>
+                        </div>
+                        <div class="address-field">
+                            <span class="address-label">Cidade/Estado</span>
+                            <p class="address-value">{{ $user->endereco->nome_cidade }} - {{ $user->endereco->estado }}</p>
+                        </div>
+                        <div class="address-field">
+                            <span class="address-label">CEP</span>
+                            <p class="address-value">{{ $user->endereco->cep }}</p>
+                        </div>
+                        @if ($user->endereco->complemento)
+                        <div class="address-field full-width">
+                            <span class="address-label">Complemento</span>
+                            <p class="address-value">{{ $user->endereco->complemento }}</p>
+                        </div>
+                        @endif
+                    </div>
                     <a href="{{ route('user.address.form') }}" class="btn-add-address">
-                        <i class="fas fa-plus"></i> Adicionar Endereço
+                        <i class="fas fa-edit"></i> Editar Endereço
                     </a>
-                </div>
-            @endif
+                @else
+                    <div class="user-no-address">
+                        <p>Você não possui um endereço cadastrado.</p>
+                        <a href="{{ route('user.address.form') }}" class="btn-add-address">
+                            <i class="fas fa-plus"></i> Adicionar Endereço
+                        </a>
+                    </div>
+                @endif
+            </div>
         </div>
     </div>
 

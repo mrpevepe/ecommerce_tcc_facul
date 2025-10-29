@@ -7,6 +7,7 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Hash; // Adicione esta linha
 
 class UserController extends Controller
 {
@@ -129,5 +130,67 @@ public function saveAddress(Request $request)
 
         return view('user.reviews', compact('reviews'));
     }
-    
+ 
+    /**
+     * Exibe o formulário para editar dados do usuário.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function showEditForm()
+    {
+        $user = Auth::user();
+        return view('user.edit', compact('user'));
+    }
+
+    /**
+     * Atualiza os dados do usuário.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(Request $request)
+    {
+        try {
+            $user = Auth::user();
+
+            $request->validate([
+                'name' => ['required', 'string', 'max:60'],
+                'telefone' => ['required', 'string', 'max:20', 'regex:/^\(\d{2}\) \d \d{4}-\d{4}$/'],
+                'current_password' => ['required', 'string'],
+                'password' => ['nullable', 'string', 'min:8', 'max:60', 'confirmed'],
+            ], [
+                // Mensagens personalizadas em português
+                'name.required' => 'O campo nome é obrigatório.',
+                'name.max' => 'O nome não pode ter mais de 60 caracteres.',
+                'telefone.required' => 'O campo telefone é obrigatório.',
+                'telefone.regex' => 'Formato de telefone inválido. Use (XX) X XXXX-XXXX.',
+                'current_password.required' => 'A senha atual é obrigatória.',
+                'password.min' => 'A senha deve ter pelo menos 8 caracteres.',
+                'password.max' => 'A senha não pode ter mais de 60 caracteres.',
+                'password.confirmed' => 'A confirmação da senha não corresponde.',
+            ]);
+
+            // Verificar senha atual
+            if (!Hash::check($request->current_password, $user->password)) {
+                return redirect()->back()->withErrors(['current_password' => 'Senha atual incorreta.'])->withInput();
+            }
+
+            // Atualizar dados
+            $user->name = $request->name;
+            $user->telefone = $request->telefone;
+            
+            if ($request->password) {
+                $user->password = Hash::make($request->password);
+            }
+
+            $user->save();
+
+            return redirect()->route('user.index')->with('success', 'Dados atualizados com sucesso!');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()->withErrors($e->validator)->withInput();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao atualizar dados: ' . $e->getMessage())->withInput();
+        }
+    }
+
 }
